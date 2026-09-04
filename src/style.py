@@ -90,18 +90,26 @@ body.hasbar{--barh:44px;padding-top:44px}
   box-shadow:0 18px 40px rgba(0,0,0,.10);opacity:0;visibility:hidden;transform:translateY(-6px);
   transition:.18s;z-index:130;padding:26px 0 30px}
 .nav>li:hover .mega,.nav>li:focus-within .mega{opacity:1;visibility:visible;transform:none}
-.mega-in{max-width:var(--maxw);margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 260px;gap:34px}
-.mega-tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
-.mega-tile img{width:100%;aspect-ratio:1/1.18;object-fit:cover;border-radius:8px;background:var(--soft)}
-.mega-tile .tt{font-size:12px;font-weight:700;margin-top:8px;line-height:1.3}
-.mega-tile .td{font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}
-.mega-tile:hover .tt{color:var(--brand)}
+.mega-in{max-width:var(--maxw);margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 224px;gap:28px;max-height:calc(100vh - 150px);overflow:auto}
+.mcols{display:grid;grid-template-columns:repeat(6,1fr);gap:10px 22px;align-items:start}
+.mcol{min-width:0}
+.mhd{font-size:12px;font-weight:800;color:var(--brand);letter-spacing:.02em;margin:0 0 9px}
+.mcol+.mcol{}
+a.mlink{display:flex;align-items:center;gap:9px;padding:4px 5px 4px 0;border-radius:7px;
+  font-size:12.5px;font-weight:600;color:#3d3d3d;line-height:1.25;transition:.14s}
+a.mlink img{width:30px;height:34px;object-fit:cover;border-radius:5px;background:var(--soft);flex:0 0 30px}
+a.mlink span{min-width:0}
+a.mlink:hover{color:var(--brand);background:#fdf3f8}
 .mega-sizes{margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
-.mega-sizes .hd,.mega-side .hd{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:10px}
-.chiprow{display:flex;flex-wrap:wrap;gap:8px}
-.nav .chiprow a.mega-chip{padding:7px 15px;border:1px solid var(--line);border-radius:20px;font-size:12px;font-weight:600}
+.mega-side .hd{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin:10px 0 2px}
+.nav .chiprow a.mega-chip{padding:6px 13px;border:1px solid var(--line);border-radius:20px;
+  font-size:11.5px;font-weight:600;color:#444}
 .nav .chiprow a.mega-chip:hover{border-color:var(--ink);background:var(--ink);color:#fff}
+.mega-side .allbtn{display:block;text-align:center;background:var(--ink);color:#fff;font-size:12px;
+  font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:11px;border-radius:7px}
+.mega-side .allbtn:hover{background:var(--brand)}
+.mega-side .chiprow{display:flex;flex-wrap:wrap;gap:7px}
 .mega-side{display:flex;flex-direction:column;gap:12px}
 .mega-promo{border-radius:8px;overflow:hidden;position:relative;background:var(--soft)}
 .mega-promo img{width:100%;aspect-ratio:230/100;object-fit:cover}
@@ -142,13 +150,32 @@ body.hasbar{--barh:44px;padding-top:44px}
   transform:translateX(-100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
 .drw.on{transform:none}
 .drw-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}
-.drw-views{flex:1;position:relative;overflow:hidden}
-.drw-view{position:absolute;inset:0;overflow:auto;background:#fff;transform:translateX(100%);
-  transition:transform .26s cubic-bezier(.2,.8,.2,1)}
-.drw-view.root,.drw-view.on{transform:none}
-.drw-view a,.drw-view button{display:flex;align-items:center;justify-content:space-between;width:100%;
-  padding:16px 18px;border-bottom:1px solid var(--soft2);font-size:14px;font-weight:600;text-align:left}
-.drw-back{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.drw-pills{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);
+  background:var(--soft);flex:0 0 auto}
+.drw-pills button{position:relative;flex:1;padding:9px 6px;border-radius:22px;border:1px solid var(--line);
+  background:#fff;font-size:13px;font-weight:700;color:#444;transition:.15s}
+.drw-pills button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.drw-pills .badge{position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--brand);
+  color:#fff;font-size:8px;font-weight:800;letter-spacing:.06em;padding:2px 5px;border-radius:3px;
+  font-style:normal}
+.drw-body{flex:1;overflow:auto;-webkit-overflow-scrolling:touch}
+.dall{display:block;margin:14px 16px 4px;text-align:center;background:var(--brand);color:#fff;
+  font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:12px;border-radius:8px}
+.dgrp{padding:14px 16px 4px}
+.dhd{font-size:12px;font-weight:800;color:var(--brand);margin-bottom:10px}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px 10px}
+.dgrid a{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:600;color:#333;line-height:1.25}
+.dgrid img{width:34px;height:42px;object-fit:cover;border-radius:5px;background:var(--soft);flex:0 0 34px}
+.dpromo{display:flex;gap:9px;overflow-x:auto;padding:14px 16px 4px;scrollbar-width:none}
+.dpromo::-webkit-scrollbar{display:none}
+.dpromo a{position:relative;flex:0 0 60%;border-radius:9px;overflow:hidden;background:var(--soft)}
+.dpromo img{width:100%;aspect-ratio:230/110;object-fit:cover}
+.dpromo span{position:absolute;left:10px;bottom:8px;color:#fff;font-size:11px;font-weight:800;
+  text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.drw-links{margin-top:12px;border-top:1px solid var(--line)}
+.drw-links a{display:flex;align-items:center;justify-content:space-between;width:100%;
+  padding:14px 18px;font-size:13.5px;font-weight:600;border-bottom:1px solid #f2efec;color:#2a2a2a}
+.drw-links a span{color:#bbb}
 .drw-foot{border-top:1px solid var(--line);padding:14px 18px;display:grid;gap:8px;font-size:12px;color:var(--muted)}
 
 /* ---------- buttons ---------- */
@@ -738,7 +765,7 @@ body.hasbar{--barh:44px;padding-top:44px}
 
 /* ================= responsive ================= */
 @container (max-width:1180px){
-  .mega-tiles{grid-template-columns:repeat(4,1fr)}
+  .mcols{grid-template-columns:repeat(4,1fr)}
   .grid{grid-template-columns:repeat(3,1fr)}
   .grid.g5{grid-template-columns:repeat(4,1fr)}
   .revs{grid-template-columns:repeat(2,1fr)}

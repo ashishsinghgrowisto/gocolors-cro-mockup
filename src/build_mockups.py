@@ -7,7 +7,7 @@ network connection but stay byte-small and always show the live artwork.
 import os, sys, json, html, random, shutil, re, hashlib
 from concurrent.futures import ThreadPoolExecutor
 
-from data import (U, BRAND, ANNOUNCE, NAV, MEGA_PROMOS, SIZES_CHIPS, CAT_TABS,
+from data import (U, BRAND, ANNOUNCE, NAV, NAV_GROUPS, MEGA_PROMOS, SIZES_CHIPS, CAT_TABS,
                   PRICE_BANDS, SPOTLIGHT, PRODUCTS, COLOR_HEX, SHADES, REVIEWS,
                   FAQ, FOOTER, L1, BANNERS, CATEGORIES)
 from style import CSS
@@ -194,31 +194,66 @@ def app_strip():
             '<button class="x" data-appclose aria-label="Dismiss">×</button></div>'
             '<div class="greenline"></div>')
 
-def mega(kids):
-    tiles = ''.join(
-        '<a class="mega-tile" href="collection.html"><img src="%s" alt="%s" loading="lazy">'
-        '<div class="tt">%s</div><div class="td">%s</div></a>' % (U(img), E(nm), E(nm), E(desc))
-        for nm, img, desc in kids)
-    chips = ''.join('<a class="mega-chip" href="collection.html">%s</a>' % E(s) for s in SIZES_CHIPS)
+NAV_IMG_FALLBACK = {}
+
+
+def nav_thumb(audience, name):
+    """Best-matching image for a menu link: category art first, then a product shot."""
+    key = (audience, name)
+    if key in NAV_IMG_FALLBACK:
+        return NAV_IMG_FALLBACK[key]
+    want = _toks(name)
+    img = ''
+    for title, cimg, _sale in CATEGORIES.get(audience, []):
+        hay = ' '.join(_toks(title))
+        if hay and any(w in hay or hay.split()[0] in _toks(name) for w in want):
+            img = U(cimg)
+            break
+    if not img:
+        pool = [p for p in PROD if p['whom'] == audience] or PROD
+        for p in pool:
+            hay = ' '.join(_toks(p['ty'] + ' ' + p['t']))
+            if any(w in hay for w in want):
+                img = p['i'][0]
+                break
+    if not img:
+        cats = CATEGORIES.get(audience) or CATEGORIES['Women']
+        img = U(cats[len(NAV_IMG_FALLBACK) % len(cats)][1])
+    NAV_IMG_FALLBACK[key] = img
+    return img
+
+
+def mega(audience):
+    cols = ''.join(
+        '<div class="mcol"><div class="mhd">%s</div>%s</div>'
+        % (E(group),
+           ''.join('<a class="mlink" href="collection.html">'
+                   '<img src="%s" alt="" loading="lazy">'
+                   '<span>%s</span></a>' % (nav_thumb(audience, nm), E(nm))
+                   for nm in links))
+        for group, links in NAV_GROUPS[audience])
     promos = ''.join(
         '<a class="mega-promo" href="collection.html"><img src="%s" alt="%s" loading="lazy">'
         '<span class="cap">%s</span></a>' % (U(img), E(cap), E(cap))
         for img, cap in MEGA_PROMOS[:2])
-    best = ''.join(
-        '<a href="product.html?p=%s"><img src="%s" alt="%s" loading="lazy"><div class="p">%s</div></a>'
-        % (p['h'], p['i'][0], E(p['t']), E(p['ty'])) for p in PROD[:2])
-    return ('<div class="mega"><div class="mega-in"><div>'
-            '<div class="mega-tiles">%s</div>'
-            '<div class="mega-sizes"><div class="hd">Shop by size</div><div class="chiprow">%s</div></div>'
-            '</div><div class="mega-side"><div class="hd">Edits for you</div>%s'
-            '<div class="hd" style="margin-top:6px">Best sellers</div>'
-            '<div class="mega-best">%s</div></div></div></div>' % (tiles, chips, promos, best))
+    chips = ''.join('<a class="mega-chip" href="collection.html">%s</a>' % E(s)
+                    for s in SIZES_CHIPS)
+    return ('<div class="mega"><div class="mega-in">'
+            '<div class="mcols">%s</div>'
+            '<div class="mega-side">'
+            '<a class="allbtn" href="%s.html">Shop all %s \u203a</a>'
+            '<div class="hd">Edits for you</div>%s'
+            '<div class="hd" style="margin-top:4px">Shop by size</div>'
+            '<div class="chiprow">%s</div>'
+            '</div></div></div>'
+            % (cols, audience.lower(), E(audience), promos, chips))
+
 
 def header():
     navhtml = ''.join(
         '<li><span class="top">%s%s<i class="car">▾</i></span>%s</li>'
-        % ('<i class="badge">NEW</i>' if label == 'Men' else '', E(label), mega(kids))
-        for label, _href, kids in NAV)
+        % ('<i class="badge">NEW</i>' if label == 'Men' else '', E(label), mega(label))
+        for label, _href, _kids in NAV)
     return (
       '<header class="hdr"><div class="hdr-in">'
       '<button class="burger" data-burger aria-label="Open menu">%s</button>'
@@ -237,27 +272,42 @@ def header():
       % (IC['menu'], logo(), navhtml, IC['search'], IC['store'], IC['user'], IC['heart'], IC['bag']))
 
 def drawer():
-    views, root = [], ['<a href="home.html">Home <span>›</span></a>']
-    for label, _h, kids in NAV:
-        vid = label.lower()
-        root.append('<button data-drw="%s">%s <span>›</span></button>' % (vid, E(label)))
-        rows = ''.join('<a href="collection.html">%s <span>›</span></a>' % E(nm) for nm, _i, _d in kids)
-        views.append(
-            '<div class="drw-view" id="dv-%s">'
-            '<button data-drwback class="drw-back" style="border-bottom:1px solid #efece9">‹ All categories</button>'
-            '%s</div>' % (vid, rows))
-    root += ['<a href="collection.html">New Arrivals <span>›</span></a>',
-             '<a href="collection.html">Best Sellers <span>›</span></a>',
-             '<a href="#" data-openwish>Wishlist <span>›</span></a>',
-             '<a href="#">Track my order <span>›</span></a>',
-             '<a href="#">Store locator <span>›</span></a>',
-             '<a href="#">Go Rewards <span>›</span></a>']
+    """Mobile menu: audience pills, then every collection in the hierarchy."""
+    auds = list(NAV_GROUPS.keys())
+    pills = ''.join('<button data-mtab="%s" class="%s">%s%s</button>'
+                    % (a, 'on' if i == 0 else '',
+                       '<i class="badge">NEW</i>' if a == 'Men' else '', E(a))
+                    for i, a in enumerate(auds))
+    panels = ''
+    for i, a in enumerate(auds):
+        groups = ''.join(
+            '<div class="dgrp"><div class="dhd">%s</div><div class="dgrid">%s</div></div>'
+            % (E(group),
+               ''.join('<a href="collection.html"><img src="%s" alt="" loading="lazy">'
+                       '<span>%s</span></a>' % (nav_thumb(a, nm), E(nm))
+                       for nm in links))
+            for group, links in NAV_GROUPS[a])
+        panels += ('<div class="dpanel" data-mpanel="%s" style="%s">'
+                   '<a class="dall" href="%s.html">Shop all %s \u203a</a>%s'
+                   '<div class="dpromo">%s</div></div>'
+                   % (a, '' if i == 0 else 'display:none', a.lower(), E(a), groups,
+                      ''.join('<a href="collection.html"><img src="%s" alt="%s" loading="lazy">'
+                              '<span>%s</span></a>' % (U(img), E(cap), E(cap))
+                              for img, cap in MEGA_PROMOS[:3])))
+    links = ''.join('<a href="%s">%s <span>\u203a</span></a>' % (h, E(t)) for h, t in
+                    [('home.html', 'Home'), ('collection.html', 'New Arrivals'),
+                     ('collection.html', 'Best Sellers')])
+    links += ''.join('<a href="#"%s>%s <span>\u203a</span></a>' % (x, E(t)) for x, t in
+                     [(' data-openwish', 'Wishlist'), ('', 'Track my order'),
+                      ('', 'Store locator'), ('', 'Go Rewards')])
     return ('<aside class="drw" id="navDrw">'
             '<div class="drw-hd">%s<button data-close aria-label="Close">%s</button></div>'
-            '<div class="drw-views"><div class="drw-view root">%s</div>%s</div>'
-            '<div class="drw-foot"><span>Free shipping · 30-day returns · Free COD</span>'
-            '<span>customercare@gocolors.com · 1800-123-9953</span></div></aside>'
-            % (logo(), IC['x'], ''.join(root), ''.join(views)))
+            '<div class="drw-pills">%s</div>'
+            '<div class="drw-body">%s<div class="drw-links">%s</div></div>'
+            '<div class="drw-foot"><span>Free shipping \u00b7 30-day returns \u00b7 Free COD</span>'
+            '<span>customercare@gocolors.com \u00b7 1800-123-9953</span></div></aside>'
+            % (logo(), IC['x'], pills, panels, links))
+
 
 def search_overlay():
     cats = ['Leggings', 'Leggings and Churidar']

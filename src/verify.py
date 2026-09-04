@@ -38,7 +38,8 @@ with sync_playwright() as pw:
 
     pg.goto('file://%s/home.html' % OUT); pg.wait_for_timeout(2600)
     pg.hover('.nav > li:first-child .top'); pg.wait_for_timeout(700)
-    mega = pg.evaluate("() => getComputedStyle(document.querySelector('.nav>li .mega')).visibility")
+    mega = pg.evaluate("""() => getComputedStyle(document.querySelector('.nav>li .mega')).visibility
+        + ' links:' + document.querySelectorAll('.nav>li:first-child .mega a.mlink').length""")
     pg.screenshot(path=SHOT + '/i-mega.png')
     pg.mouse.move(700, 700); pg.wait_for_timeout(300)
 
@@ -100,11 +101,12 @@ with sync_playwright() as pw:
     p2 = ctx2.new_page()
     p2.goto('file://%s/home.html' % OUT); p2.wait_for_timeout(2200)
     p2.click('[data-burger]'); p2.wait_for_timeout(600)
-    p2.click('[data-drw="women"]'); p2.wait_for_timeout(700)
+    p2.click('[data-mtab="Men"]'); p2.wait_for_timeout(700)
     p2.screenshot(path=SHOT + '/i-drawer-sub.png')
-    drilled = p2.evaluate("() => document.querySelector('#dv-women').classList.contains('on')")
-    p2.click('[data-drwback]'); p2.wait_for_timeout(500)
-    backok = p2.evaluate("() => !document.querySelector('#dv-women').classList.contains('on')")
+    drilled = p2.evaluate("""() => document.querySelector('[data-mpanel="Men"]').style.display !== 'none'
+        && document.querySelector('[data-mpanel="Women"]').style.display === 'none'""")
+    p2.click('[data-mtab="Girls"]'); p2.wait_for_timeout(500)
+    backok = p2.evaluate("""() => document.querySelectorAll('[data-mpanel="Girls"] .dgrid a').length > 5""")
     p2.keyboard.press('Escape'); p2.wait_for_timeout(400)
     p2.goto('file://%s/collection.html' % OUT); p2.wait_for_timeout(2000)
     p2.click('[data-filtersheet]'); p2.wait_for_timeout(700)

@@ -58,6 +58,46 @@ NAV = [
  ]),
 ]
 
+
+# ---- grouped mega-menu hierarchy (Myntra-style columns) ---------------------
+NAV_GROUPS = {
+ 'Women': [
+   ('Bottomwear', ['Leggings & Churidar', 'Ankle Length Leggings', 'Kurti Pants',
+                   'Wide Pants', 'Palazzos', 'Straight & Tapered Pants',
+                   'Pleated Pants', 'Cargos']),
+   ('Denims & Jeggings', ['Jeggings', 'Super Stretch Jeggings', 'Printed Jeggings',
+                          'Denim Leggings', 'Jeans & Denims', 'Denim Culottes',
+                          'Skinny Jeans']),
+   ('Ethnic & Festive', ['Ethnic', 'Salwars', 'Churidars', 'Harem Pants',
+                         'Kurti / Kurta', 'Skirts & Skorts']),
+   ('Active & Athleisure', ['Joggers', 'Track Pants', 'Yoga Leggings',
+                            'Shorts & Capris', 'Cycling Shorts', 'Training Capri']),
+   ('Tops & Dresses', ['T-Shirts & Knit Tops', 'Printed Shirts', 'Solid Shirts',
+                       'Blouses', 'Short Dress', 'Midi Dress']),
+   ('Shop By Edit', ['New Arrivals', 'Best Sellers', 'Shimmer Leggings',
+                     'Plus Size', 'Office Wear', 'Under \u20b9599']),
+ ],
+ 'Men': [
+   ('Pants & Trousers', ['Pants & Trousers', 'Chinos', 'Flex Knit Pants',
+                         'Glide Tech Trousers', 'Utility Pants', 'Pull-On Pants']),
+   ('Jeans & Cargos', ['Jeans & Denims', 'Slim Fit Denims', 'Regular Fit Denims',
+                       'Cargos', 'Cargo Sweatpants', 'Denim Joggers']),
+   ('Topwear', ['Shirts', 'Casual Cotton Shirt', 'Premium Cotton Shirt',
+                'Polos', 'Classic Pique Polo', 'T-Shirts']),
+   ('Active & Lounge', ['Track Pant', 'Casual Joggers', 'Active Shorts',
+                        'EaseFlex Lounge Pants', 'EaseFlex Lounge Shorts']),
+   ('Shorts', ['Shorts', 'Casual Shorts', 'Urban Cargo Shorts']),
+   ('Shop By Edit', ['New Arrivals', 'Best Sellers', 'Office Wear', 'Weekend Edit']),
+ ],
+ 'Girls': [
+   ('Leggings', ['Leggings', 'Cropped Leggings', 'Girls 3/4th Leggings']),
+   ('Jeggings & Pants', ['Denim Jeggings', 'Super Stretch Jeggings',
+                         'Knit Jeggings', 'Pants', 'Harem Pants']),
+   ('Shorts', ['Knit Shorts', 'Cycling Shorts']),
+   ('Shop By Edit', ['New Arrivals', 'Best Sellers', 'School Edit', 'Playtime']),
+ ],
+}
+
 MEGA_PROMOS = [
   ('^Inside_banners_230x100-06.jpg','Wide Pants'),
   ('^Inside_banners_230x100-09.jpg','MostlySane Edit'),
