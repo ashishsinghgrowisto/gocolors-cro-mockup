@@ -226,7 +226,7 @@ AUDIENCE_PRODUCTS = [
 PRODUCTS = PRODUCTS + AUDIENCE_PRODUCTS
 
 # ---- L1 audiences + split banner --------------------------------------------
-L1 = [('Home','home.html'),('Women','women.html'),('Men','men.html'),('Girls','girls.html')]
+L1 = [('Women','women.html'),('Men','men.html'),('Girls','girls.html')]
 
 # key: (tag, title, subtitle, cta1 label, cta1 href, cta2 label, cta2 href, disclaimer, image)
 BANNERS = {
@@ -262,4 +262,46 @@ BANNERS = {
            '*Prices inclusive of all taxes. Free shipping, free COD and 30-day returns. '
            'Age guidance is indicative; check the size chart for waist and height.',
            '~files/GoColors-ECommerceMay_248467.jpg'),
+}
+
+# ---- category grid: (collection title, image, sale tag or '') -----------------
+CATEGORIES = {
+ 'Women': [
+   ('Ankle Length Leggings','^Ankle_length_churidar_550x550.jpg','Up to 40% off'),
+   ('Palazzos','^Hakoba_Palazzo_550x550.jpg',''),
+   ('Wide Pants','^Parachute_pant_02_550x550.jpg','New in'),
+   ('Kurti Pants','^Kurti_pant_550x550.jpg',''),
+   ('Skirts & Skorts','^Twill_skort_e5c57bef-0f59-4bb4-8abb-3a897654fb2c_550x550.jpg','New in'),
+   ('Joggers','^Casula_jogger_550x550.jpg',''),
+   ('Cargos','^Cargo_sweatpant_550x550.jpg','Flat 30% off'),
+   ('Super Stretch Jeggings','^Denim_jegging_550x550.jpg',''),
+   ('Ethnics','^Harem_pant_02_550x550.jpg',''),
+   ('Printed Shirts','^Resizes_Printedshirts_550x550.jpg',''),
+   ('Solid Shirts','^Resizes_SolidShirts_550x550.jpg',''),
+   ('Short Dress','^Resizes_Shortdress_550x550.jpg','New in'),
+   ('Midi Dress','^Resizes_MIDIdress_550x550.jpg',''),
+   ('T-Shirts & Knit Tops','^Resizes_Tshirt_550x550.jpg',''),
+   ('Blouses','^Resizes_Blouse_550x550.jpg',''),
+   ('Kurti / Kurta','^Resizes_Kurta_550x550.jpg','Up to 50% off'),
+ ],
+ 'Men': [
+   ('Pants & Trousers','^Resizes_Pantsandtrouserscopy_550x550.jpg','New in'),
+   ('Chinos','^Resizes_Chinoscopy_550x550.jpg','Flat 50% off'),
+   ('Shirts','^Resizes_Shirtscopy_550x550.jpg','Up to 50% off'),
+   ('Jeans & Denims','^Resizes_Jeanscopy_550x550.jpg','Flat 50% off'),
+   ('Cargos','^Resizes_Cargopantscopy_550x550.jpg',''),
+   ('Polos','^Resizes_Poloscopy_550x550.jpg','New in'),
+   ('Shorts','^Resizes_Shortscopy_550x550.jpg','Up to 50% off'),
+   ('T-Shirts','^Resizes_Tshirtcopy_550x550.jpg',''),
+ ],
+ 'Girls': [
+   ('Leggings','~files/GLC-BLACK73_3.jpg',''),
+   ('Cropped Leggings','~files/GLC-WHITE74_4.jpg',''),
+   ('Denim Jeggings','~files/GoColors-ECommerceMay_248467.jpg','New in'),
+   ('Super Stretch Jeggings','~files/GJ02-BLACK73_5.jpg',''),
+   ('Harem Pants','~files/GH-BLACK73_3.jpg',''),
+   ('Pants','~files/GH-NAVY61_3.jpg',''),
+   ('Knit Shorts','~files/GSH3-YGFUXIA29_3.jpg','Flat ₹299'),
+   ('Cycling Shorts','~files/GCYC-NAVY61_3_c7c407ac-1d28-435c-97c0-23c3bed46e21.jpg',''),
+ ],
 }

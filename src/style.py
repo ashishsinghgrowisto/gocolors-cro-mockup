@@ -199,10 +199,25 @@ body.hasbar{--barh:44px;padding-top:44px}
 .pilltabs button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
 
 /* category tiles */
+/* ---------- category grid ---------- */
+.catsec .tabs{gap:30px}
+.cat{position:relative;display:block}
+.cat .ci{position:relative;overflow:hidden;border-radius:8px;background:var(--soft2);
+  aspect-ratio:1/1.12}
+.cat .ci img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .45s ease}
+.cat:hover .ci img{transform:scale(1.045)}
+.cat .sale{position:absolute;top:10px;left:10px;z-index:2;background:var(--sale);color:#fff;
+  font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:5px 10px;
+  border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.18);line-height:1}
+.cat .sale.new{background:var(--ink)}
+.cat .n{font-size:13px;font-weight:600;text-align:center;margin-top:10px;line-height:1.35;
+  display:flex;align-items:center;justify-content:center;gap:5px;min-height:36px}
+.cat:hover .n{color:var(--brand)}
+.cat .n .ar{color:var(--muted);font-size:11px;transition:transform .2s}
+.cat:hover .n .ar{transform:translateX(3px);color:var(--brand)}
+
 .cats{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
-.cat img{width:100%;aspect-ratio:1/1;object-fit:cover;transition:.25s;background:var(--soft2)}
-.cat:hover img{opacity:.9}
-.cat .n{font-size:12.5px;font-weight:600;text-align:center;margin-top:9px;line-height:1.3}
 
 /* price bands */
 .bands{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}

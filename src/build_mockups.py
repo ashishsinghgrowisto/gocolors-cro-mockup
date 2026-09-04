@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from data import (U, BRAND, ANNOUNCE, NAV, MEGA_PROMOS, SIZES_CHIPS, CAT_TABS,
                   PRICE_BANDS, SPOTLIGHT, PRODUCTS, COLOR_HEX, SHADES, REVIEWS,
-                  FAQ, FOOTER, L1, BANNERS)
+                  FAQ, FOOTER, L1, BANNERS, CATEGORIES)
 from style import CSS
 from script import JS, JS_PLP, JS_PDP, JS_WISH
 
@@ -367,6 +367,38 @@ def split_banner(key):
             % (U(img), E(title), IC['spark'], E(tag), E(title), E(sub),
                h1_, E(c1), h2_, E(c2), E(disc)))
 
+
+def category_card(title, img, sale):
+    tag = ''
+    if sale:
+        cls = 'sale new' if sale.strip().lower() in ('new in', 'new') else 'sale'
+        tag = '<span class="%s">%s</span>' % (cls, E(sale))
+    return ('<a class="cat" href="collection.html">'
+            '<div class="ci">%s<img src="%s" alt="%s" loading="lazy"></div>'
+            '<div class="n">%s<span class="ar">\u203a</span></div></a>'
+            % (tag, U(img), E(title), E(title)))
+
+
+def category_section(audiences, heading='Shop by category', sub=''):
+    """Tabbed when several audiences are passed, a plain grid when one is."""
+    head = ('<div class="sec-hd"><div><h2>%s</h2>%s</div>'
+            '<a class="more" href="collection.html">View all</a></div>'
+            % (E(heading), ('<div class="sub">%s</div>' % E(sub)) if sub else ''))
+    if len(audiences) == 1:
+        grid = ''.join(category_card(*c) for c in CATEGORIES[audiences[0]])
+        return ('<section class="sec catsec"><div class="wrap">%s'
+                '<div class="cats">%s</div></div></section>' % (head, grid))
+    tabrow = ''.join('<button data-tab="%s" class="%s">%s</button>'
+                     % (a, 'on' if i == 0 else '', E(a)) for i, a in enumerate(audiences))
+    panels = ''.join(
+        '<div data-panel="%s" data-group="cats" style="%s"><div class="cats">%s</div></div>'
+        % (a, '' if i == 0 else 'display:none',
+           ''.join(category_card(*c) for c in CATEGORIES[a]))
+        for i, a in enumerate(audiences))
+    return ('<section class="sec catsec"><div class="wrap">%s'
+            '<div class="tabs" data-tabgroup="cats">%s</div>%s</div></section>'
+            % (head, tabrow, panels))
+
 # --------------------------------------------------------------- page shell
 def page(title, body, extra_js='', active='', pagekey='', l1=''):
     links = [('index.html', 'Overview'), ('home.html', 'Home'), ('women.html', 'Women'),
@@ -402,17 +434,9 @@ def cards_placeholder(items):
 def home():
     hero = split_banner('home')
 
-    tabs = ''.join('<button data-tab="%s" class="%s">%s</button>'
-                   % (k, 'on' if i == 0 else '', E(k)) for i, k in enumerate(CAT_TABS))
-    panels = ''
-    for i, (k, items) in enumerate(CAT_TABS.items()):
-        cats = ''.join(
-            '<a class="cat" href="collection.html"><img src="%s" alt="%s" loading="lazy">'
-            '<div class="n">%s</div></a>' % (U(img), E(nm), E(nm)) for nm, img in items)
-        panels += ('<div data-panel="%s" data-group="cats" style="%s"><div class="cats">%s</div></div>'
-                   % (k, '' if i == 0 else 'display:none', cats))
-    shop = ('<section class="sec tight"><div class="wrap">'
-            '<div class="tabs" data-tabgroup="cats">%s</div>%s</div></section>' % (tabs, panels))
+    shop = category_section(['Women', 'Men', 'Girls'],
+                            'Shop by category',
+                            'Every collection across women, men and girls')
 
     bands = ''.join(
         '<a class="band" href="collection.html"><img src="%s" alt="%s" loading="lazy">'
@@ -497,14 +521,16 @@ def home():
 
 # --------------------------------------------------------------- audience landing
 LANDING = {
- 'women': ("Women's Bottomwear — Go Colors", 'Bottoms', 'women.html'),
- 'men':   ('Men — Go Colors',                'Men',     'men.html'),
- 'girls': ('Girls — Go Colors',              'Bottoms', 'girls.html'),
+ 'women': ("Women's Bottomwear — Go Colors", 'Women', 'women.html'),
+ 'men':   ('Men — Go Colors',                'Men',   'men.html'),
+ 'girls': ('Girls — Go Colors',              'Girls', 'girls.html'),
 }
 
 def landing_page(key):
-    title, tabkey, pagekey = LANDING[key]
-    body = split_banner(key)
+    title, audience, pagekey = LANDING[key]
+    body = split_banner(key) + category_section(
+        [audience], '%s categories' % audience,
+        'Shop the full %s range' % audience.lower())
     return page(title, body, active='home', pagekey=pagekey, l1=pagekey)
 
 # --------------------------------------------------------------- collection
