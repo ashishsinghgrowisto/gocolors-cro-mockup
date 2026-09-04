@@ -158,6 +158,8 @@ for p in PROD:
 
 # --------------------------------------------------------------- icons
 IC = {
+ 'play': '<svg width="20" height="22" viewBox="0 0 24 26" aria-hidden="true"><path fill="#00D4FF" d="M2 1.4 13.6 13 2 24.6A2 2 0 0 1 1.2 23V3A2 2 0 0 1 2 1.4z"/><path fill="#FFCE00" d="m18.2 8.6 4 2.3c1.4.8 1.4 2.4 0 3.2l-4 2.3L14.6 13z"/><path fill="#FF3A44" d="M2 24.6 13.6 13l3.6 3.4-11.6 6.7c-1.4.8-2.6.6-3.6.5z"/><path fill="#00F076" d="M2 1.4 13.6 13l3.6-3.4L5.6 2.9C4.2 2.1 3 2.3 2 1.4z"/></svg>',
+ 'apple': '<svg width="19" height="22" viewBox="0 0 24 26" fill="currentColor" aria-hidden="true"><path d="M17.6 13.7c0-2.9 2.4-4.3 2.5-4.4-1.4-2-3.5-2.3-4.2-2.3-1.8-.2-3.5 1-4.4 1-.9 0-2.3-1-3.8-1C5.8 7 4 8.1 3 10c-2 3.5-.5 8.7 1.4 11.5.9 1.4 2 3 3.5 2.9 1.4-.1 1.9-.9 3.6-.9s2.2.9 3.7.9c1.5 0 2.5-1.4 3.4-2.8 1.1-1.6 1.5-3.2 1.5-3.3-.1 0-3-1.2-3-4.6zM14.8 4.9c.8-1 1.3-2.3 1.2-3.6-1.2 0-2.6.8-3.4 1.7-.7.8-1.4 2.2-1.2 3.5 1.3.1 2.6-.7 3.4-1.6z"/></svg>',
  'search': '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
  'user': '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5c0-3.8 3.4-6 7.5-6s7.5 2.2 7.5 6"/></svg>',
  'heart': '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.7 1.1-1a5.5 5.5 0 0 0 0-7.7z"/></svg>',
@@ -414,15 +416,46 @@ def split_banner(key):
                h1_, E(c1), h2_, E(c2), E(disc)))
 
 
-def category_card(title, img, sale):
+STOP = set('and the for with your all new & pants pant wear'.split())
+
+
+def _toks(s):
+    out = []
+    for w in re.findall(r'[a-z]+', s.lower()):
+        if len(w) < 4 or w in STOP:
+            continue
+        out.append(w[:-1] if w.endswith('s') and len(w) > 4 else w)
+    return out
+
+
+def cat_start_price(audience, title):
+    """Cheapest product in the audience whose type matches the category name."""
+    pool = [p for p in PROD if p['whom'] == audience] or PROD
+    want = _toks(title)
+    if not want:
+        want = [title.lower()[:5]]
+    best = []
+    for lvl in ('ty', 'both'):
+        for p in pool:
+            hay = ' '.join(_toks(p['ty'] if lvl == 'ty' else p['ty'] + ' ' + p['t']))
+            if any(w in hay for w in want):
+                best.append(p)
+        if best:
+            break
+    return int(min(x['p'] for x in (best or pool)))
+
+
+def category_card(title, img, sale, audience='Women'):
     tag = ''
     if sale:
         cls = 'sale new' if sale.strip().lower() in ('new in', 'new') else 'sale'
         tag = '<span class="%s">%s</span>' % (cls, E(sale))
+    start = ('<span class="startsat">Starts at \u20b9%s</span>'
+             % '{:,}'.format(cat_start_price(audience, title)))
     return ('<a class="cat" href="collection.html">'
-            '<div class="ci">%s<img src="%s" alt="%s" loading="lazy"></div>'
+            '<div class="ci">%s<img src="%s" alt="%s" loading="lazy">%s</div>'
             '<div class="n">%s<span class="ar">\u203a</span></div></a>'
-            % (tag, U(img), E(title), E(title)))
+            % (tag, U(img), E(title), start, E(title)))
 
 
 def category_section(audiences, heading='Shop by category', sub=''):
@@ -435,7 +468,7 @@ def category_section(audiences, heading='Shop by category', sub=''):
                 '<button class="arw l" data-cats="p" aria-label="Previous categories">\u2039</button>'
                 '<div class="cats">%s</div>'
                 '<button class="arw r" data-cats="n" aria-label="More categories">\u203a</button>'
-                '</div>' % ''.join(category_card(*c) for c in CATEGORIES[a]))
+                '</div>' % ''.join(category_card(c[0], c[1], c[2], a) for c in CATEGORIES[a]))
 
     if len(audiences) == 1:
         return ('<section class="sec catsec"><div class="wrap">%s%s</div></section>'
@@ -509,6 +542,47 @@ def trust_bar():
     lis = ''.join('<li>%s%s</li>' % (ics[i], E(t)) for i, t in enumerate(BRAND['trust'][:3]))
     return '<div class="trust"><ul>%s</ul></div>' % lis
 
+def carousel(items, gid):
+    return ('<div class="carou"><button class="arw l" data-rail="p" aria-label="Scroll left">\u2039</button>'
+            '<div class="railrow" data-cards>%s</div>'
+            '<button class="arw r" data-rail="n" aria-label="Scroll right">\u203a</button></div>'
+            % cards_placeholder(items))
+
+
+def shade_section(audience='All', gid='s1'):
+    pool = POOLS[audience]['Bestsellers'][:8]
+    return ('<section class="sec"><div class="wrap">'
+            '<div class="sec-hd"><div><h2>Find Your Perfect Shade</h2>'
+            '<div class="sub">Slide through the spectrum and shop the shade you love</div></div>'
+            '<a class="more" href="collection.html">View all</a></div>'
+            '%s'
+            '<div class="spectrum"><input type="range" id="shadeRange" min="0" max="100" value="0" '
+            'aria-label="Pick a shade">'
+            '<div style="text-align:center"><span class="chip"><i id="shadeChipDot"></i>'
+            '<span id="shadeChipName">Black</span></span></div></div>'
+            '</div></section>' % carousel(pool, gid))
+
+
+APP_PHONE = None  # set after PROD is built
+
+
+def app_download():
+    return ('<section class="appdl"><div class="wrap"><div class="ad-in">'
+            '<div class="ph"><span class="notch"></span>'
+            '<img src="%s" alt="Go Colors app" loading="lazy"></div>'
+            '<div class="cp">'
+            '<h2>More knockout offers waiting!</h2>'
+            '<p>Extra 10%% off your first app order, early access to drops and '
+            'one-tap reorders \u2014 only on the Go Colors app.</p>'
+            '<div class="badges"><span class="dn">Download now</span>'
+            '<a class="store" href="#"><span class="ic">%s</span>'
+            '<span class="tx"><i>GET IT ON</i><b>Google Play</b></span></a>'
+            '<a class="store" href="#"><span class="ic">%s</span>'
+            '<span class="tx"><i>Download on the</i><b>App Store</b></span></a></div>'
+            '</div></div></div></section>'
+            % (PROD[0]['i'][0], IC['play'], IC['apple']))
+
+
 def cards_placeholder(items):
     return ''.join('<div data-p="%s"></div>' % p['h'] for p in items)
 
@@ -543,23 +617,10 @@ def home():
                     for a, b in BRAND['stats'])
     stat_sec = '<section class="sec grey" style="padding:0"><div class="wrap"><div class="stats">%s</div></div></section>' % stats
 
-    def carousel(items, gid):
-        return ('<div class="carou"><button class="arw l" data-rail="p" aria-label="Scroll left">\u2039</button>'
-                '<div class="railrow" data-cards>%s</div>'
-                '<button class="arw r" data-rail="n" aria-label="Scroll right">\u203a</button></div>'
-                % cards_placeholder(items))
-
     best = product_tabs_section('All', 'Shop the edit',
                                 'Bestsellers, new arrivals and what is trending right now')
 
-    shade = ('<section class="sec"><div class="wrap">'
-             '<h2 style="font-size:clamp(18px,2.1vw,25px);margin-bottom:16px">Find Your Perfect Shade</h2>'
-             '%s'
-             '<div class="spectrum"><input type="range" id="shadeRange" min="0" max="100" value="0" '
-             'aria-label="Pick a shade">'
-             '<div style="text-align:center"><span class="chip"><i id="shadeChipDot"></i>'
-             '<span id="shadeChipName">Black</span></span></div></div>'
-             '</div></section>' % carousel(PROD[:6], 's1'))
+    shade = shade_section('All', 's1')
 
     rich = ('<section class="sec"><div class="wrap" style="text-align:center;max-width:760px">'
             '<h2 style="font-size:clamp(19px,2.4vw,27px)">Timeless Styles, Perfected For You!</h2>'
@@ -585,8 +646,8 @@ def home():
                '<div class="revs">%s</div></div></section>'
                % (BRAND['rating'], BRAND['reviews'], revs))
 
-    body = (hero + shop + best + trust_bar() + price + cover + stat_sec +
-            shade + rich + rev_sec)
+    body = (hero + shop + best + price + cover + stat_sec + rich + rev_sec +
+            shade + trust_bar() + app_download())
     return page("Shop Premium Women's Bottom Wear Online — Go Colors", body,
                 active='home', pagekey='home.html', l1='home.html')
 
@@ -605,7 +666,9 @@ def landing_page(key):
                                'Shop the full %s range' % audience.lower())
             + product_tabs_section(audience, 'Shop the %s edit' % audience.lower(),
                                    'Bestsellers, new arrivals and trending styles',
-                                   gid='ptabs-%s' % audience.lower()))
+                                   gid='ptabs-%s' % audience.lower())
+            + shade_section(audience, 'sh-%s' % audience.lower())
+            + trust_bar() + app_download())
     return page(title, body, active='home', pagekey=pagekey, l1=pagekey)
 
 # --------------------------------------------------------------- collection
