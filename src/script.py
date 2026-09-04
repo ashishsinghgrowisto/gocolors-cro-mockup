@@ -162,9 +162,9 @@ window.openQuick=openQuick;
 /* ---------------- product card ---------------- */
 function card(p){
   var disc=p.cp?Math.round((1-p.p/p.cp)*100):0;
-  var dots='<div class="dots-c">'+(p.sw.length?(p.sw.slice(0,7).map(function(x,i){
+  var dots=p.sw.length?('<div class="dots-c">'+p.sw.slice(0,7).map(function(x,i){
       return '<i data-cs="'+p.h+'|'+i+'" class="'+(i===0?'on':'')+'" style="background:'+(x[2]||'#ccc')+'" title="'+esc(x[0])+'"></i>'
-    }).join('')+(p.sw.length>7?'<i class="plus">+'+(p.sw.length-7)+'</i>':'')):'')+'</div>';
+    }).join('')+(p.sw.length>7?'<i class="plus">+'+(p.sw.length-7)+'</i>':'')+'</div>'):'';
   var tag = p.bs ? '<span class="tag">Bestseller</span>'
           : (p.nw ? '<span class="tag dk">New in</span>'
           : (disc>=40 ? '<span class="tag">'+disc+'% Off</span>' : ''));
@@ -173,14 +173,16 @@ function card(p){
       '<a href="product.html?p='+p.h+'"><img src="'+p.i[0]+'" alt="'+esc(p.t)+'" loading="lazy" data-hero>'+
       (p.i[1]?'<img class="alt" src="'+p.i[1]+'" alt="" loading="lazy">':'')+'</a>'+
       tag+
-      '<button class="wish" data-wtog="'+p.h+'" aria-label="Save to wishlist">'+heart()+'</button>'+
       '<span class="rate"><span class="st">\u2605</span>'+p.r.toFixed(1)+' <i>('+p.rc+')</i></span>'+
+      dots+
     '</div>'+
     '<div class="meta">'+
       '<a href="product.html?p='+p.h+'"><div class="nm">'+esc(p.t)+'</div></a>'+
-      dots+
       '<div class="pr"><b>'+inr(p.p)+'</b>'+(p.cp?'<s>'+inr(p.cp)+'</s><em>'+disc+'% Off</em>':'')+'</div>'+
-      '<button class="atcbtn" data-quick="'+p.h+'">Add to cart</button>'+
+      '<div class="ctarow">'+
+        '<button class="atcbtn" data-quick="'+p.h+'">Add to cart</button>'+
+        '<button class="wishbtn" data-wtog="'+p.h+'" aria-label="Save to wishlist">'+heart()+'</button>'+
+      '</div>'+
     '</div></article>';
 }
 window.card=card;
