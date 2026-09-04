@@ -341,6 +341,10 @@ document.addEventListener('click',function(e){
     var wrap=a.closest('.carou'),row=$('.railrow',wrap);
     row.scrollLeft += (a.getAttribute('data-rail')==='n'?1:-1)*420;return;
   }
+  if((a=up('[data-cats]'))){
+    var cw=a.closest('.catwrap'),tr=$('.cats',cw);
+    tr.scrollLeft += (a.getAttribute('data-cats')==='n'?1:-1)*tr.clientWidth;return;
+  }
 },false);
 
 document.addEventListener('change',function(e){
@@ -376,6 +380,17 @@ document.addEventListener('DOMContentLoaded',function(){
     g.innerHTML=Array.prototype.map.call(g.children,function(c){
       var h=c.getAttribute('data-p');var p=P(h);return p?card(p):''}).join('');
   });
+  function catArrows(){
+    $$('.catwrap').forEach(function(w){
+      var tr=$('.cats',w);if(!tr)return;
+      w.classList.toggle('scrollable', tr.scrollWidth - tr.clientWidth > 4);
+    });
+  }
+  window.gcCatArrows=catArrows;
+  catArrows();
+  window.addEventListener('resize',catArrows);
+  setTimeout(catArrows,600);
+  $$('[data-tabgroup]').forEach(function(g){g.addEventListener('click',function(){setTimeout(catArrows,60)})});
   initCover();initSpectrum();counts();
 });
 })();

@@ -203,7 +203,7 @@ body.hasbar{--barh:44px;padding-top:44px}
 .catsec .tabs{gap:30px}
 .cat{position:relative;display:block}
 .cat .ci{position:relative;overflow:hidden;border-radius:8px;background:var(--soft2);
-  aspect-ratio:1/1.12}
+  aspect-ratio:1/1.05}
 .cat .ci img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   transition:transform .45s ease}
 .cat:hover .ci img{transform:scale(1.045)}
@@ -217,7 +217,19 @@ body.hasbar{--barh:44px;padding-top:44px}
 .cat .n .ar{color:var(--muted);font-size:11px;transition:transform .2s}
 .cat:hover .n .ar{transform:translateX(3px);color:var(--brand)}
 
-.cats{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.catwrap{position:relative}
+.cats{display:grid;grid-auto-flow:column;grid-template-rows:repeat(2,auto);
+  grid-auto-columns:calc((100% - 3*18px)/4);gap:22px 18px;overflow-x:auto;
+  scroll-snap-type:x proximity;scroll-behavior:smooth;scrollbar-width:none;padding-bottom:2px}
+.cats::-webkit-scrollbar{display:none}
+.cats>.cat{scroll-snap-align:start}
+.catwrap .arw{position:absolute;top:32%;width:38px;height:38px;border-radius:50%;
+  background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.18);display:none;place-items:center;
+  z-index:4;font-size:17px;transform:translateY(-50%)}
+.catwrap.scrollable .arw{display:grid}
+.catwrap .arw.l{left:-16px}
+.catwrap .arw.r{right:-16px}
+.catwrap .arw:hover{background:var(--ink);color:#fff}
 
 /* price bands */
 .bands{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -685,7 +697,6 @@ body.hasbar{--barh:44px;padding-top:44px}
 /* ================= responsive ================= */
 @container (max-width:1180px){
   .mega-tiles{grid-template-columns:repeat(4,1fr)}
-  .cats{grid-template-columns:repeat(4,1fr)}
   .grid{grid-template-columns:repeat(3,1fr)}
   .grid.g5{grid-template-columns:repeat(4,1fr)}
   .revs{grid-template-columns:repeat(2,1fr)}
@@ -709,7 +720,8 @@ body.hasbar{--barh:44px;padding-top:44px}
   .ico{min-width:32px}
   .hero img{aspect-ratio:3/3.4;object-fit:cover;object-position:center 46%}
   .trust li{padding:13px 16px;font-size:11px}
-  .cats{grid-template-columns:repeat(3,1fr)}
+  .cats{grid-template-rows:repeat(3,auto);grid-auto-columns:calc((100% - 12px)/2);gap:18px 12px}
+  .catwrap .arw{display:none!important}
   .bands{grid-template-columns:repeat(2,1fr)}
   .stats{grid-template-columns:repeat(2,1fr)}
   .revs{grid-template-columns:1fr}
@@ -756,7 +768,8 @@ body.hasbar{--barh:44px;padding-top:44px}
   .ico{min-width:32px}
   .hero img{aspect-ratio:3/3.4;object-fit:cover;object-position:center 46%}
   .trust li{padding:13px 16px;font-size:11px}
-  .cats{grid-template-columns:repeat(3,1fr)}
+  .cats{grid-template-rows:repeat(3,auto);grid-auto-columns:calc((100% - 12px)/2);gap:18px 12px}
+  .catwrap .arw{display:none!important}
   .bands{grid-template-columns:repeat(2,1fr)}
   .stats{grid-template-columns:repeat(2,1fr)}
   .revs{grid-template-columns:1fr}
@@ -1127,6 +1140,10 @@ document.addEventListener('click',function(e){
     var wrap=a.closest('.carou'),row=$('.railrow',wrap);
     row.scrollLeft += (a.getAttribute('data-rail')==='n'?1:-1)*420;return;
   }
+  if((a=up('[data-cats]'))){
+    var cw=a.closest('.catwrap'),tr=$('.cats',cw);
+    tr.scrollLeft += (a.getAttribute('data-cats')==='n'?1:-1)*tr.clientWidth;return;
+  }
 },false);
 
 document.addEventListener('change',function(e){
@@ -1162,6 +1179,17 @@ document.addEventListener('DOMContentLoaded',function(){
     g.innerHTML=Array.prototype.map.call(g.children,function(c){
       var h=c.getAttribute('data-p');var p=P(h);return p?card(p):''}).join('');
   });
+  function catArrows(){
+    $$('.catwrap').forEach(function(w){
+      var tr=$('.cats',w);if(!tr)return;
+      w.classList.toggle('scrollable', tr.scrollWidth - tr.clientWidth > 4);
+    });
+  }
+  window.gcCatArrows=catArrows;
+  catArrows();
+  window.addEventListener('resize',catArrows);
+  setTimeout(catArrows,600);
+  $$('[data-tabgroup]').forEach(function(g){g.addEventListener('click',function(){setTimeout(catArrows,60)})});
   initCover();initSpectrum();counts();
 });
 })();

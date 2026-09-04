@@ -384,16 +384,21 @@ def category_section(audiences, heading='Shop by category', sub=''):
     head = ('<div class="sec-hd"><div><h2>%s</h2>%s</div>'
             '<a class="more" href="collection.html">View all</a></div>'
             % (E(heading), ('<div class="sub">%s</div>' % E(sub)) if sub else ''))
+    def track(a):
+        return ('<div class="catwrap">'
+                '<button class="arw l" data-cats="p" aria-label="Previous categories">\u2039</button>'
+                '<div class="cats">%s</div>'
+                '<button class="arw r" data-cats="n" aria-label="More categories">\u203a</button>'
+                '</div>' % ''.join(category_card(*c) for c in CATEGORIES[a]))
+
     if len(audiences) == 1:
-        grid = ''.join(category_card(*c) for c in CATEGORIES[audiences[0]])
-        return ('<section class="sec catsec"><div class="wrap">%s'
-                '<div class="cats">%s</div></div></section>' % (head, grid))
+        return ('<section class="sec catsec"><div class="wrap">%s%s</div></section>'
+                % (head, track(audiences[0])))
     tabrow = ''.join('<button data-tab="%s" class="%s">%s</button>'
                      % (a, 'on' if i == 0 else '', E(a)) for i, a in enumerate(audiences))
     panels = ''.join(
-        '<div data-panel="%s" data-group="cats" style="%s"><div class="cats">%s</div></div>'
-        % (a, '' if i == 0 else 'display:none',
-           ''.join(category_card(*c) for c in CATEGORIES[a]))
+        '<div data-panel="%s" data-group="cats" style="%s">%s</div>'
+        % (a, '' if i == 0 else 'display:none', track(a))
         for i, a in enumerate(audiences))
     return ('<section class="sec catsec"><div class="wrap">%s'
             '<div class="tabs" data-tabgroup="cats">%s</div>%s</div></section>'
