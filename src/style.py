@@ -305,21 +305,28 @@ body.hasbar{--barh:44px;padding-top:44px}
 .card .eye{position:absolute;right:10px;bottom:10px;width:34px;height:34px;border-radius:50%;
   background:rgba(255,255,255,.95);display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.14);z-index:3}
 .card .eye:hover{background:var(--brand);color:#fff}
-.card .meta{padding:9px 2px 0;display:flex;flex-direction:column;flex:1}
+.card .meta{padding:9px 0 0;display:flex;flex-direction:column;flex:1}
 .card .nm{font-size:13px;font-weight:600;line-height:1.35;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:35px}
-.card .pr{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:5px}
-.card .pr b{font-size:14px;font-weight:700}
-.card .pr s{font-size:12px;color:var(--muted)}
-.card .pr em{font-style:normal;font-size:10px;font-weight:800;color:#fff;background:var(--sale);
-  padding:3px 6px;border-radius:3px}
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  min-height:35px;margin:0}
+.card .pr{display:flex;align-items:baseline;gap:7px;flex-wrap:nowrap;margin-top:7px;
+  white-space:nowrap;overflow:hidden}
+.card .pr b{font-size:14px;font-weight:700;flex:0 0 auto}
+.card .pr s{font-size:11.5px;color:var(--muted);flex:0 0 auto}
+.card .pr em{font-style:normal;font-size:9.5px;font-weight:800;color:#fff;background:var(--sale);
+  padding:3px 5px;border-radius:3px;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis}
 .card .rt{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);font-weight:600;margin-top:6px}
 .card .rt .stars{color:#f0a500;letter-spacing:-1px}
 .card .rt b{color:var(--ink)}
-.dots-c{display:flex;gap:5px;margin-top:8px;align-items:center;flex-wrap:wrap}
-.dots-c i{width:12px;height:12px;border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,.16) inset;cursor:pointer;display:block}
+.dots-c{display:flex;gap:4px;margin-top:8px;align-items:center;flex-wrap:nowrap;
+  justify-content:space-between;width:100%;min-height:14px;overflow:hidden}
+.dots-c:empty{min-height:14px}
+.dots-c i{flex:1 1 0;max-width:15px;aspect-ratio:1;border-radius:50%;
+  box-shadow:0 0 0 1px rgba(0,0,0,.16) inset;cursor:pointer;display:block}
 .dots-c i.on{box-shadow:0 0 0 1.5px #fff inset,0 0 0 2.5px var(--ink)}
-.dots-c .plus{font-size:10px;font-weight:700;color:var(--muted);font-style:normal}
+.dots-c .plus{flex:0 0 auto;max-width:none;aspect-ratio:auto;font-size:10px;font-weight:700;
+  color:var(--muted);font-style:normal;box-shadow:none;border-radius:0;cursor:default;
+  margin-left:2px;white-space:nowrap}
 .card .nudge{font-size:10.5px;font-weight:700;color:var(--brand);margin-top:6px;margin-bottom:10px}
 
 
@@ -328,7 +335,7 @@ body.hasbar{--barh:44px;padding-top:44px}
   align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.14);line-height:1}
 .card .rate .st{color:#f0a500;font-size:12px}
 .card .rate i{font-style:normal;color:var(--muted);font-weight:600;font-size:10.5px}
-.atcbtn{width:100%;margin-top:auto;padding:11px 10px;border:1.4px solid var(--ink);border-radius:5px;
+.atcbtn{width:100%;margin-top:11px;padding:10px;border:1.4px solid var(--ink);border-radius:5px;
   background:#fff;color:var(--ink);font-size:11.5px;font-weight:800;letter-spacing:.05em;
   text-transform:uppercase;transition:.16s}
 .atcbtn:hover{background:var(--ink);color:#fff}

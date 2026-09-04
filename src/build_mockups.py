@@ -592,7 +592,7 @@ def sidebar():
              'step="50" value="2299" aria-label="Maximum price">'
              '<div class="lb"><span>₹299</span><span id="priceMax">₹2,299</span></div></div>')
     disc = chk('disc', '20', sum(1 for p in PROD if p['cp'] and (1 - p['p'] / p['cp']) >= .2),
-               '20% &amp; above')
+               '20% & above')
     return ('<aside class="side-f"><h3>FILTERS</h3>'
             + filter_group('For Whom?', '<div class="bd">%s</div>' % whom)
             + filter_group('Colour', '<div class="fcols">%s</div>' % cols)
@@ -637,7 +637,7 @@ def collection():
             '<div class="chips" id="chips"></div>'
             '<div class="grid" id="plpGrid"></div>'
             '<div class="loadmore" id="loadWrap">'
-            '<button class="btn btn-o" data-more>Load more (<span id="loadLeft"></span> left)</button>'
+            '<button class="btn btn-o" data-more>Load more &mdash; <span id="loadLeft"></span> left</button>'
             '</div></div></div></div>%s'
             % (IC['menu'], sidebar(), sort, sheet))
     return page("New Arrivals — Go Colors", body, '<script>%s</script>' % JS_PLP,
