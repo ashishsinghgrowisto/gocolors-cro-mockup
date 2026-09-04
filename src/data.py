@@ -85,13 +85,13 @@ CAT_TABS = {
    ('Solid Shirts','^Resizes_SolidShirts_550x550.jpg'),
    ('Short Dress','^Resizes_Shortdress_550x550.jpg'),
    ('Midi Dress','^Resizes_MIDIdress_550x550.jpg'),
-   ('Long Dress','^Resizes_Longdress_550x550.jpg'),
+   ('Long Dress','~files/GoColors-ECommerceMay_248467.jpg'),
    ('T-Shirts & Knit Tops','^Resizes_Tshirt_550x550.jpg'),
    ('Blouses','^Resizes_Blouse_550x550.jpg'),
    ('Kurti / Kurta','^Resizes_Kurta_550x550.jpg'),
  ],
  'Men': [
-   ('Pants & Trousers','^Resizes_Pantsandtrouserscopy_550x550.jpg'),
+   ('Pants & Trousers','~files/2_42ac893b-fe1a-4f5c-87d1-2e0221e73aa6.jpg'),
    ('Chinos','^Resizes_Chinoscopy_550x550.jpg'),
    ('Shirts','^Resizes_Shirtscopy_550x550.jpg'),
    ('Jeans & Denims','^Resizes_Jeanscopy_550x550.jpg'),
@@ -192,4 +192,74 @@ FOOTER = {
  'Shop':['Leggings & Churidar','Kurti Pants','Wide Pants','Jeggings','Active & Athleisure','Shorts & Capris'],
  'Company':['About us','Careers','Investor Relations','Store Locator','Blogs','Go Rewards'],
  'Help':['FAQs','Returns & Exchanges','Shipping Policy','Track Order','Size Guide','Contact Support'],
+}
+
+
+# ---- men & girls catalogue (captured 4 Sep 2026) ------------------------------
+# same shape as PRODUCTS plus a 9th field: audience
+AUDIENCE_PRODUCTS = [
+["wrinkle-free-flex-knit-pants","Wrinkle Free Flex Knit Pants","Flex Knit Pants","2999.00","",["~files/2_42ac893b-fe1a-4f5c-87d1-2e0221e73aa6.jpg","~files/1_a60961ec-889b-4e8f-bcbe-dd62dbc0a9a8.jpg","~files/3_a86bd436-ec75-4845-8971-7ca19b7189a8.jpg"],["30","32","34","36","38","40"],[["Beige","~files/2_42ac893b-fe1a-4f5c-87d1-2e0221e73aa6.jpg"],["Black","~files/2_db6c4986-ce58-44c2-ad8e-2e0966b31dc2.jpg"],["Khaki","~files/1_9dbac40c-ace8-4907-b02d-7d82586fe363.jpg"],["Light Beige","~files/1_bd9d07e8-4fbe-4d4a-815a-b8281be49afc.jpg"]],"Men"],
+["engineered-glide-tech-trousers","Engineered Glide Tech Trousers","Glide Tech Trousers","1499.00","",["~files/2_f4db1608-0f4d-435d-ae9d-a287e8a9a289.jpg","~files/1_0744be94-1e41-4f15-9187-9ddddeffd89f.jpg","~files/3_dd0312c1-c708-4f4c-a717-8c99114a731c.jpg"],["XS","S","M","L","XL","2X"],[["Beige","~files/2_f4db1608-0f4d-435d-ae9d-a287e8a9a289.jpg"],["Black","~files/2_d8188705-173d-497d-9040-9172fa375fc9.jpg"],["Navy","~files/2_5b90c092-c302-49f9-9e84-d75a21ad89b3.jpg"],["Olive Green","~files/2_5c226777-55e9-45d1-aada-9188fd65ba58.jpg"],["Silver Grey","~files/2_ca94f236-2d69-4508-93d6-ca5834180eac.jpg"]],"Men"],
+["easeflex-lounge-pants","EaseFlex Lounge Pants","EaseFlex Lounge Pants","1299.00","",["~files/2_ff97ae9f-093f-465b-8257-402ee3668f80.jpg","~files/1_5bafa31b-fd3b-4f79-bb82-3b96a70ebe38.jpg","~files/3_e5298be2-ba8f-4480-87c5-7a200a266b85.jpg"],["XS","S","M","L","XL","2X"],[["Antra Melange","~files/2_ff97ae9f-093f-465b-8257-402ee3668f80.jpg"],["Black","~files/2_f0faa4ff-7fa8-482e-95df-6c7d6af8c8d9.jpg"],["Navy","~files/2_5da21104-e1cf-47b0-aa20-cdd37f1d2e91.jpg"],["Silver Grey","~files/2_60c3dd59-f733-4893-99e2-480f0a0dbd99.jpg"]],"Men"],
+["cotton-stretch-smart-fit-pull-on-pants","Cotton Stretch Smart Fit Pull On Pants","Pull-On Pants","1999.00","",["~files/2_ba018b03-4b0f-46d7-9679-e2ae0592e53e.jpg","~files/1_bbffcc85-1053-4043-ac9a-0f26118df1be.jpg","~files/3_1ff0fa7e-daff-461f-9708-9f50fa3590d5.jpg"],["30","32","34","36","38","40"],[["Beige","~files/2_ba018b03-4b0f-46d7-9679-e2ae0592e53e.jpg"],["Black","~files/2_e2b490ad-6b4c-4849-9196-481df01c8cf4.jpg"],["Khaki","~files/2_3fc03bdd-b646-4989-916c-a5bd41203401.jpg"],["Navy","~files/2_da1a4b90-4d0c-452c-bb7f-b6ac37066618.jpg"],["Olive Green","~files/2_08e81305-08fd-4d57-bd27-70d3a89f21e3.jpg"]],"Men"],
+["brushed-fabric-ultimate-chinos","Brushed Fabric Ultimate Chinos","Ultimate Chinos","1499.00","2999.00",["~files/2_cf0b401b-4b7f-4c06-b79d-32a8fca3e789.jpg","~files/1_dcae8f12-20e8-4e77-bbe6-524269ab6369.jpg","~files/3_99934152-c18f-45ff-a33d-b0319a2efe35.jpg"],["30","32","34","36","38","40"],[["Beige","~files/2_cf0b401b-4b7f-4c06-b79d-32a8fca3e789.jpg"],["Khaki","~files/2_396de31b-3595-41df-92a1-d070bad58e23.jpg"],["Light Beige","~files/2_60fc8f3a-3cef-48b6-a962-13db7088e8f4.jpg"],["Navy","~files/1_1c744070-5b88-499e-80d7-f8d3a24541b4.jpg"],["Silver Grey","~files/1_080f0816-412d-45b0-85f6-d63ffcbae583.jpg"]],"Men"],
+["airlite-chinos","AirLite Chinos","Lightweight Air Chinos","2499.00","",["~files/2_abad8ed9-68c7-4bc7-a7ab-fb267cac22f1.jpg","~files/1_6eb77089-b14c-436e-b97d-2cc448a9ce61.jpg","~files/3_a7731a3c-3ff7-42ba-b180-1ef99fc9b7a0.jpg"],["30","32","34","36","38","40"],[["Beige","~files/2_abad8ed9-68c7-4bc7-a7ab-fb267cac22f1.jpg"],["Grey Mist","~files/1_ecda717c-eb08-4bca-89c7-cb5f0256b725.jpg"],["Medium Beige","~files/1_47f279bf-7a85-4d8c-9864-d9eaeff37661.jpg"],["Navy","~files/1_f2bd5b81-d5fb-4d1f-80c3-ca26466e808c.jpg"],["Olive Green","~files/1_0237bdb3-f010-4a99-8b56-3a5c0e466af0.jpg"]],"Men"],
+["super-fine-2-ply-premium-cotton-shirt","Super Fine 2-Ply Premium Cotton Shirt","Premium Cotton Shirt","999.00","1999.00",["~files/1_8c34265e-d4d4-48b8-b22e-b641e801d325.jpg","~files/3_31c15151-6fb9-4d58-ae63-719ffce2b280.jpg","~files/2_a22e3ebf-b267-410a-9622-69668b47c50b.jpg"],["38","39","40","42","44","46"],[["Blue","~files/1_8c34265e-d4d4-48b8-b22e-b641e801d325.jpg"],["Bottle Green","~files/1_3b05e90e-f15c-4b52-9c99-aada0d1f15ca.jpg"],["Navy","~files/1_95152b51-3e3b-4f9d-90f3-6f595917e837.jpg"]],"Men"],
+["regular-fit-casual-cotton-shirt","100% Cotton Regular Fit Casual Shirt","Casual Cotton Shirt","1299.00","",["~files/3_3397f2aa-8b52-44d3-bbf5-5bdd008f658b.jpg","~files/2_7f1933ce-7cd4-4826-abd5-5d55d46756ac.jpg","~files/1_f3bc7b34-8e0b-4d93-8d17-3e06988b94b4.jpg"],["XS","S","M","L","XL","2X"],[["Baby Pink","~files/1_f3bc7b34-8e0b-4d93-8d17-3e06988b94b4.jpg"],["Blue","~files/1_08496994-3f99-45aa-9423-2347240b07d1.jpg"],["Maroon","~files/1_00e3d1ca-4925-41ce-baa8-28958a397469.jpg"],["Silver Grey","~files/1_f1223a14-701b-464f-baff-94ad24a7c09b.jpg"]],"Men"],
+["classic-pique-polo","Classic Pique Polo","Classic Pique Polo","1299.00","",["~files/2_be06f8d1-e2cb-48c4-83aa-a86b31ed32b1.jpg","~files/1_c50c08e0-2503-4ee3-9b71-6e15b4f13b48.jpg","~files/3_ba72193d-3686-4249-8b6e-b376e599a59c.jpg"],["XS","S","M","L","XL","2X"],[["Black","~files/1_0c83dbd2-a3a7-4d0f-a789-6203e0e857a6.jpg"],["Blue","~files/2_1fbdb98c-fd8e-49e9-932f-0d418e0cf3c7.jpg"],["Baby Pink","~files/3_8545ba27-af24-4f81-becc-0d3a837966e6.jpg"],["Wine","~files/2_c5a47faa-62c2-4386-ad1d-7fa0ef3b13b9.jpg"],["Dark Brown","~files/2_e001b8af-10b4-404f-aa06-5fa2304f3620.jpg"]],"Men"],
+["premium-cotton-flat-knit-polo","Premium Cotton Flat Knit Polo","Flat Knit Polo","1999.00","",["~files/2_6da14326-4898-47a8-885e-2a7ebb3029ab.jpg","~files/1_49b9610f-4796-4399-ba4e-6e78f3c87fa6.jpg","~files/3_e45dca3b-49a9-4973-b1eb-a8dd126ffd4a.jpg"],["XS","S","M","L","XL","2X"],[["Beige","~files/2_6da14326-4898-47a8-885e-2a7ebb3029ab.jpg"],["White","~files/2_06c72934-f603-4786-af91-16f0f7b12dc6.jpg"],["Olive Green","~files/2_771f0aee-86a5-4b19-9b93-12970b234610.jpg"],["Navy","~files/2_9edcc514-1d22-4895-be45-0815ed492b8d.jpg"]],"Men"],
+["slim-fit-jeans","Slim Fit Jeans","Slim Fit Denims","1749.00","3499.00",["~files/2_1268e78f-62d5-4b3f-9018-0ee0d868eeda.jpg","~files/1_1038244f-6f87-4155-80d2-ed425cbb5b40.jpg","~files/3_86b5f970-23a6-443e-bd56-0a09dfbb3902.jpg"],["30","32","34","36","38","40"],[["Black","~files/2_1268e78f-62d5-4b3f-9018-0ee0d868eeda.jpg"],["Light Blue","~files/2_7be35872-57a0-483d-92fe-cca2451f8bf7.jpg"],["Medium Blue","~files/2_41248868-bd3f-478d-aaf8-e861eef085f6.jpg"]],"Men"],
+["classic-regular-fit-jeans","Classic Regular Fit Jeans","Regular Fit Denims","3599.00","",["~files/2_f8c784e0-abfc-49c9-84d6-bb3cb6c21b63.jpg","~files/1_664e929b-7c0c-4179-be1c-54b50cb729b6.jpg","~files/3_fc6a2d5e-d728-4597-bc88-6603f73e167b.jpg"],["30","32","34","36","38","40"],[["Blue","~files/2_f8c784e0-abfc-49c9-84d6-bb3cb6c21b63.jpg"],["Light Blue","~files/2_eb366c72-5171-4fde-b686-2a5aa420b9e8.jpg"],["Medium Blue","~files/2_8c97f969-db50-4c59-b374-310fa89408c3.jpg"]],"Men"],
+["cotton-stretch-urban-cargo-shorts","Cotton Stretch Urban Cargo Shorts","Urban Cargo Shorts","1149.00","2299.00",["~files/2_06e2ccb6-3e34-45f1-a567-0a6a13258eaa.jpg","~files/1_5aee5d0e-3f57-4c76-a53b-cdf90def5378.jpg","~files/3_ce52683a-c25a-42c4-9eef-f2c868f7e466.jpg"],["30","32","34","36","38","40"],[["Beige","~files/2_2246b687-3ddd-4112-ada2-d61723b740d5.jpg"],["Khaki","~files/2_06e2ccb6-3e34-45f1-a567-0a6a13258eaa.jpg"],["Olive Green","~files/2_32464c14-853a-4a8c-b15e-360ddb9f642a.jpg"]],"Men"],
+["easeflex-lounge-shorts","EaseFlex Lounge Shorts","EaseFlex Lounge Shorts","899.00","",["~files/2_8b92c077-a853-43dd-8752-611e17175315.jpg","~files/1_a05cdca6-1181-4e2a-b949-37fbdfebbaa9.jpg","~files/3_e59f4b80-3ccc-444d-91b9-00cec79befa1.jpg"],["XS","S","M","L","XL","2X"],[["Antra Melange","~files/2_8b92c077-a853-43dd-8752-611e17175315.jpg"],["Black","~files/2_49dd645f-51cf-4716-b6d6-b1a9cca2d7b3.jpg"],["Wine","~files/2_41042a44-9243-4038-9e5b-2024f671c2f0.jpg"],["Navy","~files/2_726fe82c-cddf-4d05-8446-e1b79132cbb4.jpg"]],"Men"],
+["girls-solid-black-3-4th-leggings","Black Cotton Stretch Cropped Leggings","Girls 3/4th Leggings","299.00","",["~files/GLC-BLACK73_3.jpg","~files/GLC-BLACK73_4.jpg","~files/GLC-BLACK73_5.jpg"],["6","8","10","12","14"],[],"Girls"],
+["girls-solid-white-3-4th-leggings","White Cotton Stretch Cropped Leggings","Girls 3/4th Leggings","299.00","",["~files/GLC-WHITE74_4.jpg","~files/GLC-WHITE74_5.jpg","~files/GLC-WHITE74_1.jpg"],["6","8","10","12","14"],[],"Girls"],
+["girls-solid-blue-denim-jeggings-2","Blue Cotton Poly Stretch Denim Jeggings","Girls Denim Jeggings","899.00","",["~files/GJ03-BLUEDN89_3.jpg","~files/GJ03-BLUEDN89_4.jpg","~files/GJ03-BLUEDN89_5.jpg"],["6","8","10","12","14"],[],"Girls"],
+["girls-solid-light-blue-denim-jeggings-2","Light Blue Cotton Poly Stretch Denim Jeggings","Girls Denim Jeggings","899.00","",["~files/GoColors-ECommerceMay_248467.jpg","~files/GoColors-ECommerceMay_248468.jpg","~files/GoColors-ECommerceMay_248469.jpg"],["6","8","10","12","14"],[],"Girls"],
+["girls-solid-black-jeggings","Black Cotton Poly Stretch Super Stretch Jeggings","Girls Super Stretch Jeggings","799.00","",["~files/GJ02-BLACK73_5.jpg","~files/GJ02-BLACK73_4.jpg","~files/GJ02-BLACK73_3.jpg"],["6","8","10","12","14"],[],"Girls"],
+["girls-solid-black-harem-pants","Black Viscose Stretch Harem","Girls Harem Pants","499.00","",["~files/GH-BLACK73_3.jpg","~files/GH-BLACK73_4.jpg","~files/GH-BLACK73_5.jpg"],["6","8","10","12","14"],[],"Girls"],
+["girls-solid-navy-harem-pants","Navy Viscose Stretch Harem","Girls Harem Pants","499.00","",["~files/GH-NAVY61_3.jpg","~files/GH-NAVY61_4.jpg","~files/GH-NAVY61_5.jpg"],["6","8","10","12","14"],[],"Girls"],
+["girls-solid-young-fuchsia-mid-rise-knit-shorts","Young Fuchsia Cotton Knit Shorts","Girls Knit Shorts","299.00","349.00",["~files/GSH3-YGFUXIA29_3.jpg","~files/GSH3-YGFUXIA29_4.jpg","~files/GSH3-YGFUXIA29_5.jpg"],["6","8","10","12","14"],[],"Girls"],
+["girls-solid-black-mid-rise-knit-shorts","Black Cotton Knit Shorts","Girls Knit Shorts","299.00","349.00",["~files/GSH3-BLACK73_3.jpg","~files/GSH3-BLACK73_4.jpg","~files/GSH3-BLACK73_5.jpg"],["6","8","10","12","14"],[],"Girls"],
+["girls-cycling-shorts","Girls Cycling Shorts","Girls Cycling Shorts","249.00","",["~files/GCYC-NAVY61_3_c7c407ac-1d28-435c-97c0-23c3bed46e21.jpg","~files/GCYC-NAVY61_4_c16f7cd8-7d84-4dc8-8ff4-ef6cc66601ed.jpg","~files/GCYC-NAVY61_5_12290e80-0b17-4bbe-a817-db843de7018b.jpg"],["6","8","10","12","14"],[["Navy","~files/GCYC-NAVY61_3_c7c407ac-1d28-435c-97c0-23c3bed46e21.jpg"],["Black","~files/GCYC-BLACK73_3_c73d445b-2cb5-458f-bc66-a9ddf816a7f9.jpg"],["Silver Grey","~files/GCYC-SLVRGRY78_2_9f6cc59c-5ca5-47bf-9770-94469619d554.jpg"],["White","~files/1_8b9aa2c8-cbd6-4b8b-8dd4-64344effc52d.jpg"]],"Girls"],
+]
+PRODUCTS = PRODUCTS + AUDIENCE_PRODUCTS
+
+# ---- L1 audiences + split banner --------------------------------------------
+L1 = [('Home','home.html'),('Women','women.html'),('Men','men.html'),('Girls','girls.html')]
+
+# key: (tag, title, subtitle, cta1 label, cta1 href, cta2 label, cta2 href, disclaimer, image)
+BANNERS = {
+ 'home': ('New Season 2026',
+          'Life moves in your comfort zone',
+          'Bottomwear cut for Indian body types, in fabrics that hold their shape wash '
+          'after wash. XS to 4X, with petite-plus fits on core styles.',
+          'Shop women', 'women.html', 'Shop men', 'men.html',
+          '*Prices inclusive of all taxes. Free shipping and 30-day returns on every order. '
+          'Extra 10% off applies to prepaid orders at checkout.',
+          '~files/useforcatalog_6.jpg'),
+ 'women': ('Women · Bottomwear',
+           'One fit you will reorder in six colours',
+           '1200+ styles across leggings, kurti pants, palazzos and jeggings. '
+           'Tested across the full size run, from XS to 4X and petite-plus 2P–4P.',
+           'Shop new arrivals', 'collection.html', 'Shop best sellers', 'collection.html',
+           '*Prices inclusive of all taxes. Free shipping, free COD and 30-day returns. '
+           'Size availability varies by style and colour.',
+           '~files/useforcatalog_5.jpg'),
+ 'men': ('Men · New at Go Colors',
+         'Everyday tailoring, built for the commute',
+         'Pants, chinos, cargos and denims in stretch fabrics that survive a full day '
+         'and still press clean. Sizes 28 to 40.',
+         'Shop pants & trousers', 'collection.html', 'Shop cargos', 'collection.html',
+         '*Prices inclusive of all taxes. Free shipping, free COD and 30-day returns. '
+         'Menswear range is stocked in selected stores and online.',
+         '~files/1_c50c08e0-2503-4ee3-9b71-6e15b4f13b48.jpg'),
+ 'girls': ('Girls · 6 to 14 years',
+           'School, play and everything after',
+           'Soft cotton-stretch leggings, jeggings and pants that keep their shape '
+           'through the wash cycle a school week demands.',
+           'Shop leggings', 'collection.html', 'Shop jeggings', 'collection.html',
+           '*Prices inclusive of all taxes. Free shipping, free COD and 30-day returns. '
+           'Age guidance is indicative; check the size chart for waist and height.',
+           '~files/GoColors-ECommerceMay_248467.jpg'),
 }

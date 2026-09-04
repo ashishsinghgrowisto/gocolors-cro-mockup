@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from data import (U, BRAND, ANNOUNCE, NAV, MEGA_PROMOS, SIZES_CHIPS, CAT_TABS,
                   PRICE_BANDS, SPOTLIGHT, PRODUCTS, COLOR_HEX, SHADES, REVIEWS,
-                  FAQ, FOOTER)
+                  FAQ, FOOTER, L1, BANNERS)
 from style import CSS
 from script import JS, JS_PLP, JS_PDP, JS_WISH
 
@@ -77,8 +77,10 @@ def build_products():
     nudges = ['Bestseller in this fit', '', 'Low stock — few left', '',
               'Restocked this week', '', 'Loved for plus sizes', '']
     for i, p in enumerate(PRODUCTS):
-        h, t, ty, pr, cp, imgs, sz, sw = p
+        h, t, ty, pr, cp, imgs, sz, sw = p[:8]
         whom, length, fit, pattern, fabric, rise = derive(t, ty, sz)
+        if len(p) > 8:                 # explicit audience wins over the guess
+            whom = p[8]
         swatches = [[c, U(u), COLOR_HEX.get(c, '#cccccc')] for c, u in sw]
         cols = [c for c, _u, _x in swatches] or ([guess_colour(t)] if guess_colour(t) else [])
         out.append(dict(
@@ -339,9 +341,36 @@ def modal_shell():
             '<div class="mod" id="quickMod"><div class="mod-box"></div></div>'
             '<div class="toast" id="toast"></div>')
 
+
+def l1_bar(active=''):
+    """The desktop L1 menu, carried into mobile as a sticky tab row."""
+    links = ''.join('<a href="%s" class="%s">%s</a>'
+                    % (href, 'on' if href == active else '', E(label))
+                    for label, href in L1)
+    return '<nav class="l1bar"><div class="in">%s</div></nav>' % links
+
+
+def split_banner(key):
+    tag, title, sub, c1, h1_, c2, h2_, disc, img = BANNERS[key]
+    return ('<section class="sban">'
+            '<div class="im"><img src="%s" alt="%s" fetchpriority="high"></div>'
+            '<div class="bd">'
+            '<span class="tag">%s %s</span>'
+            '<h1>%s</h1>'
+            '<p class="sub">%s</p>'
+            '<div class="ctas">'
+            '<a class="btn btn-d" href="%s">%s</a>'
+            '<a class="btn btn-o" href="%s">%s</a>'
+            '</div>'
+            '<p class="disc">%s</p>'
+            '</div></section>'
+            % (U(img), E(title), IC['spark'], E(tag), E(title), E(sub),
+               h1_, E(c1), h2_, E(c2), E(disc)))
+
 # --------------------------------------------------------------- page shell
-def page(title, body, extra_js='', active='', pagekey=''):
-    links = [('index.html', 'Overview'), ('home.html', 'Home'),
+def page(title, body, extra_js='', active='', pagekey='', l1=''):
+    links = [('index.html', 'Overview'), ('home.html', 'Home'), ('women.html', 'Women'),
+             ('men.html', 'Men'), ('girls.html', 'Girls'),
              ('collection.html', 'Collection'), ('product.html', 'Product'),
              ('wishlist.html', 'Wishlist')]
     nav = ''.join('<a href="%s" class="%s">%s</a>'
@@ -353,10 +382,10 @@ def page(title, body, extra_js='', active='', pagekey=''):
     return ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width,initial-scale=1">'
             '<title>%s</title>%s<style>%s</style></head>'
-            '<body class="hasbar">%s<div id="viewport">%s%s%s%s</div>'
+            '<body class="hasbar">%s<div id="viewport">%s%s%s%s%s</div>'
             '%s%s%s%s%s%s'
             '<script>var DATA=%s;var SHADELIST=%s;</script><script>%s</script>%s</body></html>'
-            % (E(title), FONT_LINK, CSS, bar, app_strip(), header(), body, footer(),
+            % (E(title), FONT_LINK, CSS, bar, app_strip(), header(), l1_bar(l1), body, footer(),
                tabbar(active), drawer(), search_overlay(), cart_drawer(), wish_drawer(),
                stories_modal() + modal_shell(),
                DATA_JSON, SHADE_JSON, JS, extra_js))
@@ -371,9 +400,7 @@ def cards_placeholder(items):
     return ''.join('<div data-p="%s"></div>' % p['h'] for p in items)
 
 def home():
-    # the campaign banner carries its own headline and CTA artwork
-    hero = ('<a class="hero" href="collection.html"><img src="%s" alt="%s" fetchpriority="high"></a>'
-            % (U(BRAND['hero']), E(BRAND['tagline'])))
+    hero = split_banner('home')
 
     tabs = ''.join('<button data-tab="%s" class="%s">%s</button>'
                    % (k, 'on' if i == 0 else '', E(k)) for i, k in enumerate(CAT_TABS))
@@ -465,7 +492,20 @@ def home():
     body = (hero + shop + trust_bar() + price + cover + stat_sec + best +
             shade + rich + rev_sec)
     return page("Shop Premium Women's Bottom Wear Online — Go Colors", body,
-                active='home', pagekey='home.html')
+                active='home', pagekey='home.html', l1='home.html')
+
+
+# --------------------------------------------------------------- audience landing
+LANDING = {
+ 'women': ("Women's Bottomwear — Go Colors", 'Bottoms', 'women.html'),
+ 'men':   ('Men — Go Colors',                'Men',     'men.html'),
+ 'girls': ('Girls — Go Colors',              'Bottoms', 'girls.html'),
+}
+
+def landing_page(key):
+    title, tabkey, pagekey = LANDING[key]
+    body = split_banner(key)
+    return page(title, body, active='home', pagekey=pagekey, l1=pagekey)
 
 # --------------------------------------------------------------- collection
 def filter_group(title, inner, open_=True):
@@ -538,7 +578,7 @@ def collection():
             '</div></div></div></div>%s'
             % (IC['menu'], sidebar(), sort, sheet))
     return page("New Arrivals — Go Colors", body, '<script>%s</script>' % JS_PLP,
-                active='shop', pagekey='collection.html')
+                active='shop', pagekey='collection.html', l1='')
 
 # --------------------------------------------------------------- product
 def product():
@@ -690,7 +730,7 @@ def product():
                overview, details, faqs, reviews, similar, satc))
 
     js = '<script>var HANDLE="%s";</script><script>%s</script>' % (p['h'], JS_PDP)
-    return page('%s — Go Colors' % p['t'], body, js, active='shop', pagekey='product.html')
+    return page('%s — Go Colors' % p['t'], body, js, active='shop', pagekey='product.html', l1='')
 
 # --------------------------------------------------------------- wishlist page
 def wishlist():
@@ -705,7 +745,7 @@ def wishlist():
             '<p>Tap the heart on any style and it will wait for you here.</p>'
             '<a class="btn btn-d" href="collection.html">Browse bottomwear</a></div></div>')
     return page('Wishlist — Go Colors', body, '<script>%s</script>' % JS_WISH,
-                active='wish', pagekey='wishlist.html')
+                active='wish', pagekey='wishlist.html', l1='')
 
 def cart_redirect():
     return ('<!doctype html><html><head><meta charset="utf-8"><title>Bag — Go Colors</title>'
@@ -793,7 +833,10 @@ def main():
         shutil.rmtree(OUT)
     os.makedirs(OUT, exist_ok=True)
     pages = {
-        'index.html': index(), 'home.html': home(), 'collection.html': collection(),
+        'index.html': index(), 'home.html': home(),
+        'women.html': landing_page('women'), 'men.html': landing_page('men'),
+        'girls.html': landing_page('girls'),
+        'collection.html': collection(),
         'product.html': product(), 'wishlist.html': wishlist(), 'cart.html': cart_redirect(),
     }
     for name, htm in pages.items():

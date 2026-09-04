@@ -13,6 +13,7 @@ CSS = r"""
   --maxw:1400px;
   --barh:0px;
   --hdrh:112px;
+  --hdrm:62px;
   --r:10px;
 }
 *{box-sizing:border-box}
@@ -164,7 +165,7 @@ body.hasbar{--barh:44px;padding-top:44px}
 
 /* ---------- hero ---------- */
 .hero{position:relative}
-.hero img{width:100%;height:auto}
+.hero img{width:100%;aspect-ratio:1440/620;object-fit:cover;object-position:center 50%}
 .hero .cap{position:absolute;left:0;right:0;bottom:16%;text-align:center}
 .hero .cap a{display:inline-block;background:rgba(35,35,35,.82);color:#fff;font-size:12.5px;font-weight:600;
   padding:8px 20px;border-radius:4px}
@@ -634,6 +635,38 @@ body.hasbar{--barh:44px;padding-top:44px}
   color:var(--muted);line-height:1.75}
 .hub .note b{color:var(--ink)}
 
+
+/* ---------- L1 audience bar (desktop nav carried into mobile) ---------- */
+.l1bar{display:none;background:#fff;border-bottom:1px solid var(--line);
+  position:sticky;top:calc(var(--barh) + var(--hdrm));z-index:110}
+.l1bar .in{display:flex;overflow-x:auto;scrollbar-width:none}
+.l1bar .in::-webkit-scrollbar{display:none}
+.l1bar a{flex:1 0 auto;min-width:25%;text-align:center;padding:13px 16px;font-size:13px;
+  font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#3a3a3a;
+  border-bottom:2px solid transparent;white-space:nowrap}
+.l1bar a.on{color:var(--ink);border-color:var(--brand)}
+.l1bar a:active{background:var(--soft)}
+
+/* ---------- split banner ---------- */
+.sban{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;background:var(--soft);
+  min-height:clamp(430px,44vw,580px)}
+.sban .im{position:relative;overflow:hidden;background:var(--soft2)}
+.sban .im img{width:100%;height:100%;object-fit:cover;object-position:center 20%;position:absolute;inset:0}
+.sban .bd{display:flex;flex-direction:column;justify-content:center;padding:clamp(28px,3.6vw,58px);
+  background:#fff}
+.sban .tag{display:inline-flex;align-self:flex-start;align-items:center;gap:7px;background:#fff3f9;
+  color:var(--brand);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  padding:7px 14px;border-radius:20px}
+.sban h1{font-size:clamp(26px,3.4vw,44px);line-height:1.12;margin:18px 0 0;letter-spacing:-.02em}
+.sban .sub{font-size:clamp(13px,1.15vw,15px);color:var(--muted);line-height:1.7;margin:14px 0 0;
+  max-width:46ch;font-weight:500}
+.sban .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.sban .ctas .btn{padding:15px 30px}
+.sban .disc{font-size:11px;color:#8a8a8a;line-height:1.6;margin-top:26px;padding-top:20px;
+  border-top:1px solid var(--line);
+  max-width:52ch;font-weight:500}
+.sban .disc b{color:#6b6b6b;font-weight:700}
+
 /* ================= responsive ================= */
 @container (max-width:1180px){
   .mega-tiles{grid-template-columns:repeat(4,1fr)}
@@ -644,6 +677,14 @@ body.hasbar{--barh:44px;padding-top:44px}
   .plp{grid-template-columns:200px 1fr}
 }
 @container (max-width:900px){
+  .l1bar{display:block}
+  .sban{grid-template-columns:1fr}
+  .sban{min-height:0}
+  .sban .im{aspect-ratio:4/4.2}
+  .sban .im img{object-position:center 16%}
+  .sban .bd{padding:26px 20px 30px}
+  .sban .ctas .btn{flex:1;padding:14px 18px;justify-content:center}
+  .sban .disc{padding-top:22px}
   .nav,.searchbox,.mega{display:none}
   .burger{display:grid;place-items:center;width:40px;height:40px}
   .logo{order:0;position:absolute;left:50%;transform:translateX(-50%)}
@@ -651,7 +692,7 @@ body.hasbar{--barh:44px;padding-top:44px}
   .icons{margin-left:auto;gap:10px}
   .ico .lbl{display:none}
   .ico{min-width:32px}
-  .hero img{aspect-ratio:3/2.6;object-fit:cover;object-position:60% center}
+  .hero img{aspect-ratio:3/3.4;object-fit:cover;object-position:center 46%}
   .trust li{padding:13px 16px;font-size:11px}
   .cats{grid-template-columns:repeat(3,1fr)}
   .bands{grid-template-columns:repeat(2,1fr)}
@@ -683,6 +724,14 @@ body.hasbar{--barh:44px;padding-top:44px}
   .card .eye{display:none}
 }
 @media (max-width:900px){
+  .l1bar{display:block}
+  .sban{grid-template-columns:1fr}
+  .sban{min-height:0}
+  .sban .im{aspect-ratio:4/4.2}
+  .sban .im img{object-position:center 16%}
+  .sban .bd{padding:26px 20px 30px}
+  .sban .ctas .btn{flex:1;padding:14px 18px;justify-content:center}
+  .sban .disc{padding-top:22px}
   .nav,.searchbox,.mega{display:none}
   .burger{display:grid;place-items:center;width:40px;height:40px}
   .logo{order:0;position:absolute;left:50%;transform:translateX(-50%)}
@@ -690,7 +739,7 @@ body.hasbar{--barh:44px;padding-top:44px}
   .icons{margin-left:auto;gap:10px}
   .ico .lbl{display:none}
   .ico{min-width:32px}
-  .hero img{aspect-ratio:3/2.6;object-fit:cover;object-position:60% center}
+  .hero img{aspect-ratio:3/3.4;object-fit:cover;object-position:center 46%}
   .trust li{padding:13px 16px;font-size:11px}
   .cats{grid-template-columns:repeat(3,1fr)}
   .bands{grid-template-columns:repeat(2,1fr)}
