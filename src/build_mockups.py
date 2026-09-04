@@ -95,30 +95,51 @@ def build_products():
 
 PROD = build_products()
 
-# bestsellers = the most-reviewed styles in each audience
-BESTSELLERS = {}
+# product rails: bestsellers / new arrivals / trending, per audience and overall.
+# Proxies, since the catalogue carries no sales or publish dates:
+#   bestseller = most reviewed   new = fewest reviews (newest listing)
+#   trending   = highest rated among the rest
+POOLS = {}
+MIN_RAIL = 8
+
+def _rails(pool):
+    by_reviews = sorted(pool, key=lambda x: -x['rc'])
+    best = by_reviews[:12]
+    new = sorted(pool, key=lambda x: x['rc'])[:12]
+    rest = [p for p in pool if p not in best] or pool
+    trend = sorted(rest, key=lambda x: (-x['r'], -x['rc']))[:12]
+    out = {'Bestsellers': best, 'New Arrivals': new, 'Trending Products': trend}
+    for k, v in out.items():                      # never show a thin rail
+        if len(v) < MIN_RAIL:
+            extra = [p for p in by_reviews if p not in v]
+            out[k] = (v + extra)[:MIN_RAIL]
+    return out
+
 for _a in ('Women', 'Men', 'Girls'):
-    _pool = sorted([p for p in PROD if p['whom'] == _a], key=lambda x: -x['rc'])
-    BESTSELLERS[_a] = _pool[:8]
-    for _p in BESTSELLERS[_a]:
+    POOLS[_a] = _rails([p for p in PROD if p['whom'] == _a])
+    for _p in POOLS[_a]['Bestsellers']:
         _p['bs'] = 1
+    for _p in POOLS[_a]['New Arrivals']:
+        _p['nw'] = 1
 for _p in PROD:
     _p.setdefault('bs', 0)
 
-def _mix():
-    """Homepage: bestsellers across categories, interleaved by audience."""
+def _interleave(key, n=12):
+    """Homepage: across categories, one from each audience in turn."""
     out, i = [], 0
-    while len(out) < 12:
+    while len(out) < n:
         added = False
         for a in ('Women', 'Men', 'Girls'):
-            if i < len(BESTSELLERS[a]):
-                out.append(BESTSELLERS[a][i]); added = True
+            lst = POOLS[a][key]
+            if i < len(lst):
+                out.append(lst[i]); added = True
         if not added:
             break
         i += 1
-    return out[:12]
+    return out[:n]
 
-BESTSELLERS['All'] = _mix()
+POOLS['All'] = {k: _interleave(k) for k in ('Bestsellers', 'New Arrivals', 'Trending Products')}
+BESTSELLERS = {a: POOLS[a]['Bestsellers'] for a in POOLS}   # kept for compatibility
 BY = {p['h']: p for p in PROD}
 DATA_JSON = json.dumps(PROD, ensure_ascii=False, separators=(',', ':'))
 SHADE_JSON = json.dumps([[s, COLOR_HEX.get(s, '#ccc')] for s in SHADES])
@@ -430,18 +451,34 @@ def category_section(audiences, heading='Shop by category', sub=''):
             % (head, tabrow, panels))
 
 
-def bestseller_section(audience, heading, sub=''):
-    items = BESTSELLERS[audience]
-    head = ('<div class="sec-hd"><div><h2>%s</h2>%s</div>'
-            '<a class="more" href="collection.html">View all</a></div>'
-            % (E(heading), ('<div class="sub">%s</div>' % E(sub)) if sub else ''))
-    return ('<section class="sec"><div class="wrap">%s'
+RAIL_TABS = ['Bestsellers', 'New Arrivals', 'Trending Products']
+RAIL_TAG = {'Bestsellers': 'Bestseller', 'New Arrivals': 'New in',
+            'Trending Products': 'Trending'}
+
+
+def _rail(items, gid, tab, show):
+    return ('<div data-panel="%s" data-group="%s" style="%s">'
             '<div class="carou">'
             '<button class="arw l" data-rail="p" aria-label="Previous">\u2039</button>'
             '<div class="bsrail" data-cards>%s</div>'
             '<button class="arw r" data-rail="n" aria-label="Next">\u203a</button>'
-            '</div></div></section>'
-            % (head, ''.join('<div data-p="%s"></div>' % p['h'] for p in items)))
+            '</div></div>'
+            % (tab, gid, '' if show else 'display:none',
+               ''.join('<div data-p="%s" data-tag="%s"></div>' % (p['h'], E(RAIL_TAG[tab]))
+                       for p in items)))
+
+
+def product_tabs_section(audience, heading, sub='', gid='ptabs'):
+    pools = POOLS[audience]
+    head = ('<div class="sec-hd"><div><h2>%s</h2>%s</div>'
+            '<a class="more" href="collection.html">View all</a></div>'
+            % (E(heading), ('<div class="sub">%s</div>' % E(sub)) if sub else ''))
+    tabs = ''.join('<button data-tab="%s" class="%s">%s</button>'
+                   % (t, 'on' if i == 0 else '', E(t)) for i, t in enumerate(RAIL_TABS))
+    rails = ''.join(_rail(pools[t], gid, t, i == 0) for i, t in enumerate(RAIL_TABS))
+    return ('<section class="sec"><div class="wrap">%s'
+            '<div class="pilltabs" data-tabgroup="%s">%s</div>%s</div></section>'
+            % (head, gid, tabs, rails))
 
 # --------------------------------------------------------------- page shell
 def page(title, body, extra_js='', active='', pagekey='', l1=''):
@@ -512,8 +549,8 @@ def home():
                 '<button class="arw r" data-rail="n" aria-label="Scroll right">\u203a</button></div>'
                 % cards_placeholder(items))
 
-    best = bestseller_section('All', 'Bestsellers',
-                              'The styles our customers reorder most, across women, men and girls')
+    best = product_tabs_section('All', 'Shop the edit',
+                                'Bestsellers, new arrivals and what is trending right now')
 
     shade = ('<section class="sec"><div class="wrap">'
              '<h2 style="font-size:clamp(18px,2.1vw,25px);margin-bottom:16px">Find Your Perfect Shade</h2>'
@@ -566,8 +603,9 @@ def landing_page(key):
     body = (split_banner(key)
             + category_section([audience], '%s categories' % audience,
                                'Shop the full %s range' % audience.lower())
-            + bestseller_section(audience, 'Bestsellers in %s' % audience,
-                                 'Most reviewed, most reordered'))
+            + product_tabs_section(audience, 'Shop the %s edit' % audience.lower(),
+                                   'Bestsellers, new arrivals and trending styles',
+                                   gid='ptabs-%s' % audience.lower()))
     return page(title, body, active='home', pagekey=pagekey, l1=pagekey)
 
 # --------------------------------------------------------------- collection

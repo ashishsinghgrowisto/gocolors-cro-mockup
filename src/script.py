@@ -160,14 +160,13 @@ function openQuick(h){
 window.openQuick=openQuick;
 
 /* ---------------- product card ---------------- */
-function card(p){
+function card(p,tagOverride){
   var disc=p.cp?Math.round((1-p.p/p.cp)*100):0;
   var dots=p.sw.length?('<div class="dots-c">'+p.sw.slice(0,7).map(function(x,i){
       return '<i data-cs="'+p.h+'|'+i+'" class="'+(i===0?'on':'')+'" style="background:'+(x[2]||'#ccc')+'" title="'+esc(x[0])+'"></i>'
     }).join('')+(p.sw.length>7?'<i class="plus">+'+(p.sw.length-7)+'</i>':'')+'</div>'):'';
-  var tag = p.bs ? '<span class="tag">Bestseller</span>'
-          : (p.nw ? '<span class="tag dk">New in</span>'
-          : (disc>=40 ? '<span class="tag">'+disc+'% Off</span>' : ''));
+  var label = tagOverride || (p.bs ? 'Bestseller' : (p.nw ? 'New in' : (disc>=40 ? disc+'% Off' : '')));
+  var tag = label ? '<span class="tag'+(label==='New in'?' dk':'')+'">'+esc(label)+'</span>' : '';
   return '<article class="card" data-h="'+p.h+'">'+
     '<div class="imgwrap">'+
       '<a href="product.html?p='+p.h+'"><img src="'+p.i[0]+'" alt="'+esc(p.t)+'" loading="lazy" data-hero>'+
@@ -381,7 +380,8 @@ document.addEventListener('DOMContentLoaded',function(){
   });
   $$('[data-cards]').forEach(function(g){
     g.innerHTML=Array.prototype.map.call(g.children,function(c){
-      var h=c.getAttribute('data-p');var p=P(h);return p?card(p):''}).join('');
+      var p=P(c.getAttribute('data-p'));
+      return p?card(p,c.getAttribute('data-tag')||''):''}).join('');
   });
   function catArrows(){
     $$('.catwrap').forEach(function(w){
@@ -434,7 +434,7 @@ function sorted(l){
 }
 window.RENDER_PLP=function(){
   var list=sorted(DATA.filter(pass));
-  $('#plpGrid').innerHTML=list.slice(0,SHOWN).map(card).join('')||
+  $('#plpGrid').innerHTML=list.slice(0,SHOWN).map(function(p){return card(p)}).join('')||
     '<p style="grid-column:1/-1;padding:40px 0;color:#6b6b6b">No products match these filters. '+
     '<button style="text-decoration:underline;font-weight:800" data-clearf>Clear all</button></p>';
   $('#plpCount').textContent=list.length+' styles';
@@ -578,7 +578,7 @@ window.RENDER_WISHLIST=function(){
   var items=DATA.filter(function(p){return W.indexOf(p.h)>-1});
   document.querySelector('#wlCount').textContent=items.length+(items.length===1?' saved style':' saved styles');
   if(!items.length){g.innerHTML='';e.style.display='';return}
-  e.style.display='none';g.innerHTML=items.map(card).join('');
+  e.style.display='none';g.innerHTML=items.map(function(p){return card(p)}).join('');
   if(window.counts)window.counts();
 };
 document.addEventListener('DOMContentLoaded',window.RENDER_WISHLIST);
