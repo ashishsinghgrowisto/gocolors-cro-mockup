@@ -165,21 +165,23 @@ function card(p){
   var dots=p.sw.length?('<div class="dots-c">'+p.sw.slice(0,5).map(function(x,i){
       return '<i data-cs="'+p.h+'|'+i+'" class="'+(i===0?'on':'')+'" style="background:'+(x[2]||'#ccc')+'" title="'+esc(x[0])+'"></i>'
     }).join('')+(p.sw.length>5?'<i class="plus">+'+(p.sw.length-5)+'</i>':'')+'</div>'):'';
+  var tag = p.bs ? '<span class="tag">Bestseller</span>'
+          : (p.nw ? '<span class="tag dk">New in</span>'
+          : (disc>=40 ? '<span class="tag">'+disc+'% Off</span>' : ''));
   return '<article class="card" data-h="'+p.h+'">'+
     '<div class="imgwrap">'+
       '<a href="product.html?p='+p.h+'"><img src="'+p.i[0]+'" alt="'+esc(p.t)+'" loading="lazy" data-hero>'+
       (p.i[1]?'<img class="alt" src="'+p.i[1]+'" alt="" loading="lazy">':'')+'</a>'+
-      (p.nw?'<span class="tag">MostlySane</span>':(disc>=40?'<span class="tag">Trending</span>':
-        (p.bs?'<span class="tag dk">Best Seller</span>':''))) +
+      tag+
       '<button class="wish" data-wtog="'+p.h+'" aria-label="Save to wishlist">'+heart()+'</button>'+
-      '<button class="eye" data-quick="'+p.h+'" aria-label="Quick view">'+eye()+'</button>'+
+      '<span class="rate"><span class="st">\u2605</span>'+p.r.toFixed(1)+' <i>('+p.rc+')</i></span>'+
     '</div>'+
     '<div class="meta">'+
       '<a href="product.html?p='+p.h+'"><div class="nm">'+esc(p.t)+'</div></a>'+
       dots+
       '<div class="pr"><b>'+inr(p.p)+'</b>'+(p.cp?'<s>'+inr(p.cp)+'</s><em>'+disc+'% Off</em>':'')+'</div>'+
-      '<div class="rt"><span class="stars">'+stars(p.r)+'</span><b>'+p.r.toFixed(1)+'</b><span>| ('+p.rc+')</span></div>'+
       (p.nudge?'<div class="nudge">'+esc(p.nudge)+'</div>':'')+
+      '<button class="atcbtn" data-quick="'+p.h+'">Add to cart</button>'+
     '</div></article>';
 }
 window.card=card;
@@ -338,8 +340,8 @@ document.addEventListener('click',function(e){
   if(up('[data-stprev]')){showStory(SIDX-1);return}
   if(up('[data-stnext]')){showStory(SIDX+1);return}
   if((a=up('[data-rail]'))){
-    var wrap=a.closest('.carou'),row=$('.railrow',wrap);
-    row.scrollLeft += (a.getAttribute('data-rail')==='n'?1:-1)*420;return;
+    var wrap=a.closest('.carou'),row=$('.railrow',wrap)||$('.bsrail',wrap);
+    if(row)row.scrollLeft += (a.getAttribute('data-rail')==='n'?1:-1)*(row.clientWidth||420);return;
   }
   if((a=up('[data-cats]'))){
     var cw=a.closest('.catwrap'),tr=$('.cats',cw);
@@ -383,6 +385,10 @@ document.addEventListener('DOMContentLoaded',function(){
   function catArrows(){
     $$('.catwrap').forEach(function(w){
       var tr=$('.cats',w);if(!tr)return;
+      w.classList.toggle('scrollable', tr.scrollWidth - tr.clientWidth > 4);
+    });
+    $$('.carou').forEach(function(w){
+      var tr=$('.bsrail',w)||$('.railrow',w);if(!tr)return;
       w.classList.toggle('scrollable', tr.scrollWidth - tr.clientWidth > 4);
     });
   }

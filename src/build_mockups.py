@@ -94,6 +94,31 @@ def build_products():
     return out
 
 PROD = build_products()
+
+# bestsellers = the most-reviewed styles in each audience
+BESTSELLERS = {}
+for _a in ('Women', 'Men', 'Girls'):
+    _pool = sorted([p for p in PROD if p['whom'] == _a], key=lambda x: -x['rc'])
+    BESTSELLERS[_a] = _pool[:8]
+    for _p in BESTSELLERS[_a]:
+        _p['bs'] = 1
+for _p in PROD:
+    _p.setdefault('bs', 0)
+
+def _mix():
+    """Homepage: bestsellers across categories, interleaved by audience."""
+    out, i = [], 0
+    while len(out) < 12:
+        added = False
+        for a in ('Women', 'Men', 'Girls'):
+            if i < len(BESTSELLERS[a]):
+                out.append(BESTSELLERS[a][i]); added = True
+        if not added:
+            break
+        i += 1
+    return out[:12]
+
+BESTSELLERS['All'] = _mix()
 BY = {p['h']: p for p in PROD}
 DATA_JSON = json.dumps(PROD, ensure_ascii=False, separators=(',', ':'))
 SHADE_JSON = json.dumps([[s, COLOR_HEX.get(s, '#ccc')] for s in SHADES])
@@ -404,6 +429,20 @@ def category_section(audiences, heading='Shop by category', sub=''):
             '<div class="tabs" data-tabgroup="cats">%s</div>%s</div></section>'
             % (head, tabrow, panels))
 
+
+def bestseller_section(audience, heading, sub=''):
+    items = BESTSELLERS[audience]
+    head = ('<div class="sec-hd"><div><h2>%s</h2>%s</div>'
+            '<a class="more" href="collection.html">View all</a></div>'
+            % (E(heading), ('<div class="sub">%s</div>' % E(sub)) if sub else ''))
+    return ('<section class="sec"><div class="wrap">%s'
+            '<div class="carou">'
+            '<button class="arw l" data-rail="p" aria-label="Previous">\u2039</button>'
+            '<div class="bsrail" data-cards>%s</div>'
+            '<button class="arw r" data-rail="n" aria-label="Next">\u203a</button>'
+            '</div></div></section>'
+            % (head, ''.join('<div data-p="%s"></div>' % p['h'] for p in items)))
+
 # --------------------------------------------------------------- page shell
 def page(title, body, extra_js='', active='', pagekey='', l1=''):
     links = [('index.html', 'Overview'), ('home.html', 'Home'), ('women.html', 'Women'),
@@ -468,22 +507,13 @@ def home():
     stat_sec = '<section class="sec grey" style="padding:0"><div class="wrap"><div class="stats">%s</div></div></section>' % stats
 
     def carousel(items, gid):
-        return ('<div class="carou"><button class="arw l" data-rail="p" aria-label="Scroll left">‹</button>'
+        return ('<div class="carou"><button class="arw l" data-rail="p" aria-label="Scroll left">\u2039</button>'
                 '<div class="railrow" data-cards>%s</div>'
-                '<button class="arw r" data-rail="n" aria-label="Scroll right">›</button></div>'
+                '<button class="arw r" data-rail="n" aria-label="Scroll right">\u203a</button></div>'
                 % cards_placeholder(items))
 
-    deals = sorted([x for x in PROD if x['cp']], key=lambda x: -(1 - x['p'] / x['cp']))[:8]
-    best = ('<section class="sec"><div class="wrap">'
-            '<div class="pilltabs" data-tabgroup="best">'
-            '<button data-tab="Best Sellers" class="on">Best Sellers</button>'
-            '<button data-tab="Trending Now">Trending Now</button>'
-            '<button data-tab="Steal Deals">Steal Deals</button></div>'
-            '<div data-panel="Best Sellers" data-group="best">%s</div>'
-            '<div data-panel="Trending Now" data-group="best" style="display:none">%s</div>'
-            '<div data-panel="Steal Deals" data-group="best" style="display:none">%s</div>'
-            '</div></section>'
-            % (carousel(PROD[:8], 'b1'), carousel(PROD[12:20], 'b2'), carousel(deals, 'b3')))
+    best = bestseller_section('All', 'Bestsellers',
+                              'The styles our customers reorder most, across women, men and girls')
 
     shade = ('<section class="sec"><div class="wrap">'
              '<h2 style="font-size:clamp(18px,2.1vw,25px);margin-bottom:16px">Find Your Perfect Shade</h2>'
@@ -518,7 +548,7 @@ def home():
                '<div class="revs">%s</div></div></section>'
                % (BRAND['rating'], BRAND['reviews'], revs))
 
-    body = (hero + shop + trust_bar() + price + cover + stat_sec + best +
+    body = (hero + shop + best + trust_bar() + price + cover + stat_sec +
             shade + rich + rev_sec)
     return page("Shop Premium Women's Bottom Wear Online — Go Colors", body,
                 active='home', pagekey='home.html', l1='home.html')
@@ -533,9 +563,11 @@ LANDING = {
 
 def landing_page(key):
     title, audience, pagekey = LANDING[key]
-    body = split_banner(key) + category_section(
-        [audience], '%s categories' % audience,
-        'Shop the full %s range' % audience.lower())
+    body = (split_banner(key)
+            + category_section([audience], '%s categories' % audience,
+                               'Shop the full %s range' % audience.lower())
+            + bestseller_section(audience, 'Bestsellers in %s' % audience,
+                                 'Most reviewed, most reordered'))
     return page(title, body, active='home', pagekey=pagekey, l1=pagekey)
 
 # --------------------------------------------------------------- collection
