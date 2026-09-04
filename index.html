@@ -318,15 +318,15 @@ body.hasbar{--barh:44px;padding-top:44px}
 .card .rt{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);font-weight:600;margin-top:6px}
 .card .rt .stars{color:#f0a500;letter-spacing:-1px}
 .card .rt b{color:var(--ink)}
-.dots-c{display:flex;gap:4px;margin-top:8px;align-items:center;flex-wrap:nowrap;
-  justify-content:space-between;width:100%;min-height:14px;overflow:hidden}
+.dots-c{display:flex;gap:6px;margin-top:8px;align-items:center;flex-wrap:nowrap;
+  justify-content:flex-start;min-height:15px;overflow:hidden}
 .dots-c:empty{min-height:14px}
-.dots-c i{flex:1 1 0;max-width:15px;aspect-ratio:1;border-radius:50%;
-  box-shadow:0 0 0 1px rgba(0,0,0,.16) inset;cursor:pointer;display:block}
+.dots-c i{flex:0 0 auto;width:15px;height:15px;border-radius:50%;
+  box-shadow:0 0 0 1px rgba(0,0,0,.18) inset;cursor:pointer;display:block}
 .dots-c i.on{box-shadow:0 0 0 1.5px #fff inset,0 0 0 2.5px var(--ink)}
-.dots-c .plus{flex:0 0 auto;max-width:none;aspect-ratio:auto;font-size:10px;font-weight:700;
+.dots-c .plus{flex:0 0 auto;width:auto;height:auto;font-size:10.5px;font-weight:700;
   color:var(--muted);font-style:normal;box-shadow:none;border-radius:0;cursor:default;
-  margin-left:2px;white-space:nowrap}
+  margin-left:1px;white-space:nowrap}
 .card .nudge{font-size:10.5px;font-weight:700;color:var(--brand);margin-top:6px;margin-bottom:10px}
 
 
