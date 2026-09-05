@@ -649,20 +649,6 @@ def home():
         for label, img in PRICE_BANDS)
     price = '<section class="sec"><div class="wrap"><div class="bands">%s</div></div></section>' % bands
 
-    covers = [('CASUAL FITS,<br>EVERYDAY LOVE', 'Easy styles for every mood', SPOTLIGHT[1]),
-              ('ETHNIC, BUT<br>MAKE IT STYLISH', 'Stay-fit for modern women · Starting ₹599', SPOTLIGHT[2]),
-              ('OFFICE-PERFECT<br>PANTS', 'Sharp fits, all-day comfort · Starting ₹899', SPOTLIGHT[3]),
-              ('WEEKEND<br>ATHLEISURE', 'Train, walk, lounge · Starting ₹299', SPOTLIGHT[0])]
-    slides = ''.join(
-        '<a href="collection.html"><div class="im"><img src="%s" alt="%s" loading="lazy">'
-        '<div class="ov"><b>%s</b><span>%s</span><i>Shop Now</i></div></div></a>'
-        % (U(img), re.sub('<br>', ' ', t), t, E(sub)) for t, sub, img in covers)
-    cover = ('<section class="sec tight"><div class="wrap"><div class="cover" id="cover">'
-             '<button class="arw l" data-cv="p" aria-label="Previous">‹</button>'
-             '<div class="cover-vp"><div class="cover-tr">%s</div></div>'
-             '<button class="arw r" data-cv="n" aria-label="Next">›</button></div>'
-             '<div class="dots" id="coverDots"></div></div></section>' % slides)
-
     stats = ''.join('<div><div class="n">%s</div><div class="l">%s</div></div>' % (E(a), E(b))
                     for a, b in BRAND['stats'])
     stat_sec = '<section class="sec grey" style="padding:0"><div class="wrap"><div class="stats">%s</div></div></section>' % stats
@@ -671,16 +657,6 @@ def home():
                                 'Bestsellers, new arrivals and what is trending right now')
 
     shade = shade_section('All', 's1')
-
-    rich = ('<section class="sec"><div class="wrap" style="text-align:center;max-width:760px">'
-            '<h2 style="font-size:clamp(19px,2.4vw,27px)">Timeless Styles, Perfected For You!</h2>'
-            '<p style="color:#6b6b6b;font-size:13.5px;line-height:1.8;margin:14px 0 20px">'
-            'We strive to empower ambitious women who refuse to compromise — on comfort, functionality '
-            'or style. As pioneers in our space, we bring you versatile, high-quality designs in endless '
-            'colours, known for effortless fit and optimal comfort.</p>'
-            '<h3 style="font-size:15px">We Believe in Honest Pricing.</h3>'
-            '<p style="color:#6b6b6b;font-size:12.5px;margin:7px 0 0">No Inflated MRP | No Misleading Discounts</p>'
-            '</div></section>')
 
     revs = ''.join(
         '<div class="rev"><div class="st">%s</div><p>“%s”</p>'
@@ -696,7 +672,7 @@ def home():
                '<div class="revs">%s</div></div></section>'
                % (BRAND['rating'], BRAND['reviews'], revs))
 
-    body = (hero + shop + best + price + cover + stat_sec + rich + rev_sec +
+    body = (hero + shop + best + price + stat_sec + rev_sec +
             shade + trust_bar() + app_download())
     return page("Shop Premium Women's Bottom Wear Online — Go Colors", body,
                 active='home', pagekey='home.html', l1='home.html')

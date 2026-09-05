@@ -47,7 +47,7 @@ with sync_playwright() as pw:
     pg.screenshot(path=SHOT + '/i-search.png')
     pg.keyboard.press('Escape'); pg.wait_for_timeout(500)
 
-    covermid = pg.evaluate("() => {var m=document.querySelector('.cover-tr>a.mid');return m?m.innerText.slice(0,24):null}")
+    covermid = pg.evaluate("() => document.querySelectorAll('.cover').length")
     shade = pg.evaluate("""() => {var r=document.querySelector('#shadeRange');
         r.value=55;r.dispatchEvent(new Event('input'));
         return document.querySelector('#shadeChipName').textContent}""")
