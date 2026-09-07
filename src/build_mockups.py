@@ -445,19 +445,12 @@ def l1_bar(active=''):
 
 
 def split_banner(key):
-    tag, title, sub, c1, h1_, c2, h2_, disc, img = BANNERS[key]
-    return ('<section class="sban">'
-            '<div class="im"><img src="%s" alt="%s" fetchpriority="high"></div>'
-            '<div class="bd">'
-            '<span class="tag">%s %s</span>'
-            '<h1>%s</h1>'
-            '<div class="ctas">'
-            '<a class="btn btn-d" href="%s">%s</a>'
-            '<a class="btn btn-o" href="%s">%s</a>'
-            '</div>'
-            '</div></section>'
-            % (U(img), E(title), IC['spark'], E(tag), E(title),
-               h1_, E(c1), h2_, E(c2)))
+    """Full-width banner; all copy and the CTA are baked into the artwork."""
+    href = 'collection.html' if key == 'home' else '%s.html' % key
+    return ('<a class="fwban" href="%s"><picture>'
+            '<source srcset="banners/%s-sm.jpg" media="(max-width:900px)">'
+            '<img src="banners/%s-lg.jpg" alt="%s" fetchpriority="high"></picture></a>'
+            % (href, key, key, E(BANNERS[key][1])))
 
 
 STOP = set('and the for with your all new & pants pant wear'.split())
@@ -1016,6 +1009,9 @@ def main():
     if os.path.isdir(OUT):
         shutil.rmtree(OUT)
     os.makedirs(OUT, exist_ok=True)
+    import banners
+    banners.build(os.path.join(OUT, 'banners'))
+    print('  wrote banners/       8 files')
     pages = {
         'index.html': index(), 'home.html': home(),
         'women.html': landing_page('women'), 'men.html': landing_page('men'),

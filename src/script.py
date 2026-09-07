@@ -165,8 +165,12 @@ function card(p,tagOverride){
   var dots=p.sw.length?('<div class="dots-c">'+p.sw.slice(0,7).map(function(x,i){
       return '<i data-cs="'+p.h+'|'+i+'" class="'+(i===0?'on':'')+'" style="background:'+(x[2]||'#ccc')+'" title="'+esc(x[0])+'"></i>'
     }).join('')+(p.sw.length>7?'<i class="plus">+'+(p.sw.length-7)+'</i>':'')+'</div>'):'';
-  var label = tagOverride || (p.bs ? 'Bestseller' : (p.nw ? 'New in' : (disc>=40 ? disc+'% Off' : '')));
-  var tag = label ? '<span class="tag'+(label==='New in'?' dk':'')+'">'+esc(label)+'</span>' : '';
+  var labels=[];
+  var primary = tagOverride || (p.bs ? 'Bestseller' : (p.nw ? 'New in' : ''));
+  if(primary) labels.push([primary, primary==='New in'?' dk':'']);
+  if(disc>=40) labels.push([disc+'% Off',' off']);
+  var tag = labels.length ? '<div class="tags">'+labels.map(function(l){
+      return '<span class="tag'+l[1]+'">'+esc(l[0])+'</span>'}).join('')+'</div>' : '';
   return '<article class="card" data-h="'+p.h+'">'+
     '<div class="imgwrap">'+
       '<a href="product.html?p='+p.h+'"><img src="'+p.i[0]+'" alt="'+esc(p.t)+'" loading="lazy" data-hero>'+

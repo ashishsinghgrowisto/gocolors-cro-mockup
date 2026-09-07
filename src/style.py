@@ -9,6 +9,7 @@ CSS = r"""
   --soft2:#efece9;
   --ok:#0f7b47;
   --sale:#e02020;
+  --camp:#6b8540;
   --font:'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   --maxw:1400px;
   --barh:0px;
@@ -950,4 +951,61 @@ a.mlink:hover{color:var(--brand);background:#fdf3f8}
 .appdl .ph{width:160px;margin:14px auto 0;order:2}
 .appdl .ph img{height:185px}
 }
+
+/* full-width banner */
+.fwban{display:block;line-height:0;background:var(--soft)}
+.fwban img{width:100%;height:auto;display:block}
+
+/* mobile campaign header (green takeover, inline search) */
+@media (max-width:900px){
+  .hdr{background:var(--camp);border-bottom:none}
+  .hdr-in{gap:10px;padding:10px 14px;align-items:center}
+  .hdr .logo{position:static;transform:none;order:0;flex:0 0 auto}
+  .hdr .logo .lg,.hdr .logo .ex{color:#fff;font-size:16px}
+  .hdr .logo .ex{color:#fff}
+  .hdr .burger{color:#fff}
+  .hdr .searchbox{display:flex;flex:1 1 auto;min-width:0;margin:0;height:36px;
+    background:transparent;border:1px solid rgba(255,255,255,.72);border-radius:20px;padding:0 12px}
+  .hdr .searchbox input{background:transparent;border:none;color:#fff;font-size:12.5px;
+    font-weight:600;flex:1 1 auto;min-width:0;width:auto;padding:0}
+  .hdr .searchbox input::placeholder{color:rgba(255,255,255,.86)}
+  .hdr .searchbox .si{order:2;position:static;transform:none;color:#fff;
+    margin-left:auto;flex:0 0 auto}
+  .hdr .icons a[title="Account"]{display:none}
+  .hdr .icons{gap:6px}
+  .hdr .ico{color:#fff;min-width:28px}
+  .hdr .ico .cnt{background:#fff;color:var(--camp)}
+  .l1bar{background:var(--camp);border-bottom:none}
+  .l1bar a{color:rgba(255,255,255,.9)}
+  .l1bar a.on{color:#fff;border-color:#fff}
+}
+@container (max-width:900px){
+  .hdr{background:var(--camp);border-bottom:none}
+  .hdr-in{gap:10px;padding:10px 14px;align-items:center}
+  .hdr .logo{position:static;transform:none;order:0;flex:0 0 auto}
+  .hdr .logo .lg,.hdr .logo .ex{color:#fff;font-size:16px}
+  .hdr .logo .ex{color:#fff}
+  .hdr .burger{color:#fff}
+  .hdr .searchbox{display:flex;flex:1 1 auto;min-width:0;margin:0;height:36px;
+    background:transparent;border:1px solid rgba(255,255,255,.72);border-radius:20px;padding:0 12px}
+  .hdr .searchbox input{background:transparent;border:none;color:#fff;font-size:12.5px;
+    font-weight:600;flex:1 1 auto;min-width:0;width:auto;padding:0}
+  .hdr .searchbox input::placeholder{color:rgba(255,255,255,.86)}
+  .hdr .searchbox .si{order:2;position:static;transform:none;color:#fff;
+    margin-left:auto;flex:0 0 auto}
+  .hdr .icons a[title="Account"]{display:none}
+  .hdr .icons{gap:6px}
+  .hdr .ico{color:#fff;min-width:28px}
+  .hdr .ico .cnt{background:#fff;color:var(--camp)}
+  .l1bar{background:var(--camp);border-bottom:none}
+  .l1bar a{color:rgba(255,255,255,.9)}
+  .l1bar a.on{color:#fff;border-color:#fff}
+}
+
+/* stacked tags on product cards */
+.card .tags{position:absolute;left:0;top:0;z-index:2;display:flex;flex-direction:column;
+  align-items:flex-start;gap:4px}
+.card .tags .tag{position:static;border-radius:0 6px 6px 0}
+.card .tag.off{background:var(--sale)}
+
 """
