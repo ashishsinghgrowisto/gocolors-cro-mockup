@@ -236,17 +236,13 @@ def mega(audience):
         '<a class="mega-promo" href="collection.html"><img src="%s" alt="%s" loading="lazy">'
         '<span class="cap">%s</span></a>' % (U(img), E(cap), E(cap))
         for img, cap in MEGA_PROMOS[:2])
-    chips = ''.join('<a class="mega-chip" href="collection.html">%s</a>' % E(s)
-                    for s in SIZES_CHIPS)
     return ('<div class="mega"><div class="mega-in">'
             '<div class="mcols">%s</div>'
             '<div class="mega-side">'
             '<a class="allbtn" href="%s.html">Shop all %s \u203a</a>'
             '<div class="hd">Edits for you</div>%s'
-            '<div class="hd" style="margin-top:4px">Shop by size</div>'
-            '<div class="chiprow">%s</div>'
             '</div></div></div>'
-            % (cols, audience.lower(), E(audience), promos, chips))
+            % (cols, audience.lower(), E(audience), promos))
 
 
 def header():
@@ -455,15 +451,13 @@ def split_banner(key):
             '<div class="bd">'
             '<span class="tag">%s %s</span>'
             '<h1>%s</h1>'
-            '<p class="sub">%s</p>'
             '<div class="ctas">'
             '<a class="btn btn-d" href="%s">%s</a>'
             '<a class="btn btn-o" href="%s">%s</a>'
             '</div>'
-            '<p class="disc">%s</p>'
             '</div></section>'
-            % (U(img), E(title), IC['spark'], E(tag), E(title), E(sub),
-               h1_, E(c1), h2_, E(c2), E(disc)))
+            % (U(img), E(title), IC['spark'], E(tag), E(title),
+               h1_, E(c1), h2_, E(c2)))
 
 
 STOP = set('and the for with your all new & pants pant wear'.split())
