@@ -385,7 +385,7 @@ def stories_modal():
 
 def tabbar(active=''):
     items = [('home', 'home.html', IC['home'], ''),
-             ('shop', 'collection.html', IC['menu'], ''),
+             ('shop', '#', IC['menu'], ' data-burger'),
              ('bag', '#', IC['bag'], ' data-opencart'),
              ('wish', '#', IC['heart'], ' data-openwish'),
              ('acct', '#', IC['user'], '')]

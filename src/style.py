@@ -973,6 +973,11 @@ a.mlink:hover{color:var(--brand);background:#fdf3f8}
     margin-left:auto;flex:0 0 auto}
   .hdr .icons a[title="Account"]{display:none}
   .hdr .icons{gap:6px}
+  .hdr .burger{display:none}
+  .hdr .icons a[data-openwish],.hdr .icons a[data-opencart]{display:none}
+  .hdr .icons a[title="Store locator"]{display:grid;color:#fff}
+  .hdr .icons{flex:0 0 auto;margin-left:0}
+
   .hdr .ico{color:#fff;min-width:28px}
   .hdr .ico .cnt{background:#fff;color:var(--camp)}
   .l1bar{background:var(--camp);border-bottom:none}
@@ -995,6 +1000,11 @@ a.mlink:hover{color:var(--brand);background:#fdf3f8}
     margin-left:auto;flex:0 0 auto}
   .hdr .icons a[title="Account"]{display:none}
   .hdr .icons{gap:6px}
+  .hdr .burger{display:none}
+  .hdr .icons a[data-openwish],.hdr .icons a[data-opencart]{display:none}
+  .hdr .icons a[title="Store locator"]{display:grid;color:#fff}
+  .hdr .icons{flex:0 0 auto;margin-left:0}
+
   .hdr .ico{color:#fff;min-width:28px}
   .hdr .ico .cnt{background:#fff;color:var(--camp)}
   .l1bar{background:var(--camp);border-bottom:none}

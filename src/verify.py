@@ -100,7 +100,7 @@ with sync_playwright() as pw:
     ctx2 = b.new_context(viewport={'width': 414, 'height': 860}, is_mobile=True, has_touch=True)
     p2 = ctx2.new_page()
     p2.goto('file://%s/home.html' % OUT); p2.wait_for_timeout(2200)
-    p2.click('[data-burger]'); p2.wait_for_timeout(600)
+    p2.click('.tabbar a[aria-label="shop"]'); p2.wait_for_timeout(600)
     p2.click('[data-mtab="Men"]'); p2.wait_for_timeout(700)
     p2.screenshot(path=SHOT + '/i-drawer-sub.png')
     drilled = p2.evaluate("""() => document.querySelector('[data-mpanel="Men"]').style.display !== 'none'
