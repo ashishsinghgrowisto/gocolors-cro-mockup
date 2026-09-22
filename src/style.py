@@ -962,60 +962,36 @@ body.hasbar{--barh:44px;padding-top:44px}
 .fwban{display:block;line-height:0;background:var(--soft);margin:0}
 .fwban img{width:100%;height:auto;display:block}
 
-/* mobile campaign header (green takeover, inline search) */
+/* mobile header: shared layout, then transparent over a hero's first fold */
 @media (max-width:900px){
-  .hdr{background:var(--camp);border-bottom:none}
   .hdr-in{gap:10px;padding:10px 14px;align-items:center}
   .hdr .logo{position:static;transform:none;order:0;flex:0 0 auto}
-  .hdr .logo .lg,.hdr .logo .ex{color:#fff;font-size:16px}
-  .hdr .logo .ex{color:#fff}
-  .hdr .burger{color:#fff}
-  .hdr .searchbox{display:flex;flex:1 1 auto;min-width:0;margin:0;height:36px;
-    background:transparent;border:1px solid rgba(255,255,255,.72);border-radius:20px;padding:0 12px}
-  .hdr .searchbox input{background:transparent;border:none;color:#fff;font-size:12.5px;
-    font-weight:600;flex:1 1 auto;min-width:0;width:auto;padding:0}
-  .hdr .searchbox input::placeholder{color:rgba(255,255,255,.86)}
-  .hdr .searchbox .si{order:2;position:static;transform:none;color:#fff;
-    margin-left:auto;flex:0 0 auto}
-  .hdr .icons a[title="Account"]{display:none}
-  .hdr .icons{gap:6px}
+  .hdr .logo .lg,.hdr .logo .ex{font-size:16px}
   .hdr .burger{display:none}
-  .hdr .icons a[data-openwish],.hdr .icons a[data-opencart]{display:none}
-  .hdr .icons a[title="Store locator"]{display:grid;color:#fff}
-  .hdr .icons{flex:0 0 auto;margin-left:0}
-
-  .hdr .ico{color:#fff;min-width:28px}
-  .hdr .ico .cnt{background:#fff;color:var(--camp)}
-  .l1bar{background:var(--camp);border-bottom:none}
-  .l1bar a{color:rgba(255,255,255,.9)}
-  .l1bar a.on{color:#fff;border-color:#fff}
-}
-@container (max-width:900px){
-  .hdr{background:var(--camp);border-bottom:none}
-  .hdr-in{gap:10px;padding:10px 14px;align-items:center}
-  .hdr .logo{position:static;transform:none;order:0;flex:0 0 auto}
-  .hdr .logo .lg,.hdr .logo .ex{color:#fff;font-size:16px}
-  .hdr .logo .ex{color:#fff}
-  .hdr .burger{color:#fff}
   .hdr .searchbox{display:flex;flex:1 1 auto;min-width:0;margin:0;height:36px;
-    background:transparent;border:1px solid rgba(255,255,255,.72);border-radius:20px;padding:0 12px}
-  .hdr .searchbox input{background:transparent;border:none;color:#fff;font-size:12.5px;
-    font-weight:600;flex:1 1 auto;min-width:0;width:auto;padding:0}
-  .hdr .searchbox input::placeholder{color:rgba(255,255,255,.86)}
-  .hdr .searchbox .si{order:2;position:static;transform:none;color:#fff;
-    margin-left:auto;flex:0 0 auto}
-  .hdr .icons a[title="Account"]{display:none}
-  .hdr .icons{gap:6px}
-  .hdr .burger{display:none}
+    background:transparent;border:1px solid #d9d9d9;border-radius:20px;padding:0 12px}
+  .hdr .searchbox input{background:transparent;border:none;font-size:12.5px;font-weight:600;
+    flex:1 1 auto;min-width:0;width:auto;padding:0}
+  .hdr .searchbox .si{order:2;position:static;transform:none;margin-left:auto;flex:0 0 auto}
+  .hdr .icons{gap:6px;flex:0 0 auto;margin-left:0}
   .hdr .icons a[data-openwish],.hdr .icons a[data-opencart]{display:none}
-  .hdr .icons a[title="Store locator"]{display:grid;color:#fff}
-  .hdr .icons{flex:0 0 auto;margin-left:0}
+  .hdr .icons a[title="Store locator"]{display:grid}
+  .hdr .ico{min-width:28px}
 
-  .hdr .ico{color:#fff;min-width:28px}
-  .hdr .ico .cnt{background:#fff;color:var(--camp)}
-  .l1bar{background:var(--camp);border-bottom:none}
-  .l1bar a{color:rgba(255,255,255,.9)}
-  .l1bar a.on{color:#fff;border-color:#fff}
+  body.hero .hdr,body.hero .l1bar{transition:background .25s ease}
+  body.hero .l1bar{margin-bottom:-104px}
+  body.hero:not(.sc) .hdr{background:transparent;border-bottom:none}
+  body.hero:not(.sc) .hdr::before{content:"";position:absolute;inset:0 0 -48px 0;z-index:-1;
+    pointer-events:none;
+    background:linear-gradient(to bottom,rgba(0,0,0,.42),rgba(0,0,0,.14) 62%,rgba(0,0,0,0))}
+  body.hero:not(.sc) .hdr .logo .lg,body.hero:not(.sc) .hdr .logo .ex{color:#fff}
+  body.hero:not(.sc) .hdr .searchbox{border-color:rgba(255,255,255,.72)}
+  body.hero:not(.sc) .hdr .searchbox input{color:#fff}
+  body.hero:not(.sc) .hdr .searchbox input::placeholder{color:rgba(255,255,255,.86)}
+  body.hero:not(.sc) .hdr .searchbox .si,body.hero:not(.sc) .hdr .ico{color:#fff}
+  body.hero:not(.sc) .l1bar{background:transparent;border-bottom:none}
+  body.hero:not(.sc) .l1bar a{color:rgba(255,255,255,.88)}
+  body.hero:not(.sc) .l1bar a.on{color:#fff;border-color:#fff}
 }
 
 /* stacked tags on product cards */

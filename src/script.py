@@ -225,6 +225,24 @@ function showStory(i){
 }
 function stopStory(){clearTimeout(STIM)}
 
+/* ---------------- mobile header: transparent over fold 1 ---------------- */
+function initHdrScroll(){
+  var hdr=$('.hdr'), ban=$('.fwban');
+  if(!hdr) return;
+  function pt(){
+    var h=hdr.getBoundingClientRect().height||56;
+    var l1=$('.l1bar'); if(l1&&getComputedStyle(l1).display!=='none') h+=l1.getBoundingClientRect().height||45;
+    if(!ban) return 40;
+    return Math.max(40, ban.offsetTop + ban.offsetHeight - h - 10);
+  }
+  var trip=pt();
+  function on(){document.body.classList.toggle('sc', window.scrollY > trip)}
+  window.addEventListener('scroll', on, {passive:true});
+  window.addEventListener('resize', function(){trip=pt();on()});
+  setTimeout(function(){trip=pt();on()}, 400);
+  on();
+}
+
 /* ---------------- drawer drill-down ---------------- */
 function drwOpen(){$('#navDrw').classList.add('on');$('#ovl').classList.add('on');document.body.style.overflow='hidden'}
 function l2Tab(key){
@@ -411,7 +429,8 @@ document.addEventListener('DOMContentLoaded',function(){
   window.addEventListener('resize',catArrows);
   setTimeout(catArrows,600);
   $$('[data-tabgroup]').forEach(function(g){g.addEventListener('click',function(){setTimeout(catArrows,60)})});
-  initCover();initSpectrum();counts();
+  initCover();
+  initHdrScroll();initSpectrum();counts();
 });
 })();
 """

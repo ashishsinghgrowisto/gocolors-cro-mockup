@@ -599,7 +599,7 @@ def _rail(items, gid, tab, show):
 
 
 # --------------------------------------------------------------- page shell
-def page(title, body, extra_js='', active='', pagekey='', l1=''):
+def page(title, body, extra_js='', active='', pagekey='', l1='', hero=False):
     links = [('index.html', 'Overview'), ('women.html', 'Women'),
              ('men.html', 'Men'), ('girls.html', 'Girls'),
              ('collection.html', 'Collection'), ('product.html', 'Product'),
@@ -613,10 +613,10 @@ def page(title, body, extra_js='', active='', pagekey='', l1=''):
     return ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width,initial-scale=1">'
             '<title>%s</title>%s<style>%s</style></head>'
-            '<body class="hasbar">%s<div id="viewport">%s%s%s%s%s</div>'
+            '<body class="hasbar%s">%s<div id="viewport">%s%s%s%s%s</div>'
             '%s%s%s%s%s%s'
             '<script>var DATA=%s;var SHADELIST=%s;</script><script>%s</script>%s</body></html>'
-            % (E(title), FONT_LINK, CSS, bar, app_strip(), header(), l1_bar(l1), body, footer(),
+            % (E(title), FONT_LINK, CSS, ' hero' if hero else '', bar, app_strip(), header(), l1_bar(l1), body, footer(),
                tabbar(active), drawer(), search_overlay(), cart_drawer(), wish_drawer(),
                stories_modal() + modal_shell(),
                DATA_JSON, SHADE_JSON, JS, extra_js))
@@ -694,7 +694,7 @@ def landing_page(key):
             + mid
             + trust_bar()
             + stat_strip())
-    return page(title, body, active='home', pagekey=pagekey, l1=pagekey)
+    return page(title, body, active='home', pagekey=pagekey, l1=pagekey, hero=True)
 
 
 # --------------------------------------------------------------- collection
