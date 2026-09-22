@@ -7,7 +7,7 @@ network connection but stay byte-small and always show the live artwork.
 import os, sys, json, html, random, shutil, re, hashlib
 from concurrent.futures import ThreadPoolExecutor
 
-from data import (U, BRAND, ANNOUNCE, NAV, NAV_GROUPS, EDITS, APP_CARDS, MEGA_PROMOS, SIZES_CHIPS, CAT_TABS,
+from data import (U, BRAND, ANNOUNCE, NAV, NAV_GROUPS, NAV_TABS, EDITS, APP_CARDS, MEGA_PROMOS, SIZES_CHIPS, CAT_TABS,
                   PRICE_BANDS, SPOTLIGHT, PRODUCTS, COLOR_HEX, SHADES, REVIEWS,
                   FAQ, FOOTER, L1, BANNERS, CATEGORIES)
 from style import CSS
@@ -224,26 +224,42 @@ def nav_thumb(audience, name):
     return img
 
 
+def l2_tabs(audience, scope):
+    """Bottoms / Tops tab row, as on the live mobile menu."""
+    return ''.join(
+        '<button data-l2="%s|%s" class="%s">%s%s</button>'
+        % (scope, name, 'on' if i == 0 else '',
+           ('<i class="badge">%s</i>' % E(badge)) if badge else '', E(name))
+        for i, (name, badge, _links) in enumerate(NAV_TABS[audience]))
+
+
+def l2_panels(audience, scope, cls):
+    out = ''
+    for i, (name, _badge, links) in enumerate(NAV_TABS[audience]):
+        cells = ''.join('<a href="collection.html"><img src="%s" alt="" loading="lazy">'
+                        '<span>%s</span></a>' % (nav_thumb(audience, nm), E(nm))
+                        for nm in links)
+        out += ('<div class="%s" data-l2panel="%s|%s" style="%s">%s</div>'
+                % (cls, scope, name, '' if i == 0 else 'display:none', cells))
+    return out
+
+
 def mega(audience):
-    cols = ''.join(
-        '<div class="mcol"><div class="mhd">%s</div>%s</div>'
-        % (E(group),
-           ''.join('<a class="mlink" href="collection.html">'
-                   '<img src="%s" alt="" loading="lazy">'
-                   '<span>%s</span></a>' % (nav_thumb(audience, nm), E(nm))
-                   for nm in links))
-        for group, links in NAV_GROUPS[audience])
+    scope = 'mega-' + audience.lower()
     promos = ''.join(
         '<a class="mega-promo" href="collection.html"><img src="%s" alt="%s" loading="lazy">'
         '<span class="cap">%s</span></a>' % (U(img), E(cap), E(cap))
         for img, cap in MEGA_PROMOS[:2])
     return ('<div class="mega"><div class="mega-in">'
-            '<div class="mcols">%s</div>'
+            '<div class="mcols">'
+            '<div class="l2row" data-l2group="%s">%s</div>'
+            '%s</div>'
             '<div class="mega-side">'
             '<a class="allbtn" href="%s.html">Shop all %s \u203a</a>'
             '<div class="hd">Edits for you</div>%s'
             '</div></div></div>'
-            % (cols, audience.lower(), E(audience), promos))
+            % (scope, l2_tabs(audience, scope), l2_panels(audience, scope, 'lgrid'),
+               audience.lower(), E(audience), promos))
 
 
 def header():
@@ -269,25 +285,22 @@ def header():
       % (IC['menu'], logo(), navhtml, IC['search'], IC['store'], IC['user'], IC['heart'], IC['bag']))
 
 def drawer():
-    """Mobile menu: audience pills, then every collection in the hierarchy."""
-    auds = list(NAV_GROUPS.keys())
+    """Mobile menu, mirroring the live site: audience pills, Bottoms/Tops tabs, link grid."""
+    auds = list(NAV_TABS.keys())
     pills = ''.join('<button data-mtab="%s" class="%s">%s%s</button>'
                     % (a, 'on' if i == 0 else '',
                        '<i class="badge">NEW</i>' if a == 'Men' else '', E(a))
                     for i, a in enumerate(auds))
     panels = ''
     for i, a in enumerate(auds):
-        groups = ''.join(
-            '<div class="dgrp"><div class="dhd">%s</div><div class="dgrid">%s</div></div>'
-            % (E(group),
-               ''.join('<a href="collection.html"><img src="%s" alt="" loading="lazy">'
-                       '<span>%s</span></a>' % (nav_thumb(a, nm), E(nm))
-                       for nm in links))
-            for group, links in NAV_GROUPS[a])
+        scope = 'drw-' + a.lower()
         panels += ('<div class="dpanel" data-mpanel="%s" style="%s">'
-                   '<a class="dall" href="%s.html">Shop all %s \u203a</a>%s'
+                   '<a class="dall" href="%s.html">Shop all %s \u203a</a>'
+                   '<div class="l2row" data-l2group="%s">%s</div>'
+                   '%s'
                    '<div class="dpromo">%s</div></div>'
-                   % (a, '' if i == 0 else 'display:none', a.lower(), E(a), groups,
+                   % (a, '' if i == 0 else 'display:none', a.lower(), E(a),
+                      scope, l2_tabs(a, scope), l2_panels(a, scope, 'dgrid'),
                       ''.join('<a href="collection.html"><img src="%s" alt="%s" loading="lazy">'
                               '<span>%s</span></a>' % (U(img), E(cap), E(cap))
                               for img, cap in MEGA_PROMOS[:3])))

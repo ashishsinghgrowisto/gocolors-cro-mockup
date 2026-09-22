@@ -92,16 +92,22 @@ body.hasbar{--barh:44px;padding-top:44px}
   transition:.18s;z-index:130;padding:30px 0 34px}
 .nav>li:hover .mega,.nav>li:focus-within .mega{opacity:1;visibility:visible;transform:none}
 .mega-in{max-width:var(--maxw);margin:0 auto;padding:12px 24px 8px;display:grid;grid-template-columns:1fr 236px;gap:44px;max-height:calc(100vh - 140px);overflow:auto}
-.mcols{display:grid;grid-template-columns:repeat(6,1fr);gap:26px 30px;align-items:start}
-.mcol{min-width:0}
-.mhd{font-size:12.5px;font-weight:800;color:var(--brand);letter-spacing:.02em;margin:0 0 12px;
-  padding-bottom:9px;border-bottom:1px solid var(--line)}
-.mcol+.mcol{}
-a.mlink{display:flex;align-items:center;gap:11px;padding:6px 7px 6px 4px;margin-left:-4px;
+.mcols{display:block;min-width:0}
+.l2row{display:flex;gap:30px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.l2row button{position:relative;padding:0 2px 12px;background:none;border:none;font-size:14px;
+  font-weight:700;color:var(--muted);letter-spacing:.01em;transition:.15s}
+.l2row button.on{color:var(--ink)}
+.l2row button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;
+  background:var(--ink)}
+.l2row .badge{position:absolute;top:-9px;right:-22px;background:var(--brand);color:#fff;
+  font-size:8px;font-weight:800;letter-spacing:.06em;padding:2px 5px;border-radius:3px;
+  font-style:normal}
+.lgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 28px}
+.lgrid a{display:flex;align-items:center;gap:11px;padding:5px 7px 5px 4px;margin-left:-4px;
   border-radius:8px;font-size:12.5px;font-weight:600;color:#3d3d3d;line-height:1.3;transition:.14s}
-a.mlink img{width:34px;height:40px;object-fit:cover;border-radius:6px;background:var(--soft);flex:0 0 34px}
-a.mlink span{min-width:0}
-a.mlink:hover{color:var(--brand);background:#fdf3f8}
+.lgrid a img{width:34px;height:40px;object-fit:cover;border-radius:6px;background:var(--soft);
+  flex:0 0 34px}
+.lgrid a:hover{color:var(--brand);background:#fdf3f8}
 .mega-sizes{margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
 .mega-side .hd{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
   color:var(--muted);margin:10px 0 2px}
@@ -152,6 +158,8 @@ a.mlink:hover{color:var(--brand);background:#fdf3f8}
   transform:translateX(-100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
 .drw.on{transform:none}
 .drw-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}
+.drw-body .l2row{margin:16px 16px 14px;gap:26px}
+.drw-body .l2row button{font-size:13px;padding-bottom:10px}
 .drw-pills{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);
   background:var(--soft);flex:0 0 auto}
 .drw-pills button{position:relative;flex:1;padding:9px 6px;border-radius:22px;border:1px solid var(--line);
@@ -163,9 +171,7 @@ a.mlink:hover{color:var(--brand);background:#fdf3f8}
 .drw-body{flex:1;overflow:auto;-webkit-overflow-scrolling:touch}
 .dall{display:block;margin:14px 16px 4px;text-align:center;background:var(--brand);color:#fff;
   font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:12px;border-radius:8px}
-.dgrp{padding:14px 16px 4px}
-.dhd{font-size:12px;font-weight:800;color:var(--brand);margin-bottom:10px}
-.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px 10px}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 10px;padding:0 16px}
 .dgrid a{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:600;color:#333;line-height:1.25}
 .dgrid img{width:34px;height:42px;object-fit:cover;border-radius:5px;background:var(--soft);flex:0 0 34px}
 .dpromo{display:flex;gap:9px;overflow-x:auto;padding:14px 16px 4px;scrollbar-width:none}
@@ -767,7 +773,7 @@ a.mlink:hover{color:var(--brand);background:#fdf3f8}
 
 /* ================= responsive ================= */
 @container (max-width:1180px){
-  .mcols{grid-template-columns:repeat(4,1fr)}
+  .lgrid{grid-template-columns:repeat(3,1fr)}
   .grid{grid-template-columns:repeat(3,1fr)}
   .grid.g5{grid-template-columns:repeat(4,1fr)}
   .revs{grid-template-columns:repeat(2,1fr)}

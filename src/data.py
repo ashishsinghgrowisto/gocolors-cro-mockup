@@ -137,6 +137,33 @@ APP_CARDS = [
  ('Go Rewards', 'Points on every order, early access to drops', 'Join free'),
 ]
 
+
+# ---- live two-level menu: audience pills -> Bottoms / Tops -> link grid ------
+NAV_TABS = {
+ 'Women': [
+   ('Bottoms', '', ['New Arrivals', 'Best Sellers', 'Leggings & Churidar', 'Kurti Pants',
+                    'Wide Pants', 'Straight & Tapered Pants', 'Jeggings', 'Active & Athleisure',
+                    'Shorts & Capris', 'Jeans & Denims', 'Ethnic', 'Palazzos',
+                    'Cargos', 'Pleated Pants', 'Skirts & Skorts', 'Plus Size']),
+   ('Tops', 'NEW', ['New Arrivals', 'Best Sellers', 'T-Shirts & Knit Tops', 'Printed Shirts',
+                    'Solid Shirts', 'Blouses', 'Kurti / Kurta', 'Short Dress',
+                    'Midi Dress', 'Co-ord Sets']),
+ ],
+ 'Men': [
+   ('Bottoms', '', ['New Arrivals', 'Best Sellers', 'Pants & Trousers', 'Chinos',
+                    'Jeans & Denims', 'Cargos', 'Track Pants', 'Shorts',
+                    'Flex Knit Pants', 'Lounge Pants']),
+   ('Tops', 'NEW', ['New Arrivals', 'Best Sellers', 'Casual Shirts', 'Premium Shirts',
+                    'Polos', 'T-Shirts', 'Active T-Shirts']),
+ ],
+ 'Girls': [
+   ('Bottoms', '', ['New Arrivals', 'Best Sellers', 'Leggings', 'Cropped Leggings',
+                    'Denim Jeggings', 'Knit Jeggings', 'Harem Pants', 'Pants',
+                    'Knit Shorts', 'Cycling Shorts']),
+   ('Tops', 'NEW', ['New Arrivals', 'Best Sellers', 'T-Shirts', 'Tops & Tees']),
+ ],
+}
+
 MEGA_PROMOS = [
   ('^Inside_banners_230x100-06.jpg','Wide Pants'),
   ('^Inside_banners_230x100-09.jpg','MostlySane Edit'),

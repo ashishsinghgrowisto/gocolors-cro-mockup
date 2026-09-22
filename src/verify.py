@@ -39,7 +39,7 @@ with sync_playwright() as pw:
     pg.goto('file://%s/women.html' % OUT); pg.wait_for_timeout(2600)
     pg.hover('.nav > li:first-child .top'); pg.wait_for_timeout(700)
     mega = pg.evaluate("""() => getComputedStyle(document.querySelector('.nav>li .mega')).visibility
-        + ' links:' + document.querySelectorAll('.nav>li:first-child .mega a.mlink').length""")
+        + ' links:' + document.querySelectorAll('.nav>li:first-child .mega .lgrid a').length""")
     pg.screenshot(path=SHOT + '/i-mega.png')
     pg.mouse.move(700, 700); pg.wait_for_timeout(300)
 
