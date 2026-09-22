@@ -549,7 +549,7 @@ def uq_banner(audience, i):
 
 
 def edit_rail(audience, i, gid):
-    """Products belonging to the collection the banner above it advertises."""
+    """Products belonging to the collection the banner above it advertises. No heading."""
     title = EDITS[audience][i][0]
     pool = [p for p in PROD if p['whom'] == audience] or PROD
     want = _toks(title)
@@ -559,10 +559,8 @@ def edit_rail(audience, i, gid):
     if len(items) < 8:
         extra = [p for p in sorted(pool, key=lambda x: -x['rc']) if p not in items]
         items = (items + extra)[:8]
-    head = ('<div class="sec-hd"><div><h2>%s</h2></div>'
-            '<a class="more" href="collection.html">View all</a></div>' % E(title))
-    return ('<section class="sec"><div class="wrap">%s%s</div></section>'
-            % (head, _rail(items, gid, 'Bestsellers', True)))
+    return ('<section class="sec"><div class="wrap">%s</div></section>'
+            % _rail(items, gid, 'Bestsellers', True))
 
 
 def stat_strip():
@@ -590,13 +588,10 @@ def _rail(items, gid, tab, show):
 
 
 def product_tabs_section(audience, heading, sub='', gid='ptabs'):
-    """Best sellers only."""
+    """Best sellers only, no section heading (Uniqlo carries none)."""
     items = POOLS[audience]['Bestsellers']
-    head = ('<div class="sec-hd"><div><h2>%s</h2>%s</div>'
-            '<a class="more" href="collection.html">View all</a></div>'
-            % (E(heading), ('<div class="sub">%s</div>' % E(sub)) if sub else ''))
-    return ('<section class="sec"><div class="wrap">%s%s</div></section>'
-            % (head, _rail(items, gid, 'Bestsellers', True)))
+    return ('<section class="sec"><div class="wrap">%s</div></section>'
+            % _rail(items, gid, 'Bestsellers', True))
 
 
 # --------------------------------------------------------------- page shell
