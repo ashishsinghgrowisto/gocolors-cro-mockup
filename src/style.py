@@ -1057,19 +1057,18 @@ a.uqapp em{margin-left:auto;flex:0 0 auto;font-style:normal;font-size:11px;font-
   padding:8px 13px}
 a.uqapp:hover em{background:var(--ink);color:#fff}
 
-/* ---------- Uniqlo editorial blocks ---------- */
-.uqedits{padding:0 0 10px;background:#fff}
-.uqed{display:grid;grid-template-columns:1.25fr 1fr;gap:38px;align-items:center;
-  padding:34px 0;border-top:1px solid var(--line)}
-.uqed.alt .im{order:2}
-.uqed .im{line-height:0;display:block;overflow:hidden;background:var(--soft)}
-.uqed .im img{width:100%;aspect-ratio:16/10;object-fit:cover;transition:transform .55s ease}
-.uqed .im:hover img{transform:scale(1.03)}
+/* ---------- Uniqlo editorial blocks (full-width banners) ---------- */
+.uqedits{padding:0;background:#fff}
+.uqed{display:block;padding:0 0 40px}
+.uqed .im{display:block;line-height:0;overflow:hidden;background:var(--soft)}
+.uqed .im img{width:100%;aspect-ratio:1440/520;object-fit:cover;transition:transform .6s ease}
+.uqed .im:hover img{transform:scale(1.02)}
+.uqed .cp{max-width:var(--maxw);margin:0 auto;padding:22px 24px 0}
 .uqed h3{font-size:clamp(18px,2.1vw,25px);font-weight:700;letter-spacing:-.01em;margin:0}
-.uqed p{color:var(--muted);font-size:13.5px;line-height:1.75;margin:11px 0 16px;max-width:46ch}
+.uqed p{color:var(--muted);font-size:13.5px;line-height:1.75;margin:9px 0 14px;max-width:62ch}
 .uqed .lnk{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
   border-bottom:1.5px solid var(--ink);padding-bottom:3px}
-.uqed .feat{display:flex;align-items:center;gap:13px;margin-top:22px;padding:11px;
+.uqed .feat{display:flex;align-items:center;gap:13px;margin-top:20px;padding:11px;
   border:1px solid var(--line);border-radius:4px;max-width:330px;transition:.16s}
 .uqed .feat:hover{border-color:var(--ink)}
 .uqed .feat img{width:58px;height:70px;object-fit:cover;border-radius:3px;flex:0 0 58px}
@@ -1087,9 +1086,10 @@ a.uqapp:hover em{background:var(--ink);color:#fff}
   .uqapps .wrap{grid-template-columns:1fr;gap:10px}
   a.uqapp{padding:14px 15px;gap:11px}
   a.uqapp em{padding:7px 10px;font-size:10px}
-  .uqed,.uqed.alt{grid-template-columns:1fr;gap:16px;padding:26px 0}
-  .uqed.alt .im{order:0}
-  .uqed p{max-width:none}
+  .uqed{padding:0 0 28px}
+  .uqed .im img{aspect-ratio:3/2}
+  .uqed .cp{padding:16px 16px 0}
+  .uqed p{max-width:none;font-size:12.5px}
 }
 @container (max-width:900px){
   .rrgrid{grid-template-columns:1fr 1fr;gap:3px}
@@ -1100,9 +1100,10 @@ a.uqapp:hover em{background:var(--ink);color:#fff}
   .uqapps .wrap{grid-template-columns:1fr;gap:10px}
   a.uqapp{padding:14px 15px;gap:11px}
   a.uqapp em{padding:7px 10px;font-size:10px}
-  .uqed,.uqed.alt{grid-template-columns:1fr;gap:16px;padding:26px 0}
-  .uqed.alt .im{order:0}
-  .uqed p{max-width:none}
+  .uqed{padding:0 0 28px}
+  .uqed .im img{aspect-ratio:3/2}
+  .uqed .cp{padding:16px 16px 0}
+  .uqed p{max-width:none;font-size:12.5px}
 }
 
 """

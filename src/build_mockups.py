@@ -553,23 +553,30 @@ def uq_app_cards():
 
 
 def uq_edits(audience):
-    """Uniqlo editorial blocks: full-width image, title, blurb, optional featured product."""
+    """Uniqlo editorial blocks: full-width banner image, copy beneath it."""
     out = []
-    for i, (title, blurb, img, handle) in enumerate(EDITS[audience]):
+    for title, blurb, img, handle in EDITS[audience]:
         feat = ''
         p = next((x for x in PROD if x['h'] == handle), None) if handle else None
         if p:
             feat = ('<a class="feat" href="product.html?p=%s">'
                     '<img src="%s" alt="%s" loading="lazy">'
                     '<div><b>%s</b><span>\u20b9%s</span></div></a>'
-                    % (p['h'], p['i'][0], E(p['t']), E(p['t']), '{:,}'.format(p['p'])))
-        out.append('<article class="uqed%s">'
+                    % (p['h'], p['i'][0], E(p['t']), E(p['t']), '{:,}'.format(int(p['p']))))
+        out.append('<article class="uqed">'
                    '<a class="im" href="collection.html"><img src="%s" alt="%s" loading="lazy"></a>'
                    '<div class="cp"><h3>%s</h3><p>%s</p>'
                    '<a class="lnk" href="collection.html">Shop the collection \u203a</a>%s</div>'
                    '</article>'
-                   % (' alt' if i % 2 else '', U(img), E(title), E(title), E(blurb), feat))
-    return '<section class="uqedits"><div class="wrap">%s</div></section>' % ''.join(out)
+                   % (U(img), E(title), E(title), E(blurb), feat))
+    return '<section class="uqedits">%s</section>' % ''.join(out)
+
+
+def stat_strip():
+    stats = ''.join('<div><div class="n">%s</div><div class="l">%s</div></div>' % (E(a), E(b_))
+                    for a, b_ in BRAND['stats'])
+    return ('<section class="sec grey" style="padding:0"><div class="wrap">'
+            '<div class="stats">%s</div></div></section>' % stats)
 
 
 RAIL_TABS = ['Bestsellers', 'New Arrivals', 'Trending Products']
@@ -590,16 +597,14 @@ def _rail(items, gid, tab, show):
 
 
 def product_tabs_section(audience, heading, sub='', gid='ptabs'):
-    pools = POOLS[audience]
+    """Best sellers only."""
+    items = POOLS[audience]['Bestsellers']
     head = ('<div class="sec-hd"><div><h2>%s</h2>%s</div>'
             '<a class="more" href="collection.html">View all</a></div>'
             % (E(heading), ('<div class="sub">%s</div>' % E(sub)) if sub else ''))
-    tabs = ''.join('<button data-tab="%s" class="%s">%s</button>'
-                   % (t, 'on' if i == 0 else '', E(t)) for i, t in enumerate(RAIL_TABS))
-    rails = ''.join(_rail(pools[t], gid, t, i == 0) for i, t in enumerate(RAIL_TABS))
-    return ('<section class="sec"><div class="wrap">%s'
-            '<div class="pilltabs" data-tabgroup="%s">%s</div>%s</div></section>'
-            % (head, gid, tabs, rails))
+    return ('<section class="sec"><div class="wrap">%s%s</div></section>'
+            % (head, _rail(items, gid, 'Bestsellers', True)))
+
 
 # --------------------------------------------------------------- page shell
 def page(title, body, extra_js='', active='', pagekey='', l1=''):
@@ -688,12 +693,13 @@ def landing_page(key):
     body = (split_banner(key)
             + rr_grid(audience)
             + uq_category_chips(audience)
-            + product_tabs_section(audience, 'Featured',
-                                   'Bestsellers, new arrivals and trending styles',
+            + product_tabs_section(audience, 'Best sellers',
+                                   'The styles %s shoppers reorder most' % low,
                                    gid='ptabs-%s' % low)
             + uq_app_cards()
             + uq_edits(audience)
-            + trust_bar())
+            + trust_bar()
+            + stat_strip())
     return page(title, body, active='home', pagekey=pagekey, l1=pagekey)
 
 
