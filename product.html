@@ -1031,16 +1031,6 @@ a.rrt span{position:absolute;left:16px;bottom:14px;z-index:2;color:#fff;font-siz
   font-weight:700;letter-spacing:.1em;text-transform:uppercase;line-height:1.3;
   text-shadow:0 1px 6px rgba(0,0,0,.45);padding-right:14px}
 
-/* ---------- Uniqlo search-by-category ---------- */
-.uqcat{padding:44px 0 40px;background:#fff}
-.uqcat h2{font-size:clamp(17px,1.9vw,21px);font-weight:700;letter-spacing:.01em;margin:0 0 18px}
-.uqcat .chips{display:flex;flex-wrap:wrap;gap:9px}
-.uqcat .chips a{display:inline-flex;align-items:center;padding:9px 16px;border:1px solid var(--line);
-  border-radius:3px;font-size:12.5px;font-weight:600;color:#2a2a2a;background:#fff;transition:.15s}
-.uqcat .chips a:hover{border-color:var(--ink);background:var(--ink);color:#fff}
-.uqcat .viewall{display:inline-block;margin-top:22px;font-size:12px;font-weight:800;
-  letter-spacing:.09em;border-bottom:1.5px solid var(--ink);padding-bottom:3px}
-
 /* ---------- Uniqlo app cards ---------- */
 .uqapps{padding:0 0 44px;background:#fff}
 .uqapps .wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -1065,9 +1055,6 @@ a.uqban:hover img{transform:scale(1.02)}
 @media (max-width:900px){
   .rrgrid{grid-template-columns:1fr 1fr;gap:0}
   a.rrt span{left:11px;bottom:10px;font-size:10.5px;letter-spacing:.08em}
-  .uqcat{padding:32px 0 28px}
-  .uqcat .chips{gap:7px}
-  .uqcat .chips a{padding:8px 13px;font-size:11.5px}
   .uqapps .wrap{grid-template-columns:1fr;gap:10px}
   a.uqapp{padding:14px 15px;gap:11px}
   a.uqapp em{padding:7px 10px;font-size:10px}
@@ -1076,9 +1063,6 @@ a.uqban:hover img{transform:scale(1.02)}
 @container (max-width:900px){
   .rrgrid{grid-template-columns:1fr 1fr;gap:0}
   a.rrt span{left:11px;bottom:10px;font-size:10.5px;letter-spacing:.08em}
-  .uqcat{padding:32px 0 28px}
-  .uqcat .chips{gap:7px}
-  .uqcat .chips a{padding:8px 13px;font-size:11.5px}
   .uqapps .wrap{grid-template-columns:1fr;gap:10px}
   a.uqapp{padding:14px 15px;gap:11px}
   a.uqapp em{padding:7px 10px;font-size:10px}

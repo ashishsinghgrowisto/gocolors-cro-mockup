@@ -48,8 +48,8 @@ with sync_playwright() as pw:
     pg.keyboard.press('Escape'); pg.wait_for_timeout(500)
 
     covermid = pg.evaluate("() => document.querySelectorAll('.rrgrid > a.rrt').length")
-    shade = pg.evaluate("""() => document.querySelectorAll('.uqcat .chips a').length
-        + '/' + document.querySelectorAll('.uqban').length
+    shade = pg.evaluate("""() => document.querySelectorAll('.uqban').length
+        + '/' + document.querySelectorAll('.bsrail').length
         + '/' + document.querySelectorAll('.uqapp').length""")
 
     pg.click('.card .atcbtn'); pg.wait_for_timeout(900)

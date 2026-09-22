@@ -532,17 +532,6 @@ def rr_grid(audience, n=8):
     return '<section class="rrsec"><div class="rrgrid">%s</div></section>' % cells
 
 
-def uq_category_chips(audience):
-    """Uniqlo 'Search by category' block."""
-    chips = ''.join('<a href="collection.html">%s</a>' % E(t)
-                    for t, _i, _s in CATEGORIES[audience])
-    return ('<section class="uqcat"><div class="wrap">'
-            '<h2>Search by category</h2>'
-            '<div class="chips">%s</div>'
-            '<a class="viewall" href="collection.html">VIEW ALL CATEGORIES</a>'
-            '</div></section>' % chips)
-
-
 def uq_app_cards():
     cards = ''.join(
         '<a class="uqapp" href="#"><div class="ic">%s</div>'
@@ -701,7 +690,6 @@ def landing_page(key):
             alt += edit_rail(audience, i, 'er-%s-%d' % (low, i))
     body = (split_banner(key)
             + rr_grid(audience)
-            + uq_category_chips(audience)
             + product_tabs_section(audience, 'Best sellers',
                                    'The styles %s shoppers reorder most' % low,
                                    gid='ptabs-%s' % low)
