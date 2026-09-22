@@ -4,7 +4,7 @@ from playwright.sync_api import sync_playwright
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gocolors-mockups')
 SHOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'shots')
 os.makedirs(SHOT, exist_ok=True)
-PAGES = ['index', 'home', 'collection', 'product', 'wishlist']
+PAGES = ['index', 'women', 'men', 'girls', 'collection', 'product', 'wishlist']
 report = {}
 
 with sync_playwright() as pw:
@@ -36,7 +36,7 @@ with sync_playwright() as pw:
     pg.on('pageerror', lambda e: ierr.append(str(e)))
     pg.on('console', lambda m: ierr.append(m.text) if m.type == 'error' else None)
 
-    pg.goto('file://%s/home.html' % OUT); pg.wait_for_timeout(2600)
+    pg.goto('file://%s/women.html' % OUT); pg.wait_for_timeout(2600)
     pg.hover('.nav > li:first-child .top'); pg.wait_for_timeout(700)
     mega = pg.evaluate("""() => getComputedStyle(document.querySelector('.nav>li .mega')).visibility
         + ' links:' + document.querySelectorAll('.nav>li:first-child .mega a.mlink').length""")
@@ -47,10 +47,10 @@ with sync_playwright() as pw:
     pg.screenshot(path=SHOT + '/i-search.png')
     pg.keyboard.press('Escape'); pg.wait_for_timeout(500)
 
-    covermid = pg.evaluate("() => document.querySelectorAll('.cover').length")
-    shade = pg.evaluate("""() => {var r=document.querySelector('#shadeRange');
-        r.value=55;r.dispatchEvent(new Event('input'));
-        return document.querySelector('#shadeChipName').textContent}""")
+    covermid = pg.evaluate("() => document.querySelectorAll('.rrgrid > a.rrt').length")
+    shade = pg.evaluate("""() => document.querySelectorAll('.uqcat .chips a').length
+        + '/' + document.querySelectorAll('.uqed').length
+        + '/' + document.querySelectorAll('.uqapp').length""")
 
     pg.click('.card .atcbtn'); pg.wait_for_timeout(900)
     pg.screenshot(path=SHOT + '/i-quick.png')
@@ -99,7 +99,7 @@ with sync_playwright() as pw:
 
     ctx2 = b.new_context(viewport={'width': 414, 'height': 860}, is_mobile=True, has_touch=True)
     p2 = ctx2.new_page()
-    p2.goto('file://%s/home.html' % OUT); p2.wait_for_timeout(2200)
+    p2.goto('file://%s/women.html' % OUT); p2.wait_for_timeout(2200)
     p2.click('.tabbar a[aria-label="shop"]'); p2.wait_for_timeout(600)
     p2.click('[data-mtab="Men"]'); p2.wait_for_timeout(700)
     p2.screenshot(path=SHOT + '/i-drawer-sub.png')
@@ -114,8 +114,8 @@ with sync_playwright() as pw:
     sheet = p2.evaluate("() => document.querySelector('#filterSheet').classList.contains('on')")
     b.close()
 
-report['interactions'] = dict(mega=mega, coverMid=covermid, shadeChip=shade, cart=cart,
-                              wishDrawerItems=wdraw, plpAll=n0, plpFiltered=n1, chips=chips,
+report['interactions'] = dict(mega=mega, chips_edits_apps=shade, cart=cart,
+                              rrTiles=covermid, wishDrawerItems=wdraw, plpAll=n0, plpFiltered=n1, chips=chips,
                               priceFiltered=prange, sortFirst=first, pdpColour=colour,
                               pinOk=pin, stickyATC=satc, subnav=subnav,
                               drawerDrill=drilled, drawerBack=backok, filterSheet=sheet,

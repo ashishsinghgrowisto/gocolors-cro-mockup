@@ -7,7 +7,7 @@ network connection but stay byte-small and always show the live artwork.
 import os, sys, json, html, random, shutil, re, hashlib
 from concurrent.futures import ThreadPoolExecutor
 
-from data import (U, BRAND, ANNOUNCE, NAV, NAV_GROUPS, MEGA_PROMOS, SIZES_CHIPS, CAT_TABS,
+from data import (U, BRAND, ANNOUNCE, NAV, NAV_GROUPS, EDITS, APP_CARDS, MEGA_PROMOS, SIZES_CHIPS, CAT_TABS,
                   PRICE_BANDS, SPOTLIGHT, PRODUCTS, COLOR_HEX, SHADES, REVIEWS,
                   FAQ, FOOTER, L1, BANNERS, CATEGORIES)
 from style import CSS
@@ -158,6 +158,7 @@ for p in PROD:
 
 # --------------------------------------------------------------- icons
 IC = {
+ 'phone': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 5.3h3"/><path d="M11 18.6h2"/></svg>',
  'play': '<svg width="20" height="22" viewBox="0 0 24 26" aria-hidden="true"><path fill="#00D4FF" d="M2 1.4 13.6 13 2 24.6A2 2 0 0 1 1.2 23V3A2 2 0 0 1 2 1.4z"/><path fill="#FFCE00" d="m18.2 8.6 4 2.3c1.4.8 1.4 2.4 0 3.2l-4 2.3L14.6 13z"/><path fill="#FF3A44" d="M2 24.6 13.6 13l3.6 3.4-11.6 6.7c-1.4.8-2.6.6-3.6.5z"/><path fill="#00F076" d="M2 1.4 13.6 13l3.6-3.4L5.6 2.9C4.2 2.1 3 2.3 2 1.4z"/></svg>',
  'apple': '<svg width="19" height="22" viewBox="0 0 24 26" fill="currentColor" aria-hidden="true"><path d="M17.6 13.7c0-2.9 2.4-4.3 2.5-4.4-1.4-2-3.5-2.3-4.2-2.3-1.8-.2-3.5 1-4.4 1-.9 0-2.3-1-3.8-1C5.8 7 4 8.1 3 10c-2 3.5-.5 8.7 1.4 11.5.9 1.4 2 3 3.5 2.9 1.4-.1 1.9-.9 3.6-.9s2.2.9 3.7.9c1.5 0 2.5-1.4 3.4-2.8 1.1-1.6 1.5-3.2 1.5-3.3-.1 0-3-1.2-3-4.6zM14.8 4.9c.8-1 1.3-2.3 1.2-3.6-1.2 0-2.6.8-3.4 1.7-.7.8-1.4 2.2-1.2 3.5 1.3.1 2.6-.7 3.4-1.6z"/></svg>',
  'search': '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
@@ -180,7 +181,7 @@ IC = {
 }
 
 def logo(cls='logo'):
-    return ('<a class="%s" href="home.html" aria-label="Go Colors home">'
+    return ('<a class="%s" href="women.html" aria-label="Go Colors home">'
             '<span class="lg">GO COLORS</span><span class="ex">!</span></a>' % cls)
 
 def num():
@@ -291,7 +292,7 @@ def drawer():
                               '<span>%s</span></a>' % (U(img), E(cap), E(cap))
                               for img, cap in MEGA_PROMOS[:3])))
     links = ''.join('<a href="%s">%s <span>\u203a</span></a>' % (h, E(t)) for h, t in
-                    [('home.html', 'Home'), ('collection.html', 'New Arrivals'),
+                    [('women.html', 'Women'), ('collection.html', 'New Arrivals'),
                      ('collection.html', 'Best Sellers')])
     links += ''.join('<a href="#"%s>%s <span>\u203a</span></a>' % (x, E(t)) for x, t in
                      [(' data-openwish', 'Wishlist'), ('', 'Track my order'),
@@ -384,7 +385,7 @@ def stories_modal():
             '</div></div>')
 
 def tabbar(active=''):
-    items = [('home', 'home.html', IC['home'], ''),
+    items = [('home', 'women.html', IC['home'], ''),
              ('shop', '#', IC['menu'], ' data-burger'),
              ('bag', '#', IC['bag'], ' data-opencart'),
              ('wish', '#', IC['heart'], ' data-openwish'),
@@ -521,6 +522,56 @@ def category_section(audiences, heading='Shop by category', sub=''):
             % (head, tabrow, panels))
 
 
+def rr_grid(audience, n=6):
+    """Rare Rabbit style: portrait image tiles, label in white over the bottom-left."""
+    cells = ''.join(
+        '<a class="rrt" href="collection.html">'
+        '<img src="%s" alt="%s" loading="lazy"><span>%s</span></a>'
+        % (U(img), E(title), E(title))
+        for title, img, _sale in CATEGORIES[audience][:n])
+    return '<section class="rrsec"><div class="rrgrid">%s</div></section>' % cells
+
+
+def uq_category_chips(audience):
+    """Uniqlo 'Search by category' block."""
+    chips = ''.join('<a href="collection.html">%s</a>' % E(t)
+                    for t, _i, _s in CATEGORIES[audience])
+    return ('<section class="uqcat"><div class="wrap">'
+            '<h2>Search by category</h2>'
+            '<div class="chips">%s</div>'
+            '<a class="viewall" href="collection.html">VIEW ALL CATEGORIES</a>'
+            '</div></section>' % chips)
+
+
+def uq_app_cards():
+    cards = ''.join(
+        '<a class="uqapp" href="#"><div class="ic">%s</div>'
+        '<div class="tx"><b>%s</b><span>%s</span></div>'
+        '<em>%s</em></a>' % (IC['phone'], E(t), E(sub), E(cta))
+        for t, sub, cta in APP_CARDS)
+    return '<section class="uqapps"><div class="wrap">%s</div></section>' % cards
+
+
+def uq_edits(audience):
+    """Uniqlo editorial blocks: full-width image, title, blurb, optional featured product."""
+    out = []
+    for i, (title, blurb, img, handle) in enumerate(EDITS[audience]):
+        feat = ''
+        p = next((x for x in PROD if x['h'] == handle), None) if handle else None
+        if p:
+            feat = ('<a class="feat" href="product.html?p=%s">'
+                    '<img src="%s" alt="%s" loading="lazy">'
+                    '<div><b>%s</b><span>\u20b9%s</span></div></a>'
+                    % (p['h'], p['i'][0], E(p['t']), E(p['t']), '{:,}'.format(p['p'])))
+        out.append('<article class="uqed%s">'
+                   '<a class="im" href="collection.html"><img src="%s" alt="%s" loading="lazy"></a>'
+                   '<div class="cp"><h3>%s</h3><p>%s</p>'
+                   '<a class="lnk" href="collection.html">Shop the collection \u203a</a>%s</div>'
+                   '</article>'
+                   % (' alt' if i % 2 else '', U(img), E(title), E(title), E(blurb), feat))
+    return '<section class="uqedits"><div class="wrap">%s</div></section>' % ''.join(out)
+
+
 RAIL_TABS = ['Bestsellers', 'New Arrivals', 'Trending Products']
 RAIL_TAG = {'Bestsellers': 'Bestseller', 'New Arrivals': 'New in',
             'Trending Products': 'Trending'}
@@ -552,7 +603,7 @@ def product_tabs_section(audience, heading, sub='', gid='ptabs'):
 
 # --------------------------------------------------------------- page shell
 def page(title, body, extra_js='', active='', pagekey='', l1=''):
-    links = [('index.html', 'Overview'), ('home.html', 'Home'), ('women.html', 'Women'),
+    links = [('index.html', 'Overview'), ('women.html', 'Women'),
              ('men.html', 'Men'), ('girls.html', 'Girls'),
              ('collection.html', 'Collection'), ('product.html', 'Product'),
              ('wishlist.html', 'Wishlist')]
@@ -623,48 +674,6 @@ def app_download():
 def cards_placeholder(items):
     return ''.join('<div data-p="%s"></div>' % p['h'] for p in items)
 
-def home():
-    hero = split_banner('home')
-
-    shop = category_section(['Women', 'Men', 'Girls'],
-                            'Shop by category',
-                            'Every collection across women, men and girls')
-
-    bands = ''.join(
-        '<a class="band" href="collection.html"><img src="%s" alt="%s" loading="lazy">'
-        '<div class="lb">%s</div></a>' % (U(img), E(label), E(label))
-        for label, img in PRICE_BANDS)
-    price = '<section class="sec"><div class="wrap"><div class="bands">%s</div></div></section>' % bands
-
-    stats = ''.join('<div><div class="n">%s</div><div class="l">%s</div></div>' % (E(a), E(b))
-                    for a, b in BRAND['stats'])
-    stat_sec = '<section class="sec grey" style="padding:0"><div class="wrap"><div class="stats">%s</div></div></section>' % stats
-
-    best = product_tabs_section('All', 'Shop the edit',
-                                'Bestsellers, new arrivals and what is trending right now')
-
-    shade = shade_section('All', 's1')
-
-    revs = ''.join(
-        '<div class="rev"><div class="st">%s</div><p>“%s”</p>'
-        '<div class="who">%s <span>· %s</span></div>'
-        '<div class="vf">✓ Verified buyer · %s</div></div>'
-        % ('★' * st + '☆' * (5 - st), E(txt), E(nm), E(city), E(prod))
-        for nm, city, txt, st, prod in REVIEWS)
-    rev_sec = ('<section class="sec grey"><div class="wrap">'
-               '<h2 style="text-align:center;font-size:clamp(19px,2.3vw,26px)">Customers Reviews</h2>'
-               '<div class="revsum" style="margin-top:10px"><span class="stars">★★★★☆</span>'
-               '<b style="color:#1a1a1a">%s</b><span>· (%s)</span>'
-               '<span class="vf">✓ Verified</span></div>'
-               '<div class="revs">%s</div></div></section>'
-               % (BRAND['rating'], BRAND['reviews'], revs))
-
-    body = (hero + shop + best + price + stat_sec + rev_sec +
-            shade + trust_bar() + app_download())
-    return page("Shop Premium Women's Bottom Wear Online — Go Colors", body,
-                active='home', pagekey='home.html', l1='home.html')
-
-
 # --------------------------------------------------------------- audience landing
 LANDING = {
  'women': ("Women's Bottomwear — Go Colors", 'Women', 'women.html'),
@@ -673,16 +682,20 @@ LANDING = {
 }
 
 def landing_page(key):
+    """Uniqlo page structure, Go Colors content; section 2 is the Rare Rabbit grid."""
     title, audience, pagekey = LANDING[key]
+    low = audience.lower()
     body = (split_banner(key)
-            + category_section([audience], '%s categories' % audience,
-                               'Shop the full %s range' % audience.lower())
-            + product_tabs_section(audience, 'Shop the %s edit' % audience.lower(),
+            + rr_grid(audience)
+            + uq_category_chips(audience)
+            + product_tabs_section(audience, 'Featured',
                                    'Bestsellers, new arrivals and trending styles',
-                                   gid='ptabs-%s' % audience.lower())
-            + shade_section(audience, 'sh-%s' % audience.lower())
-            + trust_bar() + app_download())
+                                   gid='ptabs-%s' % low)
+            + uq_app_cards()
+            + uq_edits(audience)
+            + trust_bar())
     return page(title, body, active='home', pagekey=pagekey, l1=pagekey)
+
 
 # --------------------------------------------------------------- collection
 def filter_group(title, inner, open_=True):
@@ -743,7 +756,7 @@ def collection():
                                   .replace('</aside>', '</div>')
                                   .replace('<h3>FILTERS</h3>', '')))
 
-    body = ('<div class="wrap"><div class="crumb"><a href="home.html">Home</a> / <b>New Arrivals</b></div>'
+    body = ('<div class="wrap"><div class="crumb"><a href="women.html">Women</a> / <b>New Arrivals</b></div>'
             '<div class="mfilter"><button data-filtersheet>%s Filter</button>'
             '<button data-sortsheet>⇅ Sort</button></div>'
             '<div class="plp">%s<div>'
@@ -899,7 +912,7 @@ def product():
             '<button class="btn btn-d" data-quick="%s">Add to bag</button></div></div>'
             % (p['i'][0], E(p['t']), p['r'], p['rc'], '{:,}'.format(int(p['p'])), p['h']))
 
-    body = ('<div class="wrap"><div class="crumb"><a href="home.html">Home</a> / '
+    body = ('<div class="wrap"><div class="crumb"><a href="women.html">Women</a> / '
             '<a href="collection.html">Women</a> / <a href="collection.html">Kurti Pants</a> / <b>%s</b></div>'
             '<div class="pdp">%s%s</div></div>%s'
             '<div class="wrap">%s%s%s%s%s</div>%s'
@@ -911,7 +924,7 @@ def product():
 
 # --------------------------------------------------------------- wishlist page
 def wishlist():
-    body = ('<div class="wrap"><div class="crumb"><a href="home.html">Home</a> / <b>Wishlist</b></div>'
+    body = ('<div class="wrap"><div class="crumb"><a href="women.html">Women</a> / <b>Wishlist</b></div>'
             '<div style="padding:6px 0 18px"><h1 style="font-size:clamp(20px,2.4vw,28px)">My Wishlist</h1>'
             '<div class="plp-top"><span class="cnt" id="wlCount"></span>'
             '<button class="btn btn-d" style="border-radius:5px;padding:11px 20px" data-addall>Add all to cart</button>'
@@ -926,16 +939,18 @@ def wishlist():
 
 def cart_redirect():
     return ('<!doctype html><html><head><meta charset="utf-8"><title>Bag — Go Colors</title>'
-            '<meta http-equiv="refresh" content="0;url=home.html"></head>'
-            '<body><script>location.replace("home.html")</script>'
+            '<meta http-equiv="refresh" content="0;url=women.html"></head>'
+            '<body><script>location.replace("women.html")</script>'
             '<p style="font-family:system-ui;padding:30px">The bag opens as a drawer. '
-            '<a href="home.html">Return to the store</a>.</p></body></html>')
+            '<a href="women.html">Return to the store</a>.</p></body></html>')
 
 # --------------------------------------------------------------- hub
 def index():
     pages = [
-        ('home.html', 'Home', 'Hero, category tabs, budget edits, coverflow campaign slider, '
-                              'best-seller carousels, shade finder, stats and the full footer.'),
+        ('women.html', 'Women', 'Full-width banner, Rare Rabbit category grid, search-by-category, '
+                                'featured product rails, app cards and editorial collection blocks.'),
+        ('men.html', 'Men', 'The same Uniqlo page structure with the men\u2019s catalogue.'),
+        ('girls.html', 'Girls', 'The same Uniqlo page structure with the girls\u2019 catalogue.'),
         ('collection.html', 'Collection / PLP', 'Left-rail filters with live counts, price slider, '
                                                 'sort, active-filter chips, quick-view and colour dots.'),
         ('product.html', 'Product / PDP', 'Two-up image grid, Go Rewards panel, colour dots and similar '
@@ -945,11 +960,13 @@ def index():
     ]
     cards = ''.join('<a href="%s"><div class="n">%s</div><div class="d">%s</div></a>'
                     % (h, E(n), E(d)) for h, n, d in pages)
-    body = ('<div class="hub"><h1>Go Colors — interactive mockup</h1>'
-            '<p class="lead">A replica of gocolors.com with the conversion improvements applied: '
-            'a quick-view variant modal on every surface, a free-shipping progress bar and coupon '
-            'field directly above a value-bearing checkout button, sticky add-to-bag on the product '
-            'page, size guidance at the point of choice, and trust messaging beside every decision. '
+    body = ('<div class="hub"><h1>Go Colors \u2014 interactive mockup</h1>'
+            '<p class="lead">A replica of gocolors.com restructured on the Uniqlo India page '
+            'template, with the conversion improvements applied: a quick-view variant modal on '
+            'every surface, a free-shipping progress bar and coupon field directly above a '
+            'value-bearing checkout button, sticky add-to-bag on the product page, size guidance at '
+            'the point of choice, and trust messaging beside every decision. There is no separate '
+            'homepage \u2014 Women, Men and Girls are the landing pages, and the logo goes to Women. '
             'Use the Desktop / Mobile toggle in the top bar to switch viewports.</p>'
             '<div class="hublist">%s</div>'
             '<div class="note"><b>How to use this.</b> Images load straight from the Go Colors '
@@ -958,11 +975,11 @@ def index():
             'are the live catalogue as captured on 4 September 2026; reviews, ratings and stock '
             'nudges are sample content for demonstration and are not real customer data.</div></div>'
             % cards)
-    return page('Go Colors mockup — overview', body, pagekey='index.html')
+    return page('Go Colors mockup \u2014 overview', body, pagekey='index.html')
 
 
-# --------------------------------------------------------------- optional localiser
 IMG_RE = re.compile(r'https?://[^\s"\')]+?\.(?:jpg|jpeg|png|webp)(?:\?[^\s"\')]*)?', re.I)
+
 
 def localise(files):
     """--local: download every CDN image into assets/ for offline use / QA."""
@@ -1013,7 +1030,7 @@ def main():
     banners.build(os.path.join(OUT, 'banners'))
     print('  wrote banners/       8 files')
     pages = {
-        'index.html': index(), 'home.html': home(),
+        'index.html': index(),
         'women.html': landing_page('women'), 'men.html': landing_page('men'),
         'girls.html': landing_page('girls'),
         'collection.html': collection(),

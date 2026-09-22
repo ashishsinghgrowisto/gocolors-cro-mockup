@@ -98,6 +98,45 @@ NAV_GROUPS = {
  ],
 }
 
+
+# ---- Uniqlo-style editorial collection blocks per audience -------------------
+EDITS = {
+ 'Women': [
+   ('Bottomwear Collection', 'Leggings, palazzos and kurti pants cut for Indian body types \u2014 '
+    'in fabrics that hold their shape wash after wash.', '^Kurti_pant_550x550.jpg', 'women-kurti-pants'),
+   ('Wide Leg Collection', 'Palazzos and parachute pants with the drape that carries a whole outfit.',
+    '^Hakoba_Palazzo_550x550.jpg', None),
+   ('Active & Athleisure', 'Train, walk, lounge \u2014 four-way stretch that moves the way you do.',
+    '^Parachute_pant_02_550x550.jpg', 'women-yoga-leggings'),
+   ('Everyday Denim', 'Jeggings and jeans with real stretch recovery, from skinny to culotte.',
+    '^Ankle_length_churidar_550x550.jpg', None),
+ ],
+ 'Men': [
+   ('Trouser Collection', 'Chinos, flex-knit pants and tech trousers built for the commute and the '
+    'desk that follows it.', '^Kurti_pant_550x550.jpg', None),
+   ('Cargo & Utility', 'Pocketed, relaxed and hard-wearing \u2014 the weekend uniform.',
+    '^Parachute_pant_02_550x550.jpg', None),
+   ('Topwear Edit', 'Cotton shirts and pique polos in a colour range that actually matches the bottoms.',
+    '^Hakoba_Palazzo_550x550.jpg', None),
+   ('Lounge Collection', 'EaseFlex pants and shorts for the hours that are nobody else\u2019s business.',
+    '^Twill_skort_e5c57bef-0f59-4bb4-8abb-3a897654fb2c_550x550.jpg', None),
+ ],
+ 'Girls': [
+   ('School to Play', 'Leggings and jeggings that survive the walk home, the playground and the wash.',
+    '^Kurti_pant_550x550.jpg', None),
+   ('Knit Shorts & Capris', 'Light, breathable and cut to move \u2014 for summer and everything after.',
+    '^Parachute_pant_02_550x550.jpg', None),
+   ('Denim for Girls', 'The look of denim with the give of knit.', '^Hakoba_Palazzo_550x550.jpg', None),
+   ('Everyday Comfort', 'Harem pants and pull-ons in colours they will actually pick themselves.',
+    '^Ankle_length_churidar_550x550.jpg', None),
+ ],
+}
+
+APP_CARDS = [
+ ('Go Colors App', 'Shop on our app for the best experience', 'Open app'),
+ ('Go Rewards', 'Points on every order, early access to drops', 'Join free'),
+]
+
 MEGA_PROMOS = [
   ('^Inside_banners_230x100-06.jpg','Wide Pants'),
   ('^Inside_banners_230x100-09.jpg','MostlySane Edit'),
