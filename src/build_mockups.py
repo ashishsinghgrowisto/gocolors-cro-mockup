@@ -545,6 +545,16 @@ def rr_grid(audience, n=8):
     return '<section class="rrsec"><div class="rrgrid">%s</div></section>' % cells
 
 
+def band_grid():
+    """Price-band tiles, same UI as the category grid."""
+    cells = ''.join(
+        '<a class="rrt" href="collection.html">'
+        '<img src="%s" alt="%s" loading="lazy"><span>%s</span></a>'
+        % (U(img), E(label), E(label))
+        for label, img in PRICE_BANDS)
+    return '<section class="rrsec"><div class="rrgrid">%s</div></section>' % cells
+
+
 def uq_banner(audience, i):
     """Uniqlo-style full-width banner; no copy block beneath it."""
     title, _blurb, img, _h = EDITS[audience][i]
@@ -688,6 +698,8 @@ def landing_page(key):
     mid = ''
     for i, (tab, items) in enumerate(rails):
         mid += rail_section(items, 'r%d-%s' % (i, low), tab)
+        if i == 0:
+            mid += band_grid()
         mid += uq_banner(audience, i)
     body = (split_banner(key)
             + rr_grid(audience)
