@@ -50,7 +50,7 @@ with sync_playwright() as pw:
     covermid = pg.evaluate("() => document.querySelectorAll('.rrgrid > a.rrt').length")
     shade = pg.evaluate("""() => document.querySelectorAll('.uqban').length
         + '/' + document.querySelectorAll('.bsrail').length
-        + '/' + document.querySelectorAll('.uqapp').length""")
+        + '/' + document.querySelectorAll('.rrt').length""")
 
     pg.click('.card .atcbtn'); pg.wait_for_timeout(900)
     pg.screenshot(path=SHOT + '/i-quick.png')

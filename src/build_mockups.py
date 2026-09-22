@@ -532,15 +532,6 @@ def rr_grid(audience, n=8):
     return '<section class="rrsec"><div class="rrgrid">%s</div></section>' % cells
 
 
-def uq_app_cards():
-    cards = ''.join(
-        '<a class="uqapp" href="#"><div class="ic">%s</div>'
-        '<div class="tx"><b>%s</b><span>%s</span></div>'
-        '<em>%s</em></a>' % (IC['phone'], E(t), E(sub), E(cta))
-        for t, sub, cta in APP_CARDS)
-    return '<section class="uqapps"><div class="wrap">%s</div></section>' % cards
-
-
 def uq_banner(audience, i):
     """Uniqlo-style full-width banner; no copy block beneath it."""
     title, _blurb, img, _h = EDITS[audience][i]
@@ -689,7 +680,6 @@ def landing_page(key):
                                    'The styles %s shoppers reorder most' % low,
                                    gid='ptabs-%s' % low)
             + alt
-            + uq_app_cards()
             + trust_bar()
             + stat_strip())
     return page(title, body, active='home', pagekey=pagekey, l1=pagekey)

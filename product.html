@@ -1031,22 +1031,6 @@ a.rrt span{position:absolute;left:16px;bottom:14px;z-index:2;color:#fff;font-siz
   font-weight:700;letter-spacing:.1em;text-transform:uppercase;line-height:1.3;
   text-shadow:0 1px 6px rgba(0,0,0,.45);padding-right:14px}
 
-/* ---------- Uniqlo app cards ---------- */
-.uqapps{padding:0 0 44px;background:#fff}
-.uqapps .wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-a.uqapp{display:flex;align-items:center;gap:14px;padding:18px 20px;border:1px solid var(--line);
-  border-radius:4px;background:#fff;transition:.16s}
-a.uqapp:hover{border-color:var(--ink);box-shadow:0 6px 18px rgba(0,0,0,.07)}
-a.uqapp .ic{flex:0 0 44px;height:44px;display:grid;place-items:center;border-radius:4px;
-  background:var(--soft);color:var(--ink)}
-a.uqapp .tx{display:flex;flex-direction:column;min-width:0}
-a.uqapp .tx b{font-size:14px;font-weight:700}
-a.uqapp .tx span{font-size:12px;color:var(--muted);margin-top:2px}
-a.uqapp em{margin-left:auto;flex:0 0 auto;font-style:normal;font-size:11px;font-weight:800;
-  letter-spacing:.08em;text-transform:uppercase;border:1.4px solid var(--ink);border-radius:3px;
-  padding:8px 13px}
-a.uqapp:hover em{background:var(--ink);color:#fff}
-
 /* ---------- Uniqlo full-width editorial banners ---------- */
 a.uqban{display:block;line-height:0;overflow:hidden;background:var(--soft)}
 a.uqban img{width:100%;aspect-ratio:1440/460;object-fit:cover;transition:transform .6s ease}
@@ -1055,17 +1039,11 @@ a.uqban:hover img{transform:scale(1.02)}
 @media (max-width:900px){
   .rrgrid{grid-template-columns:1fr 1fr;gap:0}
   a.rrt span{left:11px;bottom:10px;font-size:10.5px;letter-spacing:.08em}
-  .uqapps .wrap{grid-template-columns:1fr;gap:10px}
-  a.uqapp{padding:14px 15px;gap:11px}
-  a.uqapp em{padding:7px 10px;font-size:10px}
   a.uqban img{aspect-ratio:4/3}
 }
 @container (max-width:900px){
   .rrgrid{grid-template-columns:1fr 1fr;gap:0}
   a.rrt span{left:11px;bottom:10px;font-size:10.5px;letter-spacing:.08em}
-  .uqapps .wrap{grid-template-columns:1fr;gap:10px}
-  a.uqapp{padding:14px 15px;gap:11px}
-  a.uqapp em{padding:7px 10px;font-size:10px}
   a.uqban img{aspect-ratio:4/3}
 }
 
