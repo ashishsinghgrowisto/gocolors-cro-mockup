@@ -522,7 +522,7 @@ def category_section(audiences, heading='Shop by category', sub=''):
             % (head, tabrow, panels))
 
 
-def rr_grid(audience, n=6):
+def rr_grid(audience, n=8):
     """Rare Rabbit style: portrait image tiles, label in white over the bottom-left."""
     cells = ''.join(
         '<a class="rrt" href="collection.html">'
@@ -552,24 +552,28 @@ def uq_app_cards():
     return '<section class="uqapps"><div class="wrap">%s</div></section>' % cards
 
 
-def uq_edits(audience):
-    """Uniqlo editorial blocks: full-width banner image, copy beneath it."""
-    out = []
-    for title, blurb, img, handle in EDITS[audience]:
-        feat = ''
-        p = next((x for x in PROD if x['h'] == handle), None) if handle else None
-        if p:
-            feat = ('<a class="feat" href="product.html?p=%s">'
-                    '<img src="%s" alt="%s" loading="lazy">'
-                    '<div><b>%s</b><span>\u20b9%s</span></div></a>'
-                    % (p['h'], p['i'][0], E(p['t']), E(p['t']), '{:,}'.format(int(p['p']))))
-        out.append('<article class="uqed">'
-                   '<a class="im" href="collection.html"><img src="%s" alt="%s" loading="lazy"></a>'
-                   '<div class="cp"><h3>%s</h3><p>%s</p>'
-                   '<a class="lnk" href="collection.html">Shop the collection \u203a</a>%s</div>'
-                   '</article>'
-                   % (U(img), E(title), E(title), E(blurb), feat))
-    return '<section class="uqedits">%s</section>' % ''.join(out)
+def uq_banner(audience, i):
+    """Uniqlo-style full-width banner; no copy block beneath it."""
+    title, _blurb, img, _h = EDITS[audience][i]
+    return ('<a class="uqban" href="collection.html">'
+            '<img src="%s" alt="%s" loading="lazy"></a>' % (U(img), E(title)))
+
+
+def edit_rail(audience, i, gid):
+    """Products belonging to the collection the banner above it advertises."""
+    title = EDITS[audience][i][0]
+    pool = [p for p in PROD if p['whom'] == audience] or PROD
+    want = _toks(title)
+    hit = [p for p in pool
+           if any(w in ' '.join(_toks(p['ty'] + ' ' + p['t'])) for w in want)]
+    items = (hit or sorted(pool, key=lambda x: -x['rc']))[:12]
+    if len(items) < 8:
+        extra = [p for p in sorted(pool, key=lambda x: -x['rc']) if p not in items]
+        items = (items + extra)[:8]
+    head = ('<div class="sec-hd"><div><h2>%s</h2></div>'
+            '<a class="more" href="collection.html">View all</a></div>' % E(title))
+    return ('<section class="sec"><div class="wrap">%s%s</div></section>'
+            % (head, _rail(items, gid, 'Bestsellers', True)))
 
 
 def stat_strip():
@@ -687,17 +691,22 @@ LANDING = {
 }
 
 def landing_page(key):
-    """Uniqlo page structure, Go Colors content; section 2 is the Rare Rabbit grid."""
+    """Uniqlo page structure: banners and product rails alternating."""
     title, audience, pagekey = LANDING[key]
     low = audience.lower()
+    alt = ''
+    for i in range(len(EDITS[audience])):
+        alt += uq_banner(audience, i)
+        if i < 3:
+            alt += edit_rail(audience, i, 'er-%s-%d' % (low, i))
     body = (split_banner(key)
             + rr_grid(audience)
             + uq_category_chips(audience)
             + product_tabs_section(audience, 'Best sellers',
                                    'The styles %s shoppers reorder most' % low,
                                    gid='ptabs-%s' % low)
+            + alt
             + uq_app_cards()
-            + uq_edits(audience)
             + trust_bar()
             + stat_strip())
     return page(title, body, active='home', pagekey=pagekey, l1=pagekey)

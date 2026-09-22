@@ -953,7 +953,7 @@ a.mlink:hover{color:var(--brand);background:#fdf3f8}
 }
 
 /* full-width banner */
-.fwban{display:block;line-height:0;background:var(--soft)}
+.fwban{display:block;line-height:0;background:var(--soft);margin:0}
 .fwban img{width:100%;height:auto;display:block}
 
 /* mobile campaign header (green takeover, inline search) */
@@ -1020,8 +1020,8 @@ a.mlink:hover{color:var(--brand);background:#fdf3f8}
 
 
 /* ---------- Rare Rabbit category grid ---------- */
-.rrsec{padding:4px 0 0}
-.rrgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.rrsec{padding:0;margin:0;line-height:0}
+.rrgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
 a.rrt{position:relative;display:block;line-height:0;background:var(--soft);overflow:hidden}
 a.rrt img{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform .5s ease}
 a.rrt:hover img{transform:scale(1.035)}
@@ -1057,28 +1057,13 @@ a.uqapp em{margin-left:auto;flex:0 0 auto;font-style:normal;font-size:11px;font-
   padding:8px 13px}
 a.uqapp:hover em{background:var(--ink);color:#fff}
 
-/* ---------- Uniqlo editorial blocks (full-width banners) ---------- */
-.uqedits{padding:0;background:#fff}
-.uqed{display:block;padding:0 0 40px}
-.uqed .im{display:block;line-height:0;overflow:hidden;background:var(--soft)}
-.uqed .im img{width:100%;aspect-ratio:1440/520;object-fit:cover;transition:transform .6s ease}
-.uqed .im:hover img{transform:scale(1.02)}
-.uqed .cp{max-width:var(--maxw);margin:0 auto;padding:22px 24px 0}
-.uqed h3{font-size:clamp(18px,2.1vw,25px);font-weight:700;letter-spacing:-.01em;margin:0}
-.uqed p{color:var(--muted);font-size:13.5px;line-height:1.75;margin:9px 0 14px;max-width:62ch}
-.uqed .lnk{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
-  border-bottom:1.5px solid var(--ink);padding-bottom:3px}
-.uqed .feat{display:flex;align-items:center;gap:13px;margin-top:20px;padding:11px;
-  border:1px solid var(--line);border-radius:4px;max-width:330px;transition:.16s}
-.uqed .feat:hover{border-color:var(--ink)}
-.uqed .feat img{width:58px;height:70px;object-fit:cover;border-radius:3px;flex:0 0 58px}
-.uqed .feat div{display:flex;flex-direction:column;min-width:0}
-.uqed .feat b{font-size:12.5px;font-weight:700;line-height:1.35;overflow:hidden;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.uqed .feat span{font-size:13px;font-weight:800;margin-top:4px}
+/* ---------- Uniqlo full-width editorial banners ---------- */
+a.uqban{display:block;line-height:0;overflow:hidden;background:var(--soft)}
+a.uqban img{width:100%;aspect-ratio:1440/460;object-fit:cover;transition:transform .6s ease}
+a.uqban:hover img{transform:scale(1.02)}
 
 @media (max-width:900px){
-  .rrgrid{grid-template-columns:1fr 1fr;gap:3px}
+  .rrgrid{grid-template-columns:1fr 1fr;gap:0}
   a.rrt span{left:11px;bottom:10px;font-size:10.5px;letter-spacing:.08em}
   .uqcat{padding:32px 0 28px}
   .uqcat .chips{gap:7px}
@@ -1086,13 +1071,10 @@ a.uqapp:hover em{background:var(--ink);color:#fff}
   .uqapps .wrap{grid-template-columns:1fr;gap:10px}
   a.uqapp{padding:14px 15px;gap:11px}
   a.uqapp em{padding:7px 10px;font-size:10px}
-  .uqed{padding:0 0 28px}
-  .uqed .im img{aspect-ratio:3/2}
-  .uqed .cp{padding:16px 16px 0}
-  .uqed p{max-width:none;font-size:12.5px}
+  a.uqban img{aspect-ratio:4/3}
 }
 @container (max-width:900px){
-  .rrgrid{grid-template-columns:1fr 1fr;gap:3px}
+  .rrgrid{grid-template-columns:1fr 1fr;gap:0}
   a.rrt span{left:11px;bottom:10px;font-size:10.5px;letter-spacing:.08em}
   .uqcat{padding:32px 0 28px}
   .uqcat .chips{gap:7px}
@@ -1100,10 +1082,7 @@ a.uqapp:hover em{background:var(--ink);color:#fff}
   .uqapps .wrap{grid-template-columns:1fr;gap:10px}
   a.uqapp{padding:14px 15px;gap:11px}
   a.uqapp em{padding:7px 10px;font-size:10px}
-  .uqed{padding:0 0 28px}
-  .uqed .im img{aspect-ratio:3/2}
-  .uqed .cp{padding:16px 16px 0}
-  .uqed p{max-width:none;font-size:12.5px}
+  a.uqban img{aspect-ratio:4/3}
 }
 
 """
