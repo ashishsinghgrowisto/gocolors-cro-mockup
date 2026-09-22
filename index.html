@@ -977,10 +977,12 @@ body.hasbar{--barh:44px;padding-top:44px}
   .hdr .icons a[data-openwish],.hdr .icons a[data-opencart]{display:none}
   .hdr .icons a[title="Store locator"]{display:grid}
   .hdr .ico{min-width:28px}
+  /* pin the category bar flush to the header's real mobile height */
+  .l1bar{top:calc(var(--barh) + 57px)}
 
   body.hero .hdr,body.hero .l1bar{transition:background .25s ease}
   body.hero .l1bar{margin-bottom:-104px}
-  body.hero:not(.sc) .hdr{background:transparent;border-bottom:none}
+  body.hero:not(.sc) .hdr{background:transparent;border-bottom-color:transparent}
   body.hero:not(.sc) .hdr::before{content:"";position:absolute;inset:0 0 -48px 0;z-index:-1;
     pointer-events:none;
     background:linear-gradient(to bottom,rgba(0,0,0,.42),rgba(0,0,0,.14) 62%,rgba(0,0,0,0))}
@@ -989,7 +991,7 @@ body.hasbar{--barh:44px;padding-top:44px}
   body.hero:not(.sc) .hdr .searchbox input{color:#fff}
   body.hero:not(.sc) .hdr .searchbox input::placeholder{color:rgba(255,255,255,.86)}
   body.hero:not(.sc) .hdr .searchbox .si,body.hero:not(.sc) .hdr .ico{color:#fff}
-  body.hero:not(.sc) .l1bar{background:transparent;border-bottom:none}
+  body.hero:not(.sc) .l1bar{background:transparent;border-bottom-color:transparent}
   body.hero:not(.sc) .l1bar a{color:rgba(255,255,255,.88)}
   body.hero:not(.sc) .l1bar a.on{color:#fff;border-color:#fff}
 }
