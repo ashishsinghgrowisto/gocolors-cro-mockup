@@ -539,19 +539,26 @@ def uq_banner(audience, i):
             '<img src="%s" alt="%s" loading="lazy"></a>' % (U(img), E(title)))
 
 
-def edit_rail(audience, i, gid):
-    """Products belonging to the collection the banner above it advertises. No heading."""
-    title = EDITS[audience][i][0]
-    pool = [p for p in PROD if p['whom'] == audience] or PROD
-    want = _toks(title)
-    hit = [p for p in pool
-           if any(w in ' '.join(_toks(p['ty'] + ' ' + p['t'])) for w in want)]
-    items = (hit or sorted(pool, key=lambda x: -x['rc']))[:12]
-    if len(items) < 8:
-        extra = [p for p in sorted(pool, key=lambda x: -x['rc']) if p not in items]
-        items = (items + extra)[:8]
+def steal_deals(audience, n=12):
+    """Deepest genuine markdowns \u2014 the audience first, then the wider catalogue.
+
+    Never pads with full-price styles: a Steal deal card always carries a discount.
+    """
+    def cut(p):
+        return 1 - p['p'] / p['cp'] if p.get('cp') and p['cp'] > p['p'] else 0
+
+    own = sorted([p for p in PROD if p['whom'] == audience and cut(p) > 0],
+                 key=lambda x: -cut(x))
+    if len(own) >= 8:
+        return own[:n]
+    rest = sorted([p for p in PROD if cut(p) > 0 and p not in own], key=lambda x: -cut(x))
+    return (own + rest)[:max(8, min(n, len(own) + len(rest)))]
+
+
+def rail_section(items, gid, tab):
+    """A bare product rail \u2014 no heading, Uniqlo carries none."""
     return ('<section class="sec"><div class="wrap">%s</div></section>'
-            % _rail(items, gid, 'Bestsellers', True))
+            % _rail(items, gid, tab, True))
 
 
 def stat_strip():
@@ -563,7 +570,7 @@ def stat_strip():
 
 RAIL_TABS = ['Bestsellers', 'New Arrivals', 'Trending Products']
 RAIL_TAG = {'Bestsellers': 'Bestseller', 'New Arrivals': 'New in',
-            'Trending Products': 'Trending'}
+            'Trending Products': 'Trending', 'Steal Deals': 'Steal deal'}
 
 
 def _rail(items, gid, tab, show):
@@ -576,13 +583,6 @@ def _rail(items, gid, tab, show):
             % (tab, gid, '' if show else 'display:none',
                ''.join('<div data-p="%s" data-tag="%s"></div>' % (p['h'], E(RAIL_TAG[tab]))
                        for p in items)))
-
-
-def product_tabs_section(audience, heading, sub='', gid='ptabs'):
-    """Best sellers only, no section heading (Uniqlo carries none)."""
-    items = POOLS[audience]['Bestsellers']
-    return ('<section class="sec"><div class="wrap">%s</div></section>'
-            % _rail(items, gid, 'Bestsellers', True))
 
 
 # --------------------------------------------------------------- page shell
@@ -666,20 +666,19 @@ LANDING = {
 }
 
 def landing_page(key):
-    """Uniqlo page structure: banners and product rails alternating."""
+    """Uniqlo structure: three product rails alternating with full-width banners."""
     title, audience, pagekey = LANDING[key]
     low = audience.lower()
-    alt = ''
-    for i in range(len(EDITS[audience])):
-        alt += uq_banner(audience, i)
-        if i < 3:
-            alt += edit_rail(audience, i, 'er-%s-%d' % (low, i))
+    rails = [('Bestsellers', POOLS[audience]['Bestsellers']),
+             ('Trending Products', POOLS[audience]['Trending Products']),
+             ('Steal Deals', steal_deals(audience))]
+    mid = ''
+    for i, (tab, items) in enumerate(rails):
+        mid += rail_section(items, 'r%d-%s' % (i, low), tab)
+        mid += uq_banner(audience, i)
     body = (split_banner(key)
             + rr_grid(audience)
-            + product_tabs_section(audience, 'Best sellers',
-                                   'The styles %s shoppers reorder most' % low,
-                                   gid='ptabs-%s' % low)
-            + alt
+            + mid
             + trust_bar()
             + stat_strip())
     return page(title, body, active='home', pagekey=pagekey, l1=pagekey)
