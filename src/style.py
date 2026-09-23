@@ -12,6 +12,7 @@ CSS = r"""
   --camp:#6b8540;
   --font:'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   --maxw:1400px;
+  --gx:24px;   /* single page gutter */
   --barh:0px;
   --hdrh:112px;
   --hdrm:62px;
@@ -26,7 +27,7 @@ a{color:inherit;text-decoration:none}
 button{font-family:inherit;font-weight:600;cursor:pointer;border:0;background:none;color:inherit}
 input,select{font-family:inherit;font-size:14px}
 h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.01em}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gx)}
 #viewport{container-type:inline-size;margin:0 auto;transition:max-width .25s ease;background:#fff;position:relative}
 body.mobile #viewport{max-width:420px;box-shadow:0 0 0 1px var(--line)}
 
@@ -1036,16 +1037,18 @@ a.uqban:hover img{transform:scale(1.02)}
 }
 
 
-/* one horizontal gutter on mobile for product sections and banners alike */
+/* one minimal gutter on mobile — every section lines up on the same edge */
 @media (max-width:900px){
-  .sec .wrap{padding-left:12px;padding-right:12px}
-  a.uqban{margin-left:12px;margin-right:12px}
-  a.uqban img{border-radius:2px}
+  :root{--gx:6px}
+  .sec .wrap{padding-left:var(--gx);padding-right:var(--gx)}
+  a.fwban,a.uqban,.rrsec{margin-left:var(--gx);margin-right:var(--gx)}
+  .trust{margin-left:var(--gx);margin-right:var(--gx)}
 }
 @container (max-width:900px){
-  .sec .wrap{padding-left:12px;padding-right:12px}
-  a.uqban{margin-left:12px;margin-right:12px}
-  a.uqban img{border-radius:2px}
+  #viewport{--gx:6px}
+  .sec .wrap{padding-left:var(--gx);padding-right:var(--gx)}
+  a.fwban,a.uqban,.rrsec{margin-left:var(--gx);margin-right:var(--gx)}
+  .trust{margin-left:var(--gx);margin-right:var(--gx)}
 }
 
 """
