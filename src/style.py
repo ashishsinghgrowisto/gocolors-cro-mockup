@@ -258,17 +258,17 @@ body.hasbar{--barh:44px;padding-top:44px}
   scroll-snap-type:x proximity;scroll-behavior:smooth;scrollbar-width:none;padding-bottom:2px}
 .cats::-webkit-scrollbar{display:none}
 .cats>.cat{scroll-snap-align:start}
-.catwrap .arw{position:absolute;top:32%;width:38px;height:38px;border-radius:50%;
-  background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.18);display:none;place-items:center;
-  z-index:4;font-size:17px;transform:translateY(-50%)}
+.catwrap .arw{position:absolute;top:32%;width:30px;height:38px;background:none;border:none;
+  box-shadow:none;display:none;place-items:center;z-index:4;font-size:30px;line-height:1;
+  color:var(--ink);text-shadow:0 1px 6px rgba(255,255,255,.85);transform:translateY(-50%)}
 .catwrap.scrollable .arw{display:grid}
 .catwrap .arw.l{left:-16px}
 .catwrap .arw.r{right:-16px}
-@container (max-width:900px){.catwrap .arw{width:32px;height:32px;font-size:15px;top:27%}
-  .catwrap .arw.l{left:-6px}.catwrap .arw.r{right:-6px}}
-@media (max-width:900px){.catwrap .arw{width:32px;height:32px;font-size:15px;top:27%}
-  .catwrap .arw.l{left:-6px}.catwrap .arw.r{right:-6px}}
-.catwrap .arw:hover{background:var(--ink);color:#fff}
+@container (max-width:900px){.catwrap .arw{width:24px;height:32px;font-size:26px;top:27%}
+  .catwrap .arw.l{left:-4px}.catwrap .arw.r{right:-4px}}
+@media (max-width:900px){.catwrap .arw{width:24px;height:32px;font-size:26px;top:27%}
+  .catwrap .arw.l{left:-4px}.catwrap .arw.r{right:-4px}}
+.catwrap .arw:hover{color:var(--brand)}
 
 /* price bands */
 .bands{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -315,17 +315,17 @@ body.hasbar{--barh:44px;padding-top:44px}
 .railrow::-webkit-scrollbar{display:none}
 .railrow>.card{flex:0 0 calc((100% - 3*16px)/4);scroll-snap-align:start}
 .carou{position:relative}
-.carou .arw{position:absolute;top:34%;width:38px;height:38px;border-radius:50%;background:#fff;
-  box-shadow:0 2px 12px rgba(0,0,0,.18);display:none;place-items:center;z-index:4;font-size:17px;
-  transform:translateY(-50%)}
+.carou .arw{position:absolute;top:34%;width:30px;height:38px;background:none;border:none;
+  box-shadow:none;display:none;place-items:center;z-index:4;font-size:30px;line-height:1;
+  color:var(--ink);text-shadow:0 1px 6px rgba(255,255,255,.85);transform:translateY(-50%)}
 .carou.scrollable .arw{display:grid}
-.carou .arw:hover{background:var(--ink);color:#fff}
+.carou .arw:hover{color:var(--brand)}
 .carou .arw.l{left:-16px}
 .carou .arw.r{right:-16px}
-@container (max-width:900px){.carou .arw{width:32px;height:32px;font-size:15px;top:30%}
-  .carou .arw.l{left:-6px}.carou .arw.r{right:-6px}}
-@media (max-width:900px){.carou .arw{width:32px;height:32px;font-size:15px;top:30%}
-  .carou .arw.l{left:-6px}.carou .arw.r{right:-6px}}
+@container (max-width:900px){.carou .arw{width:24px;height:32px;font-size:26px;top:30%}
+  .carou .arw.l{left:-4px}.carou .arw.r{right:-4px}}
+@media (max-width:900px){.carou .arw{width:24px;height:32px;font-size:26px;top:30%}
+  .carou .arw.l{left:-4px}.carou .arw.r{right:-4px}}
 .card{position:relative;display:flex;flex-direction:column}
 .card .imgwrap{position:relative;overflow:hidden;background:var(--soft);aspect-ratio:1/1.32;border-radius:var(--r)}
 .card .imgwrap img{width:100%;height:100%;object-fit:cover;transition:opacity .3s}
@@ -974,7 +974,8 @@ body.hasbar{--barh:44px;padding-top:44px}
     flex:1 1 auto;min-width:0;width:auto;padding:0}
   .hdr .searchbox .si{order:2;position:static;transform:none;margin-left:auto;flex:0 0 auto}
   .hdr .icons{gap:6px;flex:0 0 auto;margin-left:0}
-  .hdr .icons a[data-openwish],.hdr .icons a[data-opencart]{display:none}
+  .hdr .icons a[data-openwish],.hdr .icons a[data-opencart],
+  .hdr .icons a[title="Account"]{display:none}
   .hdr .icons a[title="Store locator"]{display:grid}
   .hdr .ico{min-width:28px}
   /* pin the category bar flush to the header's real mobile height */
@@ -982,10 +983,6 @@ body.hasbar{--barh:44px;padding-top:44px}
 
   body.hero .l1bar{margin-bottom:-104px}
   body.hero .hdr{background:transparent;border-bottom-color:transparent}
-  /* a persistent veil keeps the transparent bars legible over any content */
-  body.hero .hdr::before{content:"";position:absolute;inset:0 0 -49px 0;z-index:-1;
-    pointer-events:none;
-    background:linear-gradient(to bottom,rgba(0,0,0,.62),rgba(0,0,0,.44) 54%,rgba(0,0,0,.30))}
   body.hero .hdr .logo .lg,body.hero .hdr .logo .ex{color:#fff;
     text-shadow:0 1px 4px rgba(0,0,0,.35)}
   body.hero .hdr .searchbox{border-color:rgba(255,255,255,.72)}
@@ -1036,6 +1033,19 @@ a.uqban:hover img{transform:scale(1.02)}
   a.uqban{margin:12px 0}
   a.uqban img{aspect-ratio:3/4}
   a.uqban + a.uqban{margin-top:12px}
+}
+
+
+/* one horizontal gutter on mobile for product sections and banners alike */
+@media (max-width:900px){
+  .sec .wrap{padding-left:12px;padding-right:12px}
+  a.uqban{margin-left:12px;margin-right:12px}
+  a.uqban img{border-radius:2px}
+}
+@container (max-width:900px){
+  .sec .wrap{padding-left:12px;padding-right:12px}
+  a.uqban{margin-left:12px;margin-right:12px}
+  a.uqban img{border-radius:2px}
 }
 
 """
