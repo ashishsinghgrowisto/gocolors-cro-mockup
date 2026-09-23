@@ -184,11 +184,10 @@ function card(p,tagOverride){
       '<div class="pr"><b>'+inr(p.p)+'</b>'+(p.cp?'<s>'+inr(p.cp)+'</s><em>'+disc+'% Off</em>':'')+'</div>'+
       '<div class="ctarow">'+
         '<button class="atcbtn" data-quick="'+p.h+'">Add to cart</button>'+
-        '<button class="wishbtn" data-wtog="'+p.h+'" aria-label="Save to wishlist">'+heart()+'</button>'+
       '</div>'+
     '</div></article>';
 }
-window.card=card;
+window.card=card;window.toggleWish=toggleWish;
 function heart(){return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.7 1.1-1a5.5 5.5 0 0 0 0-7.7z"/></svg>'}
 function eye(){return '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></svg>'}
 window.heart=heart;

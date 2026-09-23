@@ -374,7 +374,7 @@ body.hasbar{--barh:44px;padding-top:44px}
 .card .rate .st{color:#f0a500;font-size:12px}
 .card .rate i{font-style:normal;color:var(--muted);font-weight:600;font-size:10.5px}
 .ctarow{display:flex;gap:8px;margin-top:11px}
-.atcbtn{flex:0 0 70%;padding:10px 6px;border:1.4px solid var(--ink);border-radius:5px;
+.atcbtn{flex:1 1 100%;padding:10px 6px;border:1.4px solid var(--ink);border-radius:5px;
   background:#fff;color:var(--ink);font-size:11.5px;font-weight:800;letter-spacing:.04em;
   text-transform:uppercase;transition:.16s;white-space:nowrap;overflow:hidden}
 .atcbtn:hover{background:var(--ink);color:#fff}

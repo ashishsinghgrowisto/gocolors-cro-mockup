@@ -62,7 +62,8 @@ with sync_playwright() as pw:
         mrp:document.querySelector('#osMrp').textContent,
         tot:document.querySelector('#osTot').textContent})""")
     pg.keyboard.press('Escape'); pg.wait_for_timeout(400)
-    pg.click('.card .wishbtn'); pg.wait_for_timeout(500)
+    pg.evaluate("() => toggleWish(document.querySelector('.card').getAttribute('data-h'))")
+    pg.wait_for_timeout(500)
     pg.click('[data-openwish]'); pg.wait_for_timeout(900)
     pg.screenshot(path=SHOT + '/i-wishdrawer.png')
     wdraw = pg.evaluate("() => document.querySelectorAll('#wishBody .ci').length")
