@@ -980,20 +980,21 @@ body.hasbar{--barh:44px;padding-top:44px}
   /* pin the category bar flush to the header's real mobile height */
   .l1bar{top:calc(var(--barh) + 57px)}
 
-  body.hero .hdr,body.hero .l1bar{transition:background .25s ease}
   body.hero .l1bar{margin-bottom:-104px}
-  body.hero:not(.sc) .hdr{background:transparent;border-bottom-color:transparent}
-  body.hero:not(.sc) .hdr::before{content:"";position:absolute;inset:0 0 -48px 0;z-index:-1;
+  body.hero .hdr{background:transparent;border-bottom-color:transparent}
+  /* a persistent veil keeps the transparent bars legible over any content */
+  body.hero .hdr::before{content:"";position:absolute;inset:0 0 -49px 0;z-index:-1;
     pointer-events:none;
-    background:linear-gradient(to bottom,rgba(0,0,0,.42),rgba(0,0,0,.14) 62%,rgba(0,0,0,0))}
-  body.hero:not(.sc) .hdr .logo .lg,body.hero:not(.sc) .hdr .logo .ex{color:#fff}
-  body.hero:not(.sc) .hdr .searchbox{border-color:rgba(255,255,255,.72)}
-  body.hero:not(.sc) .hdr .searchbox input{color:#fff}
-  body.hero:not(.sc) .hdr .searchbox input::placeholder{color:rgba(255,255,255,.86)}
-  body.hero:not(.sc) .hdr .searchbox .si,body.hero:not(.sc) .hdr .ico{color:#fff}
-  body.hero:not(.sc) .l1bar{background:transparent;border-bottom-color:transparent}
-  body.hero:not(.sc) .l1bar a{color:rgba(255,255,255,.88)}
-  body.hero:not(.sc) .l1bar a.on{color:#fff;border-color:#fff}
+    background:linear-gradient(to bottom,rgba(0,0,0,.62),rgba(0,0,0,.44) 54%,rgba(0,0,0,.30))}
+  body.hero .hdr .logo .lg,body.hero .hdr .logo .ex{color:#fff;
+    text-shadow:0 1px 4px rgba(0,0,0,.35)}
+  body.hero .hdr .searchbox{border-color:rgba(255,255,255,.72)}
+  body.hero .hdr .searchbox input{color:#fff}
+  body.hero .hdr .searchbox input::placeholder{color:rgba(255,255,255,.86)}
+  body.hero .hdr .searchbox .si,body.hero .hdr .ico{color:#fff}
+  body.hero .l1bar{background:transparent;border-bottom-color:transparent}
+  body.hero .l1bar a{color:rgba(255,255,255,.9);text-shadow:0 1px 3px rgba(0,0,0,.35)}
+  body.hero .l1bar a.on{color:#fff;border-color:#fff}
 }
 
 /* stacked tags on product cards */
@@ -1016,19 +1017,25 @@ a.rrt span{position:absolute;left:16px;bottom:14px;z-index:2;color:#fff;font-siz
   text-shadow:0 1px 6px rgba(0,0,0,.45);padding-right:14px}
 
 /* ---------- Uniqlo full-width editorial banners ---------- */
-a.uqban{display:block;line-height:0;overflow:hidden;background:var(--soft)}
+a.uqban{display:block;line-height:0;overflow:hidden;background:var(--soft);margin:18px 0}
+a.uqban + a.uqban{margin-top:0}
+.rrsec + a.uqban{margin-top:18px}
 a.uqban img{width:100%;aspect-ratio:1440/460;object-fit:cover;transition:transform .6s ease}
 a.uqban:hover img{transform:scale(1.02)}
 
 @media (max-width:900px){
   .rrgrid{grid-template-columns:1fr 1fr;gap:0}
   a.rrt span{left:11px;bottom:10px;font-size:10.5px;letter-spacing:.08em}
-  a.uqban img{aspect-ratio:4/3}
+  a.uqban{margin:12px 0}
+  a.uqban img{aspect-ratio:3/4}
+  a.uqban + a.uqban{margin-top:12px}
 }
 @container (max-width:900px){
   .rrgrid{grid-template-columns:1fr 1fr;gap:0}
   a.rrt span{left:11px;bottom:10px;font-size:10.5px;letter-spacing:.08em}
-  a.uqban img{aspect-ratio:4/3}
+  a.uqban{margin:12px 0}
+  a.uqban img{aspect-ratio:3/4}
+  a.uqban + a.uqban{margin-top:12px}
 }
 
 """

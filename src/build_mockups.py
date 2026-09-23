@@ -703,6 +703,7 @@ def landing_page(key):
         mid += uq_banner(audience, i)
     body = (split_banner(key)
             + rr_grid(audience)
+            + uq_banner(audience, 3)
             + mid
             + trust_bar()
             + stat_strip())
