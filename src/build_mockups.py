@@ -7,7 +7,7 @@ network connection but stay byte-small and always show the live artwork.
 import os, sys, json, html, random, shutil, re, hashlib
 from concurrent.futures import ThreadPoolExecutor
 
-from data import (U, BRAND, ANNOUNCE, NAV, NAV_GROUPS, NAV_TABS, EDITS, APP_CARDS, MEGA_PROMOS, SIZES_CHIPS, CAT_TABS,
+from data import (U, BRAND, ANNOUNCE, NAV, NAV_GROUPS, NAV_TABS, APP_MENU, APP_EXPLORE, EDITS, APP_CARDS, MEGA_PROMOS, SIZES_CHIPS, CAT_TABS,
                   PRICE_BANDS, SPOTLIGHT, PRODUCTS, COLOR_HEX, SHADES, REVIEWS,
                   FAQ, FOOTER, L1, BANNERS, CATEGORIES)
 from style import CSS
@@ -158,6 +158,7 @@ for p in PROD:
 
 # --------------------------------------------------------------- icons
 IC = {
+ 'hanger': '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="7" height="12" rx="1"/><rect x="14" y="8" width="7" height="12" rx="1"/><path d="M6.5 5.5h11"/></svg>',
  'phone': '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 5.3h3"/><path d="M11 18.6h2"/></svg>',
  'play': '<svg width="20" height="22" viewBox="0 0 24 26" aria-hidden="true"><path fill="#00D4FF" d="M2 1.4 13.6 13 2 24.6A2 2 0 0 1 1.2 23V3A2 2 0 0 1 2 1.4z"/><path fill="#FFCE00" d="m18.2 8.6 4 2.3c1.4.8 1.4 2.4 0 3.2l-4 2.3L14.6 13z"/><path fill="#FF3A44" d="M2 24.6 13.6 13l3.6 3.4-11.6 6.7c-1.4.8-2.6.6-3.6.5z"/><path fill="#00F076" d="M2 1.4 13.6 13l3.6-3.4L5.6 2.9C4.2 2.1 3 2.3 2 1.4z"/></svg>',
  'apple': '<svg width="19" height="22" viewBox="0 0 24 26" fill="currentColor" aria-hidden="true"><path d="M17.6 13.7c0-2.9 2.4-4.3 2.5-4.4-1.4-2-3.5-2.3-4.2-2.3-1.8-.2-3.5 1-4.4 1-.9 0-2.3-1-3.8-1C5.8 7 4 8.1 3 10c-2 3.5-.5 8.7 1.4 11.5.9 1.4 2 3 3.5 2.9 1.4-.1 1.9-.9 3.6-.9s2.2.9 3.7.9c1.5 0 2.5-1.4 3.4-2.8 1.1-1.6 1.5-3.2 1.5-3.3-.1 0-3-1.2-3-4.6zM14.8 4.9c.8-1 1.3-2.3 1.2-3.6-1.2 0-2.6.8-3.4 1.7-.7.8-1.4 2.2-1.2 3.5 1.3.1 2.6-.7 3.4-1.6z"/></svg>',
@@ -190,7 +191,7 @@ def num():
 # --------------------------------------------------------------- chrome
 def app_strip():
     return ('<div class="appstrip" id="appstrip">'
-            '<span class="txt">🎉 Enjoy Seamless Shopping &amp; Faster Checkout</span>'
+            '<span class="txt">&#127881; Enjoy Seamless Shopping &amp; Faster Checkout</span>'
             '<a class="cta" href="#">Download The App</a>'
             '<button class="x" data-appclose aria-label="Dismiss">×</button></div>'
             '<div class="greenline"></div>')
@@ -284,33 +285,61 @@ def header():
       '</div></div></header>'
       % (IC['menu'], logo(), navhtml, IC['search'], IC['store'], IC['user'], IC['heart'], IC['bag']))
 
+def app_tiles(audience):
+    """Image-list sections from the Go Colors app menu page."""
+    out = ''
+    for title, link, cols, items in APP_MENU[audience]:
+        cells = ''.join(
+            '<a class="atile" href="collection.html">'
+            '<img src="%s" alt="%s" loading="lazy"><span>%s</span></a>'
+            % (U(img), E(lbl), E(lbl)) for img, lbl in items)
+        out += ('<section class="asec"><div class="ahd"><h3>%s</h3>'
+                '<a class="alink" href="collection.html">%s</a></div>'
+                '<div class="agrid c%d">%s</div></section>'
+                % (E(title), E(link), cols, cells))
+    return out
+
+
+def app_rail(title, items, tag=''):
+    return ('<section class="asec"><div class="ahd"><h3>%s</h3>'
+            '<a class="alink" href="collection.html">View all</a></div>'
+            '<div class="arail" data-cards>%s</div></section>'
+            % (E(title), ''.join('<div data-p="%s"%s></div>'
+                                 % (x['h'], (' data-tag="%s"' % E(tag)) if tag else '')
+                                 for x in items)))
+
+
+def app_explore(audience):
+    others = [a for a in ('Women', 'Men', 'Girls') if a != audience]
+    tiles = ''.join('<button class="atile" data-mtab="%s">'
+                    '<img src="%s" alt="%s" loading="lazy"><span>%s</span></button>'
+                    % (a, U(APP_EXPLORE[a]), E(a), E(a)) for a in others)
+    return ('<section class="asec aexp"><h3>Also Explore</h3>'
+            '<div class="agrid c2">%s</div></section>' % tiles)
+
+
 def drawer():
-    """Mobile menu, mirroring the live site: audience pills, Bottoms/Tops tabs, link grid."""
+    """Mobile menu rebuilt on the Go Colors app "Collections (Menu)" page:
+    audience tabs, image-list sections, then New Arrivals / Best Sellers / Sale rails."""
     auds = list(NAV_TABS.keys())
-    pills = ''.join('<button data-mtab="%s" class="%s">%s%s</button>'
-                    % (a, 'on' if i == 0 else '',
-                       '<i class="badge">NEW</i>' if a == 'Men' else '', E(a))
+    pills = ''.join('<button data-mtab="%s" class="%s">%s</button>'
+                    % (a, 'on' if i == 0 else '', E(a))
                     for i, a in enumerate(auds))
     panels = ''
     for i, a in enumerate(auds):
-        scope = 'drw-' + a.lower()
-        panels += ('<div class="dpanel" data-mpanel="%s" style="%s">'
-                   '<a class="dall" href="%s.html">Shop all %s \u203a</a>'
-                   '<div class="l2row" data-l2group="%s">%s</div>'
-                   '%s'
-                   '<div class="dpromo">%s</div></div>'
-                   % (a, '' if i == 0 else 'display:none', a.lower(), E(a),
-                      scope, l2_tabs(a, scope), l2_panels(a, scope, 'dgrid'),
-                      ''.join('<a href="collection.html"><img src="%s" alt="%s" loading="lazy">'
-                              '<span>%s</span></a>' % (U(img), E(cap), E(cap))
-                              for img, cap in MEGA_PROMOS[:3])))
+        panels += ('<div class="dpanel" data-mpanel="%s" style="%s">%s%s%s%s%s</div>'
+                   % (a, '' if i == 0 else 'display:none',
+                      app_tiles(a),
+                      app_rail('New Arrivals', POOLS[a]['New Arrivals'][:8], 'New in'),
+                      app_rail('Best Sellers', POOLS[a]['Bestsellers'][:8], 'Bestseller'),
+                      app_rail('Sale', steal_deals(a, 8)),
+                      app_explore(a)))
     links = ''.join('<a href="%s">%s <span>\u203a</span></a>' % (h, E(t)) for h, t in
-                    [('women.html', 'Women'), ('collection.html', 'New Arrivals'),
-                     ('collection.html', 'Best Sellers')])
+                    [('women.html', 'Women'), ('men.html', 'Men'), ('girls.html', 'Girls')])
     links += ''.join('<a href="#"%s>%s <span>\u203a</span></a>' % (x, E(t)) for x, t in
                      [(' data-openwish', 'Wishlist'), ('', 'Track my order'),
                       ('', 'Store locator'), ('', 'Go Rewards')])
-    return ('<aside class="drw" id="navDrw">'
+    return ('<aside class="drw appdrw" id="navDrw">'
             '<div class="drw-hd">%s<button data-close aria-label="Close">%s</button></div>'
             '<div class="drw-pills">%s</div>'
             '<div class="drw-body">%s<div class="drw-links">%s</div></div>'
@@ -787,16 +816,54 @@ def collection():
 def product():
     p = BY['women-solid-black-cotton-mid-rise-kurti-pants']
     hero_colour = 'Black'
-    gal_imgs = (p['i'] + [x[1] for x in PROD[6]['sw']] + p['i'])[:8]
-    gallery = ('<div class="pgal" id="pgal">'
+    _seen, gal_imgs = set(), []
+    for _u in (p['i'] + [x[1] for x in PROD[6]['sw']] + p['i']):
+        if _u not in _seen:
+            _seen.add(_u); gal_imgs.append(_u)
+    gal_imgs = gal_imgs[:8]
+    slides = ''.join('<img src="%s" alt="%s" loading="%s">'
+                     % (u, E(p['t']), 'eager' if i == 0 else 'lazy')
+                     for i, u in enumerate(gal_imgs))
+    dots_g = ''.join('<i data-pgd="%d" class="%s"></i>' % (i, 'on' if i == 0 else '')
+                     for i in range(len(gal_imgs)))
+    gallery = ('<div class="pgal" id="pgal"><div class="pgal-in">'
+               '<div class="pgal-stage">'
                '<span class="tg">Trending</span>'
                '<span class="tryon">%s Try It On</span>'
                '<button class="storyring" data-stories="%s" aria-label="Watch product stories">'
-               '<span class="in">WATCH<br>THE FIT</span></button>%s</div>'
-               % (IC['spark'], p['h'],
-                  ''.join('<img src="%s" alt="%s" loading="%s">'
-                          % (u, E(p['t']), 'eager' if i < 2 else 'lazy')
-                          for i, u in enumerate(gal_imgs))))
+               '<span class="in">WATCH<br>THE FIT</span></button>'
+               '<button class="arw l" data-pgal="p" aria-label="Previous image">\u2039</button>'
+               '<div class="pgal-tr" id="pgalTr">%s</div>'
+               '<button class="arw r" data-pgal="n" aria-label="Next image">\u203a</button>'
+               '<div class="pgal-dots" id="pgalDots">%s</div>'
+               '<span class="fitnote">Nikita is 5\u20325\u2033 wearing size <b>M</b></span>'
+               '</div>'
+               '<button class="vsim" data-vsim aria-label="View similar products">'
+               '%s<span>View Similar</span></button>'
+               '</div></div>'
+               % (IC['spark'], p['h'], slides, dots_g, IC['hanger']))
+
+    sim_pool = [x for x in PROD if x['whom'] == 'Women' and x['h'] != p['h']][:10]
+    sim_cards = ''.join(
+        '<article class="sprod">'
+        '<a href="product.html?p=%s"><div class="im"><img src="%s" alt="%s" loading="lazy">'
+        '<span class="rt">%s \u2605</span></div></a>'
+        '<div class="nm">%s</div>'
+        '<div class="pr"><b>\u20b9%s</b>%s</div>'
+        '<button class="btn btn-o sm" data-quick="%s">Add to Bag</button>'
+        '</article>'
+        % (x['h'], x['i'][0], E(x['t']), ('%.1f' % x['r']), E(x['t']),
+           '{:,}'.format(int(x['p'])),
+           ('<s>\u20b9%s</s><em>%d%% OFF</em>'
+            % ('{:,}'.format(int(x['cp'])), round((1 - x['p'] / x['cp']) * 100)))
+           if x.get('cp') and x['cp'] > x['p'] else '',
+           x['h'])
+        for x in sim_pool)
+    simsheet = ('<div class="sheet simsheet" id="simSheet"><div class="hd">'
+                '<h3 style="font-size:15px;font-weight:800">Similar Products</h3>'
+                '<button data-close aria-label="Close">%s</button></div>'
+                '<div class="bd"><div class="simrow">%s</div></div></div>'
+                % (IC['x'], sim_cards))
 
     palette = ['Black', 'Baby Pink', 'Dark Purple', 'Teal', 'Dark Brown', 'Cherry', 'Fuchsia',
                'Brown', 'Wheat', 'Beige', 'Light Beige', 'Cream', 'Bottle Green', 'Dark Olive',
@@ -878,7 +945,8 @@ def product():
                hero_colour, dots, sims, sizes, IC['bag'], p['h'], IC['heart'], usp3, accordions))
 
     secs = [('overview', 'Overview'), ('details', 'Details'), ('faqs', 'FAQs'),
-            ('reviews', 'Reviews'), ('similar', 'You may like')]
+            ('reviews', 'Reviews'), ('simsec', 'Similar products'),
+            ('similar', 'You may like')]
     subnav = ('<div class="subnav" id="subnav"><div class="in">%s</div></div>'
               % ''.join('<button data-go="%s">%s</button>' % (i, E(l)) for i, l in secs))
 
@@ -912,6 +980,10 @@ def product():
                '<span>%s reviews · 92%% say the fit is true to size</span></div>'
                '<div class="revs">%s</div></section>' % (p['r'], p['rc'], revs))
 
+    simsec = ('<section class="pdp-sec simsec" id="simsec"><h2>Similar products</h2>'
+              '<div class="simgrid" data-cards>%s</div></section>'
+              % cards_placeholder(sim_pool[:8]))
+
     similar = ('<section class="pdp-sec" id="similar"><h2>Mostlysane Collection</h2>'
                '<div class="carou"><button class="arw l" data-rail="p">‹</button>'
                '<div class="railrow" data-cards>%s</div>'
@@ -926,11 +998,11 @@ def product():
             % (p['i'][0], E(p['t']), p['r'], p['rc'], '{:,}'.format(int(p['p'])), p['h']))
 
     body = ('<div class="wrap"><div class="crumb"><a href="women.html">Women</a> / '
-            '<a href="collection.html">Women</a> / <a href="collection.html">Kurti Pants</a> / <b>%s</b></div>'
+            '<a href="collection.html">Women</a> / <b>Kurti Pants</b></div>'
             '<div class="pdp">%s%s</div></div>%s'
-            '<div class="wrap">%s%s%s%s%s</div>%s'
-            % (E(p['t']), gallery, info, subnav,
-               overview, details, faqs, reviews, similar, satc))
+            '<div class="wrap">%s%s%s%s%s%s</div>%s%s'
+            % (gallery, info, subnav,
+               overview, details, faqs, reviews, simsec, similar, satc, simsheet))
 
     js = '<script>var HANDLE="%s";</script><script>%s</script>' % (p['h'], JS_PDP)
     return page('%s — Go Colors' % p['t'], body, js, active='shop', pagekey='product.html', l1='')
@@ -1050,6 +1122,8 @@ def main():
         'product.html': product(), 'wishlist.html': wishlist(), 'cart.html': cart_redirect(),
     }
     for name, htm in pages.items():
+        if not htm.endswith('\n'):
+            htm += '\n'                      # match what the Git host stores
         with open(os.path.join(OUT, name), 'w', encoding='utf-8') as f:
             f.write(htm)
         print('  wrote %-16s %5.0f KB' % (name, len(htm) / 1024))

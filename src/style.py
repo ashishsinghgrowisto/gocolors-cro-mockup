@@ -181,6 +181,37 @@ body.hasbar{--barh:44px;padding-top:44px}
 .dpromo img{width:100%;aspect-ratio:230/110;object-fit:cover}
 .dpromo span{position:absolute;left:10px;bottom:8px;color:#fff;font-size:11px;font-weight:800;
   text-shadow:0 1px 4px rgba(0,0,0,.5)}
+/* ---- app menu page (mobile drawer, mirrors the Go Colors app) ---- */
+.drw-hd .logo{position:static!important;transform:none!important;order:0;color:var(--ink)}
+.drw-hd .logo .lg{color:var(--ink)}
+.appdrw .drw-pills{gap:0;padding:14px 16px;border-bottom:0}
+.appdrw .drw-pills button{flex:1;border-radius:999px;border:1px solid var(--line);
+  margin:0 -1px;font-size:14px;font-weight:500;padding:11px 6px}
+.appdrw .drw-pills button.on{background:#1a1a1a;border-color:#1a1a1a;color:#fff;font-weight:600;
+  position:relative;z-index:1}
+.asec{padding:0 0 4px}
+.asec .ahd{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 0}
+.asec .ahd h3{font-size:16px;font-weight:600;line-height:1.5}
+.asec .alink{font-size:14px;font-weight:500;color:#404040;text-decoration:underline;
+  text-underline-offset:2px}
+.agrid{display:grid;gap:12px 8px;padding:12px 16px 8px}
+.agrid.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.agrid.c3{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 12px}
+.agrid.c2{grid-template-columns:1fr 1fr;gap:20px}
+.atile{display:block;text-align:center;background:none;border:0;padding:0;cursor:pointer;
+  color:inherit;font:inherit}
+.atile img{width:100%;aspect-ratio:85/113;object-fit:cover;background:var(--soft);display:block}
+.agrid.c2 .atile img{aspect-ratio:169/225;object-fit:contain}
+.atile span{display:block;margin-top:8px;font-size:12px;font-weight:500;line-height:1.5;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.agrid.c3 .atile span,.agrid.c2 .atile span{font-size:14px}
+.aexp h3{font-size:16px;font-weight:700;padding:16px 16px 0}
+.arail{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:12px 16px 16px}
+.arail::-webkit-scrollbar{display:none}
+.arail .card{flex:0 0 168px;scroll-snap-align:start}
+.arail .card .nm{font-size:12px;line-height:1.5}
+.arail .card .pr{font-size:12px}
+.arail .card .ctarow{display:none}
 .drw-links{margin-top:12px;border-top:1px solid var(--line)}
 .drw-links a{display:flex;align-items:center;justify-content:space-between;width:100%;
   padding:14px 18px;font-size:13.5px;font-weight:600;border-bottom:1px solid #f2efec;color:#2a2a2a}
@@ -601,11 +632,56 @@ body.hasbar{--barh:44px;padding-top:44px}
 .sheet .ft .btn{flex:1}
 
 /* ---------- PDP ---------- */
-.pdp{display:grid;grid-template-columns:1.08fr .92fr;gap:34px;padding:6px 0 10px;align-items:start}
-.pgal{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:relative}
-.pgal img{width:100%;aspect-ratio:1/1.32;object-fit:cover;background:var(--soft)}
+.pdp{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:34px;
+  padding:6px 0 10px;align-items:start}
+/* PDP gallery: Myntra-style 2-up image grid on desktop, swipe slider on mobile */
+.pgal{align-self:stretch}
+
+.pgal-in{display:block;position:sticky;top:calc(var(--barh) + var(--hdrm) + 8px);
+  max-height:calc(100vh - var(--barh) - var(--hdrm) - 24px);overflow-y:auto;
+  scrollbar-width:none}
+.pgal-in::-webkit-scrollbar{display:none}
+.pgal-stage{position:relative;background:transparent;overflow:visible}
+.pgal-tr{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pgal-tr img{width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--soft);display:block}
+/* the grid shows every shot, so the slider chrome is mobile-only */
+.pgal .arw,.pgal-dots{display:none}
+.pgal .fitnote{position:absolute;right:10px;bottom:10px;z-index:3;font-size:11px;
+  color:#4a4a4a;letter-spacing:.01em;font-style:italic;
+  text-shadow:0 1px 4px rgba(255,255,255,.85)}
+.pgal .fitnote b{font-style:normal;font-weight:700;color:var(--ink)}
+/* view similar — round icon button on desktop, labelled pill on mobile */
+.vsim{position:sticky;bottom:96px;z-index:4;display:grid;place-items:center;
+  width:46px;height:46px;border-radius:50%;background:#fff;color:var(--brand);border:none;
+  box-shadow:0 3px 12px rgba(0,0,0,.18);cursor:pointer;transition:.16s;
+  margin:-70px 14px 0 auto}
+.vsim:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.22)}
+.vsim span{display:none}
+
+/* similar-products section (in-page) */
+.simsec{scroll-margin-top:calc(var(--barh) + var(--hdrm) + 56px)}
+.simgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 10px}
+
+/* similar-products sheet */
+.simsheet .bd{padding:14px 0 18px}
+.simrow{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:0 16px 4px;
+  scroll-snap-type:x proximity}
+.simrow::-webkit-scrollbar{display:none}
+.sprod{flex:0 0 150px;scroll-snap-align:start;display:flex;flex-direction:column}
+.sprod .im{position:relative;line-height:0;background:var(--soft)}
+.sprod .im img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.sprod .rt{position:absolute;left:6px;bottom:6px;background:rgba(255,255,255,.95);
+  font-size:10.5px;font-weight:800;padding:3px 6px;display:inline-flex;gap:3px;align-items:center}
+.sprod .nm{font-size:12px;font-weight:700;line-height:1.35;margin:8px 0 2px;overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.sprod .pr{display:flex;align-items:baseline;gap:6px;flex-wrap:nowrap;white-space:nowrap;
+  font-size:12.5px;margin-bottom:8px}
+.sprod .pr b{font-weight:800}
+.sprod .pr s{color:var(--muted);font-size:11px}
+.sprod .pr em{font-style:normal;color:var(--sale);font-size:11px;font-weight:800}
+.sprod .btn.sm{margin-top:auto;padding:8px 6px;font-size:11px;border-radius:0}
 .pgal .tg{position:absolute;top:0;left:0;background:var(--brand);color:#fff;font-size:9.5px;font-weight:700;
-  padding:4px 10px;border-bottom-right-radius:6px;z-index:3}
+  padding:4px 10px;border-radius:0;z-index:3}
 .pgal .tryon{position:absolute;top:10px;right:10px;background:#fff;border-radius:18px;padding:6px 13px;
   font-size:11px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.14);z-index:3;display:flex;align-items:center;gap:6px}
 .storyring{position:absolute;left:12px;top:44px;width:58px;height:58px;border-radius:50%;padding:3px;
@@ -811,7 +887,21 @@ body.hasbar{--barh:44px;padding-top:44px}
   .side-f{display:none}
   .mfilter{display:flex}
   .pdp{grid-template-columns:1fr;gap:18px}
-  .pgal{grid-template-columns:1fr}
+  .pdp{grid-template-columns:1fr}
+  .pgal-in{position:static;max-height:none;overflow:visible}
+  .simgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pgal-stage{overflow:hidden;aspect-ratio:3/4;background:var(--soft)}
+  .pgal-tr{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .pgal-tr::-webkit-scrollbar{display:none}
+  .pgal-tr img{flex:0 0 100%;height:100%;object-fit:contain;scroll-snap-align:center}
+  .pgal .arw{display:grid}
+  .pgal-dots{display:flex}
+  .vsim{bottom:96px;width:auto;height:auto;border-radius:20px;
+    padding:7px 12px;gap:7px;grid-auto-flow:column;align-items:center;color:var(--ink);
+    font-size:11.5px;font-weight:700;margin:-52px auto 0 10px}
+  .vsim span{display:inline}
+  .vsim svg{color:var(--brand)}
   .mod-box{grid-template-columns:1fr}
   .mod-box img.hero{aspect-ratio:16/9;border-radius:12px 12px 0 0;max-height:190px}
   .ftr-grid{grid-template-columns:1fr 1fr}
@@ -860,7 +950,21 @@ body.hasbar{--barh:44px;padding-top:44px}
   .side-f{display:none}
   .mfilter{display:flex}
   .pdp{grid-template-columns:1fr;gap:18px}
-  .pgal{grid-template-columns:1fr}
+  .pdp{grid-template-columns:1fr}
+  .pgal-in{position:static;max-height:none;overflow:visible}
+  .simgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pgal-stage{overflow:hidden;aspect-ratio:3/4;background:var(--soft)}
+  .pgal-tr{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .pgal-tr::-webkit-scrollbar{display:none}
+  .pgal-tr img{flex:0 0 100%;height:100%;object-fit:contain;scroll-snap-align:center}
+  .pgal .arw{display:grid}
+  .pgal-dots{display:flex}
+  .vsim{bottom:96px;width:auto;height:auto;border-radius:20px;
+    padding:7px 12px;gap:7px;grid-auto-flow:column;align-items:center;color:var(--ink);
+    font-size:11.5px;font-weight:700;margin:-52px auto 0 10px}
+  .vsim span{display:inline}
+  .vsim svg{color:var(--brand)}
   .mod-box{grid-template-columns:1fr}
   .mod-box img.hero{aspect-ratio:16/9;border-radius:12px 12px 0 0;max-height:190px}
   .ftr-grid{grid-template-columns:1fr}

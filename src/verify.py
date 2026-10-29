@@ -93,7 +93,8 @@ with sync_playwright() as pw:
     pg.click('.storyring'); pg.wait_for_timeout(1200)
     pg.screenshot(path=SHOT + '/i-stories.png')
     pg.keyboard.press('Escape'); pg.wait_for_timeout(400)
-    pg.mouse.wheel(0, 1900); pg.wait_for_timeout(900)
+    pg.mouse.wheel(0, 1400); pg.wait_for_timeout(600)
+    pg.mouse.wheel(0, 1000); pg.wait_for_timeout(900)
     satc = pg.evaluate("() => document.querySelector('#satc').classList.contains('on')")
     subnav = pg.evaluate("() => document.querySelector('#subnav').classList.contains('show')")
     pg.screenshot(path=SHOT + '/i-pdp-sticky.png')
@@ -107,7 +108,7 @@ with sync_playwright() as pw:
     drilled = p2.evaluate("""() => document.querySelector('[data-mpanel="Men"]').style.display !== 'none'
         && document.querySelector('[data-mpanel="Women"]').style.display === 'none'""")
     p2.click('[data-mtab="Girls"]'); p2.wait_for_timeout(500)
-    backok = p2.evaluate("""() => document.querySelectorAll('[data-mpanel="Girls"] .dgrid a').length > 5""")
+    backok = p2.evaluate("""() => document.querySelectorAll(`[data-mpanel="Girls"] .agrid .atile`).length > 5""")
     p2.keyboard.press('Escape'); p2.wait_for_timeout(400)
     p2.goto('file://%s/collection.html' % OUT); p2.wait_for_timeout(2000)
     p2.click('[data-filtersheet]'); p2.wait_for_timeout(700)

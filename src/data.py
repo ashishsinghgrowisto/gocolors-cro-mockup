@@ -411,3 +411,90 @@ CATEGORIES = {
    ('Cycling Shorts','~files/GCYC-NAVY61_3_c7c407ac-1d28-435c-97c0-23c3bed46e21.jpg',''),
  ],
 }
+
+# ----------------------------------------------------------------- app menu page
+# Mirrors the Go Colors app "Collections (Menu)" page built in Appbrew Studio:
+# audience tabs -> image-list sections (Bottoms / Tops / Occasion / Fit) ->
+# product rails (New Arrivals / Best Sellers / Sale) -> "Also Explore".
+APP_MENU = {
+ 'Women': [
+  ('Bottoms', 'Shop all', 4, [
+    ('~files/2_95194a4e-9058-4633-b8d5-7e608be4d43a.jpg', 'Leggings'),
+    ('~files/WidePant.jpg', 'Wide Pants'),
+    ('~files/Palazzos.jpg', 'Palazzos'),
+    ('~files/Pants_b6ff6a07-5a59-4532-a8d4-2b0efcf824ec.jpg', 'Pants'),
+    ('~files/KurtiPants.jpg', 'Kurti Pants'),
+    ('~files/Jeggings_4ab26a6a-8eb5-4e52-b107-4126083ab6ba.jpg', 'Jeggings'),
+    ('~files/Active.jpg', 'Athleisure'),
+    ('~files/FlarePants.jpg', 'Flares'),
+    ('~files/Shorts.jpg', 'Shorts'),
+    ('~files/Jeans_27b29a69-b8ef-4327-b270-c42e7211b3d5.jpg', 'Jeans'),
+  ]),
+  ('Tops', 'Shop all', 4, [
+    ('~files/Kurti.jpg', 'Kurta/Kurti'),
+    ('~files/8905344442566_21.jpg', 'Kurti Sets'),
+    ('~files/Co-ordSet.jpg', 'Co-ord Set'),
+    ('~files/Dress.jpg', 'Dresses'),
+    ('~files/Shirt.jpg', 'Shirts'),
+    ('~files/8905344420861_2_703ad894-ed8b-42b7-bb24-68f9e9096fd9.jpg', 'Tops'),
+    ('~files/2_c22899fa-47a9-4e0a-8f5d-524924a814d9.jpg', 'T-Shirts'),
+    ('~files/2_ef40bf54-5bc8-4a5f-99d7-1ca806be5abc1.jpg', 'Camisole'),
+  ]),
+  ('Shop by Occasion', 'Shop all', 3, [
+    ('~files/5_4c5a816c-5ea5-4c61-84eb-47fe86e2dee2.jpg', 'Office'),
+    ('~files/LPZ8-DBRWN38TB_1_81e030cb-b114-4e46-9593-b2cffdf07629.jpg', 'Casual'),
+    ('~files/8905344426894_1.jpg', 'Festive'),
+    ('~files/Workout.jpg', 'Workout'),
+    ('~files/Lounge.jpg', 'Lounge'),
+    ('~files/8905344439061_6_c74fe9d5-8278-4c9b-85cd-ccde724b4440.jpg', 'Party'),
+  ]),
+  ('Shop by Fit', 'Shop all', 3, [
+    ('~files/Cat_LL-BLACK73-43.jpg', 'Skinny'),
+    ('~files/5_8cfec29e-b71c-496f-92e8-c0bc6326b4ab.jpg', 'Straight'),
+    ('~files/8905344497528_2__edit_1.jpg', 'Wide'),
+    ('~files/LPT8-BLACK73P_3.jpg', 'Flared'),
+    ('~files/8_95257cb8-7cdc-407d-9371-35e864dd9b0d.jpg', 'Baggy'),
+    ('~files/LT06-BLACK73C_3.jpg', 'Tapered'),
+  ]),
+ ],
+ 'Men': [
+  ('Tops', 'Shop all', 4, [
+    ('~files/3_3397f2aa-8b52-44d3-bbf5-5bdd008f658b.jpg', 'Shirts'),
+    ('~files/2_be06f8d1-e2cb-48c4-83aa-a86b31ed32b1.jpg', 'Polos'),
+    ('~files/2_56f5f26d-d689-4703-a977-50426103df62.jpg', 'T-shirts'),
+  ]),
+  ('Bottoms', 'Shop all', 4, [
+    ('~files/2_42ac893b-fe1a-4f5c-87d1-2e0221e73aa6.jpg', 'Trousers'),
+    ('~files/2_1268e78f-62d5-4b3f-9018-0ee0d868eeda.jpg', 'Jeans'),
+    ('~files/2_abad8ed9-68c7-4bc7-a7ab-fb267cac22f1.jpg', 'Chinos'),
+    ('~files/2_f8ed0a60-b360-4348-95e3-b05b60753189.jpg', 'Shorts'),
+  ]),
+  ('Shop by Occasion', 'Shop all', 3, [
+    ('~files/1_8c34265e-d4d4-48b8-b22e-b641e801d325.jpg', 'Office'),
+    ('~files/1_62bdf6bd-11c0-4b75-86c2-51b03d86877b.jpg', 'Casual'),
+    ('~files/2_ff97ae9f-093f-465b-8257-402ee3668f80.jpg', 'Lounge'),
+  ]),
+ ],
+ 'Girls': [
+  ('Bottoms', 'Shop all', 3, [
+    ('~files/GLC-BLACK73_3.jpg', 'Leggings'),
+    ('~files/GPZ-BLACK73_3.jpg', 'Palazzos'),
+    ('~files/GH-WHITE74_5.jpg', 'Pants'),
+    ('~files/GJ03-BLUEDN89_3.jpg', 'Jeggings'),
+    ('~files/GCYC-NAVY61_3_c7c407ac-1d28-435c-97c0-23c3bed46e21.jpg', 'Shorts'),
+    ('~files/GJ07-PURPLE21_3.jpg', 'Joggers'),
+  ]),
+  ('Shop by Occasion', 'Shop all', 3, [
+    ('~files/GL-DKRED2_4.jpg', 'Everyday'),
+    ('~files/GH-BLACK73_3.jpg', 'Festive'),
+    ('~files/GPT1-PLUM25_4.jpg', 'Active'),
+  ]),
+ ],
+}
+
+# "Also Explore" tiles — cross-links to the other two audience tabs
+APP_EXPLORE = {
+ 'Women': '~files/converted_image.jpg',
+ 'Men':   '~files/MP01-LTWINE19_6_ad4bb77b-b0ad-4aff-b54e-c04147bcfb03.jpg',
+ 'Girls': '~files/GPZ-TEAL151-1_6_91460aaf-5108-4faf-a5d4-415f2aff995f.jpg',
+}
